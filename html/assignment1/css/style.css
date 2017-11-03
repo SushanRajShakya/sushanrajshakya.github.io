@@ -211,12 +211,14 @@
 .col-2-right ul li{
     height: auto;
     line-height: 16px;
+    font-size: 11px;
     width: 152px;
     font-weight: bold;
 }
 
 .col-2-right ul li a{
     float:left; 
+    font-size: 11px;
     width: 174px;
     text-decoration: none;
     padding: 8px 0px 8px 8px;
