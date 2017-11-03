@@ -433,6 +433,13 @@
     font-size: 10px;
 }
 
+.footer-left ul li a{
+    float: left;    
+    text-decoration: none;
+    color: #bcbcbc;
+    font-size: 10px;
+}
+
 .footer-left ul li:last-child{
     float: left;    
     margin: 20px 0px 20px 0px;
@@ -461,7 +468,7 @@
     height: 12px;
 }
 
-}
+
 
 
 
