@@ -1,0 +1,284 @@
+.main-wrapper{
+    /*min-width: 1500px;*/
+}
+
+.header-wrapper{
+    background-image: url(../images/header-background.png);
+    background-repeat: repeat-x;
+    height: 160px;
+    width: 100%;
+}
+
+.header-top{
+    width: 1170px;
+    margin: 0px auto;
+    position: relative;
+}
+
+.top-menu{
+    float: right;
+}
+
+.search-box{
+    display: none;
+    position: absolute; 
+    top: 40px;
+    right: 0px;
+    float: right;
+}
+
+.header-bot{
+    width: 1170px;
+    margin: 0px auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+.body-wrapper{
+    background-color: #f3f3f3;
+    width: 100%;
+    float: left;
+}
+
+.main-body{
+    width: 1170px;
+    margin: 0px auto;
+}
+
+.body-first{
+    position: relative;
+    width: 100%;
+}
+
+.body-first-right{
+    float:right;
+}
+
+.slider-img{
+    height: 700px;
+    margin-bottom: 3px;
+    width: 100%;
+    position: relative;
+    border-radius: 5px;
+    float: left;
+    background-image: url(../images/body2-no-img.png);
+    -webkit-box-shadow: 0px 3px 0px 0px rgba(229,230,230,1);
+    -moz-box-shadow: 0px 3px 0px 0px rgba(229,230,230,1);
+    box-shadow: 0px 3px 0px 0px rgba(229,230,230,1);
+}
+
+.slider-button{
+    padding: 31px 0px;
+    margin: 0px auto;
+    width: 100%;
+    float: left;
+    justify-content: center;
+}
+
+.body-info{
+    width: 100%;
+    float: left;
+}
+
+.body-para{
+    padding: 39px 2px;
+    float: left;
+    width: 766px;
+}
+
+.body-details{
+    padding: 39px 1px;
+    float: right;
+    width: 268px;
+}
+
+.related-projects{
+    padding: 20px 0px 16px 4px;
+    float: left;
+    width: 100%;
+    background-image: url(../images/line.png);
+    background-repeat: repeat-x;
+    background-position: 20px 35px;
+}
+
+.navigation{
+    float: right;
+    background-color: #f3f3f3;
+    padding-left: 9px;
+}
+
+.img-div{
+    width: 100%;
+}
+
+.img-box{
+    width: 270px;
+    position: relative;
+    height: auto;
+    float: left;
+    padding: 0px 15px 87px 15px;
+}
+
+.img-box-l{
+    width: 270px;
+    position: relative;
+    height: auto;
+    float: left;
+    padding-bottom: 87px;
+    padding-right: 15px
+}
+
+.img-box-r{
+    width: 270px;
+    position: relative;
+    height: auto;
+    float: left;
+    padding-bottom: 87px;
+    padding-left: 15px;
+}
+
+.img-box:hover .img-hide{
+    display: block;
+}
+
+.img-box-l:hover .img-hide-l{
+    display: block;
+}
+
+.img-box-r:hover .img-hide{
+    display: block;
+}
+
+.img-hide{
+    display: none;
+    position: absolute;
+    width: 270px;
+    height: 270px;
+    top: 0px;
+    left: 15px;
+    float: left;
+    border-radius: 5px;
+    border: none;
+    background-color: #83ccc5;
+}
+
+.img-hide-l{
+    display: none;
+    position: absolute;
+    width: 270px;
+    height: 270px;
+    top: 0px;
+    left: 0px;
+    float: left;
+    border-radius: 5px;
+    border: none;
+    background-color: #83ccc5;
+}
+
+.eye{
+    position: absolute;
+    left: 33%;
+    top: 40%;
+    line-height: 40px;
+    border-radius: 5px;
+    border: none;
+    background-color: #76b7b1;
+}
+
+.eye:hover{
+    background-color: #e2534b;
+}
+
+.link{
+    left: 52%;
+    line-height: 40px;
+    top: 40%;
+    position: absolute;
+    border-radius: 5px;
+    border: none;
+    background-color: #76b7b1;
+}
+
+.link:hover{
+    background-color: #e2534b;
+}
+
+.text-abs{
+    position: absolute;
+    top: 70%;
+    left: 31%;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 40px;
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+.footer-wrapper{
+    width: 100%;
+    background-color: #76c7c0;
+    float: left;
+}
+
+.main-footer-top{
+    background-image: url(../images/footer-top.png);
+    background-repeat: repeat-x;    
+    width: 100%;
+}
+
+.footer-top{
+    width: 1170px;
+    margin: 0px auto;
+}
+
+.footer-l-left{
+    width: 370px;
+    padding: 48px 0px 48px 5px;
+    float: left;
+    color: white; 
+}
+
+.footer-left{
+    width: 170px;
+    padding: 48px 2px 48px 25px;
+    float: left;
+}
+
+.footer-right{
+    width: 170px;
+    padding: 48px 2px 48px 28px;
+    float: left;
+}
+
+.footer-r-right{
+    width: 340px;
+    padding: 48px 29px;
+    float: right;
+}
+
+.main-footer-bot{
+    background-image: url(../images/footer-bot.png);
+    background-repeat: repeat-x;
+    width: 100%;
+    float: left;
+}
+
+.footer-bot{
+    width: 1170px;
+    margin: 0px auto;
+}
