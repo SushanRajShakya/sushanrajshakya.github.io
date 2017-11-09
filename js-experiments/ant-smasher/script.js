@@ -131,11 +131,11 @@ function World(){
 				mainWrapper.style.display="none";
 			}
 
-			this.collisionDetection(tempGroup);
+			//this.collisionDetection(tempGroup);
 
 		},50);
 	}
-
+/*
 	this.collisionDetection(tempGroup){
 		tempGroup.forEach(function firstAnt){
 			tempGroup.forEach(function secondAnt){				
@@ -145,6 +145,8 @@ function World(){
 			}
 		}
 	}
+
+*/
 }
 
 //total width of all elements-----------------------------------------------------------------
