@@ -76,7 +76,7 @@ this.gameMenuWrapper.appendChild(startBtn);
 		dummyWrapper.style.height="100%";
 		dummyWrapper.style.position="relative";
 		mainWrapper.appendChild(dummyWrapper);
-		for(var i=0;i<10;i++){
+		for(var i=0;i<20;i++){
 			var box=document.createElement("div");
 			box.style.width=boxWidth+"px";
 			box.style.height=boxHeight+"px";
@@ -209,16 +209,6 @@ var collisionDetection=function(specifiedGroup){
 							ant1.dy=-Math.abs(ant1.dy);
 						}
 					}
-					/*
-					if(ant1.x=ant2.x){
-						ant1.dy=-ant1.dy;
-						ant2.dy=-ant2.dy;
-					}
-
-					if(ant1.y==ant2.y){
-						ant1.dx=-ant1.dx;
-						ant2.dx=-ant2.dx;
-					}*/
 				}
 			}
 		});
