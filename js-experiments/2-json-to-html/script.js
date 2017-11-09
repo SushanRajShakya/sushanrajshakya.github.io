@@ -40,19 +40,20 @@ var body=document.getElementsByTagName("body")[0];
 var objKeys=Object.keys(data[0]);
 
 for(var i=0;i<data.length;i++){
-	jsonToHtml(data[i]);
+	jsonToHtml(data[i],body);
 }
 
 
 //Converting JSON to HTML----------------------------------------------------------------------------
-function jsonToHtml(jsonObject){
-	var parent=constructElement(jsonObject);
-	for(var i=0;i<jsonObject.children.length;i++){
-		console.log(i);
-		var children=constructElement(jsonObject.children[i]);
-		parent.appendChild(children);
+function jsonToHtml(jsonObject,parent){
+	var child=constructElement(jsonObject);
+	var flag=checkChildren(jsonObject);
+	if(flag=="hasChildren"){
+		for(var i=0;i<jsonObject.children.length;i++){
+			jsonToHtml(jsonObject.children[i],child);
+		}
 	}
-	body.appendChild(parent);
+	parent.appendChild(child);
 }
 
 function constructElement(element){
@@ -62,5 +63,17 @@ function constructElement(element){
 		newElement.style[styleKey]=element.styles[styleKey];
 	}
 	return newElement;
+}
+
+
+function checkChildren(jsonObject){
+	var keys=Object.keys(jsonObject);
+	var flag="noChildren";
+	keys.forEach(function(key){
+		if(key=="children"){
+			flag="hasChildren";
+		}
+	});
+	return flag;
 }
 
