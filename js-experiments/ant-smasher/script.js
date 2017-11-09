@@ -8,29 +8,29 @@ mainWrapper.style.display="none";
 
 function World(){
 //game menu start----------------------------------------------------------------------------------------------
-	this.gameMenuWrapper=document.createElement("div");
-	this.gameMenuWrapper.style.backgroundColor="red";
-	this.gameMenuWrapper.style.width="100%";
-	this.gameMenuWrapper.style.height="500px";
-	this.gameMenuWrapper.style.fontSize="5em";
-	this.gameMenuWrapper.style.fontWeight="bold";
-	this.gameMenuWrapper.style.display="block";
-	this.gameMenuWrapper.style.textAlign="center";
-	this.gameMenuWrapper.innerHTML="Ant Smasher!<br><br>-----Smash'em all-----<br>"
-	document.body.appendChild(this.gameMenuWrapper);
+this.gameMenuWrapper=document.createElement("div");
+this.gameMenuWrapper.style.backgroundColor="orange";
+this.gameMenuWrapper.style.width="100%";
+this.gameMenuWrapper.style.height="500px";
+this.gameMenuWrapper.style.fontSize="5em";
+this.gameMenuWrapper.style.fontWeight="bold";
+this.gameMenuWrapper.style.display="block";
+this.gameMenuWrapper.style.textAlign="center";
+this.gameMenuWrapper.innerHTML="Ant Smasher!<br><br>-----Smash'em all-----<br>"
+document.body.appendChild(this.gameMenuWrapper);
 
-	var startBtn=document.createElement("button");
-	startBtn.style.borderRadius="5px";
-	startBtn.style.padding="20px";
-	startBtn.style.fontSize="20px";
-	startBtn.style.value="Start";
-	startBtn.innerHTML="Start";
-	this.gameMenuWrapper.appendChild(startBtn);
+var startBtn=document.createElement("button");
+startBtn.style.borderRadius="5px";
+startBtn.style.padding="20px";
+startBtn.style.fontSize="20px";
+startBtn.style.value="Start";
+startBtn.innerHTML="Start";
+this.gameMenuWrapper.appendChild(startBtn);
 
 
 	//game over division--------------------------------------------------------------------------------------------
 	this.gameOverWrapper=document.createElement("div");
-	this.gameOverWrapper.style.backgroundColor="red";
+	this.gameOverWrapper.style.backgroundColor="orange";
 	this.gameOverWrapper.style.width="100%";
 	this.gameOverWrapper.style.height="500px";
 	this.gameOverWrapper.style.fontSize="5em";
@@ -91,62 +91,35 @@ function World(){
 
 		//total width of all elements-----------------------------------------------------------------
 
-			box.onclick=function(selectedAnt){
-				return function(){
-					var clickedAnt=selectedAnt;
-					clickedAnt.killAnt();
-					antGroup.splice(antGroup.indexOf(selectedAnt),1);
-					this.onclick=null;
-				}
-			}(antGroup[i]);
-		}
-
-		this.beginInterval(antGroup,dummyWrapper);
-
-	//set interval-----------------------------------------------------------------------------
-		/*
-		var flag=setInterval(function(){
-			for(var i=0;i<antGroup.length;i++){
-				antGroup[i].updatePosition();
+		box.onclick=function(selectedAnt){
+			return function(){
+				var clickedAnt=selectedAnt;
+				clickedAnt.killAnt();
+				antGroup.splice(antGroup.indexOf(selectedAnt),1);
+				this.onclick=null;
 			}
-			if(antGroup.length==0){
+		}(antGroup[i]);
+	}
+
+	this.beginInterval(antGroup,dummyWrapper);
+};
+
+	//function for setInterval
+	this.beginInterval=function(funcAntGroup,dummyWrapper){
+		var flag=setInterval(function(){
+			collisionDetection(funcAntGroup);
+			for(var i=0;i<funcAntGroup.length;i++){
+				funcAntGroup[i].updatePosition();
+			}
+			if(funcAntGroup.length==0){
 				clearInterval(flag);
 				that.gameOverWrapper.style.display="block";
 				mainWrapper.removeChild(dummyWrapper);
 				mainWrapper.style.display="none";
 			}
 		},50);
-		*/
-	};
-
-	this.beginInterval=function(tempGroup,dummyWrapper){
-		var flag=setInterval(function(){
-			for(var i=0;i<tempGroup.length;i++){
-				tempGroup[i].updatePosition();
-			}
-			if(tempGroup.length==0){
-				clearInterval(flag);
-				that.gameOverWrapper.style.display="block";
-				mainWrapper.removeChild(dummyWrapper);
-				mainWrapper.style.display="none";
-			}
-
-			//this.collisionDetection(tempGroup);
-
-		},50);
-	}
-/*
-	this.collisionDetection(tempGroup){
-		tempGroup.forEach(function firstAnt){
-			tempGroup.forEach(function secondAnt){				
-				if(firstAnt){
-
-				}
-			}
-		}
 	}
 
-*/
 }
 
 //total width of all elements-----------------------------------------------------------------
@@ -203,7 +176,93 @@ function Ant(item){
 
 }
 
+//Initiating the ant-smasher world
 var createWorld=new World();
+
+
+//collision detection function
+var collisionDetection=function(specifiedGroup){
+	specifiedGroup.forEach(function(ant1){
+		specifiedGroup.forEach(function(ant2){
+			if(ant1==ant2){
+				//do nothing same ant
+			}else{
+				if((ant1.x+30>ant2.x)&&(ant1.x<ant2.x+30)&&(ant1.y+17>ant2.y)&&(ant1.y<ant2.y+17)){
+					if(ant1.x>ant2.x){
+						ant1.dx=Math.abs(ant1.dx);
+						ant2.dx=-Math.abs(ant2.dx);
+						if(ant1.y>ant2.y){
+							ant1.dy=Math.abs(ant1.dy);
+							ant2.dy=-Math.abs(ant2.dy);
+						}else{
+							ant2.dy=Math.abs(ant2.dy);
+							ant1.dy=-Math.abs(ant1.dy);
+						}
+					}else{
+						ant2.dx=Math.abs(ant2.dx);
+						ant1.dx=-Math.abs(ant1.dx);
+						if(ant1.y>ant2.y){
+							ant1.dy=Math.abs(ant1.dy);
+							ant2.dy=-Math.abs(ant2.dy);
+						}else{
+							ant2.dy=Math.abs(ant2.dy);
+							ant1.dy=-Math.abs(ant1.dy);
+						}
+					}
+					/*
+					if(ant1.x=ant2.x){
+						ant1.dy=-ant1.dy;
+						ant2.dy=-ant2.dy;
+					}
+
+					if(ant1.y==ant2.y){
+						ant1.dx=-ant1.dx;
+						ant2.dx=-ant2.dx;
+					}*/
+				}
+			}
+		});
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*---------------------------------------------------------------------------------------------
