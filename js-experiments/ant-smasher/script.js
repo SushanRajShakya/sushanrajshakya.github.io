@@ -1,31 +1,37 @@
 //division---------------------------------------------------------------------------------------------
-var mainWrapper=document.getElementById("main-wrapper");
-mainWrapper.style.backgroundColor="darkkhaki";
-mainWrapper.style.width="1000px";
-mainWrapper.style.height="500px";
-mainWrapper.style.overflow="hidden";
-mainWrapper.style.display="none";
+document.body.style.padding="0px";
+document.body.style.margin="0px";
 
 function World(){
-//game menu start----------------------------------------------------------------------------------------------
-this.gameMenuWrapper=document.createElement("div");
-this.gameMenuWrapper.style.backgroundColor="orange";
-this.gameMenuWrapper.style.width="100%";
-this.gameMenuWrapper.style.height="500px";
-this.gameMenuWrapper.style.fontSize="5em";
-this.gameMenuWrapper.style.fontWeight="bold";
-this.gameMenuWrapper.style.display="block";
-this.gameMenuWrapper.style.textAlign="center";
-this.gameMenuWrapper.innerHTML="Ant Smasher!<br><br>-----Smash'em all-----<br>"
-document.body.appendChild(this.gameMenuWrapper);
 
-var startBtn=document.createElement("button");
-startBtn.style.borderRadius="5px";
-startBtn.style.padding="20px";
-startBtn.style.fontSize="20px";
-startBtn.style.value="Start";
-startBtn.innerHTML="Start";
-this.gameMenuWrapper.appendChild(startBtn);
+	//mainWrapper
+	this.mainWrapper=document.createElement("div");
+	this.mainWrapper.style.backgroundColor="darkkhaki";
+	this.mainWrapper.style.width="1000px";
+	this.mainWrapper.style.height="500px";
+	this.mainWrapper.style.margin="10px";
+	this.mainWrapper.style.display="none";
+	document.body.appendChild(this.mainWrapper);
+
+	//game menu start----------------------------------------------------------------------------------------------
+	this.gameMenuWrapper=document.createElement("div");
+	this.gameMenuWrapper.style.backgroundColor="orange";
+	this.gameMenuWrapper.style.width="100%";
+	this.gameMenuWrapper.style.height="500px";
+	this.gameMenuWrapper.style.fontSize="5em";
+	this.gameMenuWrapper.style.fontWeight="bold";
+	this.gameMenuWrapper.style.display="block";
+	this.gameMenuWrapper.style.textAlign="center";
+	this.gameMenuWrapper.innerHTML="Ant Smasher!<br><br>-----Smash'em all-----<br>"
+	document.body.appendChild(this.gameMenuWrapper);
+
+	var startBtn=document.createElement("button");
+	startBtn.style.borderRadius="5px";
+	startBtn.style.padding="20px";
+	startBtn.style.fontSize="20px";
+	startBtn.style.value="Start";
+	startBtn.innerHTML="Start";
+	this.gameMenuWrapper.appendChild(startBtn);
 
 
 	//game over division--------------------------------------------------------------------------------------------
@@ -53,7 +59,7 @@ this.gameMenuWrapper.appendChild(startBtn);
 	playAgainBtn.onclick=function(){
 		that.gameOverWrapper.style.display="none";
 		that.gameMenuWrapper.style.display="block";
-		mainWrapper.style.display="none";
+		that.mainWrapper.style.display="none";
 	}
 
 
@@ -61,7 +67,7 @@ this.gameMenuWrapper.appendChild(startBtn);
 	startBtn.onclick=function(){
 		that.gameMenuWrapper.style.display="none";
 		that.gameOverWrapper.style.display="none";
-		mainWrapper.style.display="block";
+		that.mainWrapper.style.display="block";
 		that.start();
 	}
 
@@ -73,9 +79,9 @@ this.gameMenuWrapper.appendChild(startBtn);
 	this.start=function(){
 		var dummyWrapper=document.createElement("div");
 		dummyWrapper.style.width="100%";
-		dummyWrapper.style.height="100%";
+		dummyWrapper.style.height="500px";
 		dummyWrapper.style.position="relative";
-		mainWrapper.appendChild(dummyWrapper);
+		this.mainWrapper.appendChild(dummyWrapper);
 		for(var i=0;i<20;i++){
 			var box=document.createElement("div");
 			box.style.width=boxWidth+"px";
@@ -91,18 +97,18 @@ this.gameMenuWrapper.appendChild(startBtn);
 
 		//total width of all elements-----------------------------------------------------------------
 
-		box.onclick=function(selectedAnt){
-			return function(){
-				var clickedAnt=selectedAnt;
-				clickedAnt.killAnt();
-				antGroup.splice(antGroup.indexOf(selectedAnt),1);
-				this.onclick=null;
-			}
-		}(antGroup[i]);
+			box.onclick=function(selectedAnt){
+				return function(){
+					var clickedAnt=selectedAnt;
+					clickedAnt.killAnt();
+					antGroup.splice(antGroup.indexOf(selectedAnt),1);
+					this.onclick=null;
+				}
+			}(antGroup[i]);
 	}
 
 	this.beginInterval(antGroup,dummyWrapper);
-};
+	};
 
 	//function for setInterval
 	this.beginInterval=function(funcAntGroup,dummyWrapper){
@@ -114,8 +120,8 @@ this.gameMenuWrapper.appendChild(startBtn);
 			if(funcAntGroup.length==0){
 				clearInterval(flag);
 				that.gameOverWrapper.style.display="block";
-				mainWrapper.removeChild(dummyWrapper);
-				mainWrapper.style.display="none";
+				that.mainWrapper.removeChild(dummyWrapper);
+				that.mainWrapper.style.display="none";
 			}
 		},50);
 	}
@@ -125,8 +131,8 @@ this.gameMenuWrapper.appendChild(startBtn);
 //total width of all elements-----------------------------------------------------------------
 var boxWidth=30;
 var boxHeight=17;
-var maxWidth=parseInt(mainWrapper.style.getPropertyValue("width"));
-var maxHeight=parseInt(mainWrapper.style.getPropertyValue("height"));
+var maxWidth=1000;
+var maxHeight=500;
 
 
 //Random number generator------------------------------------------------------------------------
@@ -141,8 +147,8 @@ function Ant(item){
 	this.element=item;
 
 	//defining co-ordinates and directions
-	this.x=getRandomNumber(980,0);
-	this.y=getRandomNumber(380,0);
+	this.x=getRandomNumber(980,10);
+	this.y=getRandomNumber(380,10);
 	this.dx=getRandomNumber(3,-3);
 	this.dy=getRandomNumber(3,-3);
 
@@ -176,11 +182,14 @@ function Ant(item){
 
 }
 
-//Initiating the ant-smasher world
+//Initiating the ant-smasher world-----------------------------------------------------------------------------
 var createWorld=new World();
 
+//var secondWorld=new World();
 
-//collision detection function
+
+
+//collision detection function-----------------------------------------------------------------------------------
 var collisionDetection=function(specifiedGroup){
 	specifiedGroup.forEach(function(ant1){
 		specifiedGroup.forEach(function(ant2){
