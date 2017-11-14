@@ -132,7 +132,7 @@ function World() {
             }
 
             that.moveCar();
-            that.obstacleCollision(mainCar);
+            that.obstacleCollision(mainCar);//removal of obstacle also in same function
             if (that.gameOverIndex === "game-over") {
                 that.gameOver();
             }
