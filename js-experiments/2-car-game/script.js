@@ -86,10 +86,16 @@ function World() {
   }
 
   this.obstacleArray = [];
+  this.bulletArray = [];
+  this.bulletLimit = 1;
+  this.bulletCounter = 0;
 
 //Initiating the world----------------------------------------------------
   this.init = function() {
     this.obstacleArray = [];
+    this.bulletArray = [];
+    this.bulletLimit = 1;
+    this.bulletCounter = 0;
     this.gameOverIndex = 'none';
     var bgLimit = 0;
     var mainCar = new Car();
@@ -102,7 +108,15 @@ function World() {
         mainCar.move('left');
       } else if (event.keyCode == 39) {
         mainCar.move('right');
+      } else if (event.keyCode == 32) {
+        if(that.bulletCounter<that.bulletLimit) {
+          var bullet = new Bullet(mainCar);
+          that.bulletCounter++;
+          bullet.addBullet(that.dummyWrapper);
+          that.bulletArray.push(bullet);
+        }
       }
+
 // }else if(event.keyCode==40){
 //  mainCar.move('top',);
 // }else if(event.keyCode==38){
@@ -115,28 +129,33 @@ function World() {
   this.begin = function(bgLimit, mainCar) {
     var counter = 0;
     var flag = setInterval(function() {
+      that.bulletCooldown++;
       that.mainWrapper.style.backgroundPosition = '0px ' + bgLimit + 'px';
       bgLimit += 2;
       if (bgLimit > 828) {
         bgLimit = 0;
       }
+
       if (that.gameOverIndex === "game-over") {
         that.gameOver();
         that.gameOverScreen.style.display = 'block';
         clearInterval(flag);
       }
+//adding obstacle at 1.5 secs interval
       counter += 10;
-      if (counter == 1500) {
+      if (counter == 1000) {
         counter = 0;
         that.addObstacle();
       }
 
-      that.moveCar();
+      that.moveCar();//moving the obstacle cars
       that.obstacleCollision(mainCar);//removal of obstacle also in same function
       if (that.gameOverIndex === "game-over") {
         that.gameOver();
       }
 
+      that.moveBullet();
+      that.bulletCollision();
     }, 10);
   }
 
@@ -152,6 +171,13 @@ function World() {
     for (var i = 0; i < that.obstacleArray.length; i++) {
       that.obstacleArray[i].y += speed;
       that.obstacleArray[i].objImage.style.top = that.obstacleArray[i].y + 'px';
+    }
+  }
+
+//moving bullet
+  this.moveBullet = function() {
+    for (var i = 0; i < that.bulletArray.length; i++) {
+      that.bulletArray[i].moveBullet();
     }
   }
 
@@ -173,6 +199,43 @@ function World() {
         }
       }
     }
+  }
+
+//bullet removal and collision detection-------------------------------------------------
+  this.bulletCollision = function() {
+    if (that.bulletArray.length > 0) {
+      if (that.bulletArray[0].y > 600) {
+        that.bulletArray[0].removeBullet(that.dummyWrapper);
+        that.bulletCounter--;
+        that.bulletArray.splice(that.bulletArray.indexOf(that.bulletArray[0]), 1);
+      } else {
+        var bulletObstacleIndex = checkBulletCollision(that.bulletArray,that.obstacleArray);
+        that.blastObstacle(bulletObstacleIndex[0],bulletObstacleIndex[1]);
+      }
+    }
+  }
+
+  this.blastObstacle = function(bulletIndex,obstacleIndex){
+    if ((bulletIndex != "no") && (obstacleIndex != "no")) {
+      that.dummyWrapper.removeChild(that.bulletArray[bulletIndex].objImage);
+      that.dummyWrapper.removeChild(that.obstacleArray[obstacleIndex].objImage);
+      that.bulletCounter--;
+      that.obstacleArray.splice(that.obstacleArray.indexOf(that.obstacleArray[obstacleIndex]),1);
+      that.displayBoom(bulletIndex);
+    }
+  }
+
+  this.displayBoom = function(bulletIndex){
+    var left = parseInt(that.bulletArray[bulletIndex].left)-40;
+    var y = that.bulletArray[bulletIndex].y;
+    var boom = new Explosion();
+    boom.objImage.style.left = left+'px';
+    boom.objImage.style.bottom = (y+30) + 'px';
+    that.dummyWrapper.appendChild(boom.objImage);
+    setTimeout(function () {
+      that.dummyWrapper.removeChild(boom.objImage);
+    },1000);
+    that.bulletArray.splice(that.bulletArray.indexOf(that.bulletArray[bulletIndex]),1);
   }
 }
 
@@ -260,16 +323,35 @@ function Explosion() {
   this.objImage.style.zIndex = '2';
 }
 
-function Bullet() {
+function Bullet(mainCar) {
   var that = this;
-//BOOM IMAGE--------------------------------------------------
+  this.position = ['75px', '184px', '285px']; //total position
+  this.indexPosition = mainCar.indexPosition;
+  this.left = this.position[this.indexPosition];
+  this.y = 90;
+  this.dy = 3;
+//Bullet IMAGE--------------------------------------------------
   this.objImage = document.createElement('img');
   this.objImage.src = 'bullet.png';
-  this.objImage.style.width = '20px';
-  this.objImage.style.height = '150px';
+  this.objImage.style.width = '40px';
+  this.objImage.style.height = '60px';
   this.objImage.style.position = 'absolute';
-  this.objImage.style.bottom = '0px';
-  this.objImage.style.zIndex = '3';
+  this.objImage.style.bottom = this.y + 'px';
+  this.objImage.style.left = this.left;
+  this.objImage.style.zIndex = '2';
+
+  this.removeBullet = function(dummyWrapper) {
+    dummyWrapper.removeChild(this.objImage);
+  }
+
+  this.addBullet = function (dummyWrapper) {
+    dummyWrapper.appendChild(this.objImage);
+  }
+
+  this.moveBullet = function(){
+    this.y+=this.dy
+    this.objImage.style.bottom=this.y+'px';
+  }
 }
 
 
@@ -286,6 +368,22 @@ var checkCollision = function(mainCar, obstacle, dummyWrapper) {
     }
   }
   return false;
+}
+
+//Check Bullet Collision
+var checkBulletCollision = function(bullet,obstacle) {
+  for(var i=0;i<bullet.length;i++){
+    var topBullet=600-bullet[i].y;
+    for(var j=0;j<obstacle.length;j++){
+      var botObstacle = parseInt(obstacle[j].objImage.style.getPropertyValue("top")) + 130;
+      if ((topBullet < botObstacle)) {
+        if (bullet[i].indexPosition == obstacle[j].indexPosition) {
+          return [i, j];
+        }
+      }
+    }
+  }
+  return ["no","no"];
 }
 
 //Game creeting world-----------------------------------------------------------------------------------------------
