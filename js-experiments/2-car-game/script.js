@@ -234,7 +234,7 @@ function World() {
     that.dummyWrapper.appendChild(boom.objImage);
     setTimeout(function () {
       that.dummyWrapper.removeChild(boom.objImage);
-    },1000);
+    },250);
     that.bulletArray.splice(that.bulletArray.indexOf(that.bulletArray[bulletIndex]),1);
   }
 }
