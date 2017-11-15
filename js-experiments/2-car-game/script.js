@@ -87,14 +87,14 @@ function World() {
 
   this.obstacleArray = [];
   this.bulletArray = [];
-  this.bulletLimit = 1;
+  this.bulletLimit = 3;
   this.bulletCounter = 0;
 
 //Initiating the world----------------------------------------------------
   this.init = function() {
     this.obstacleArray = [];
     this.bulletArray = [];
-    this.bulletLimit = 1;
+    this.bulletLimit = 3;
     this.bulletCounter = 0;
     this.gameOverIndex = 'none';
     var bgLimit = 0;
