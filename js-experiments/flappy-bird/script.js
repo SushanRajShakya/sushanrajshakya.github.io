@@ -1,5 +1,5 @@
 const KEY_CODES = {
-SPACE: 32
+  SPACE: 32
 };
 const GAME_MAIN_HEIGHT = 500;
 const GAME_HEIGHT = 405;
