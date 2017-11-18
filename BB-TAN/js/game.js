@@ -2,107 +2,168 @@ class Game {
   constructor() {
     this.canvas = document.getElementById('mainCanvas');
     this.ctx = this.canvas.getContext('2d');
+    this.level = 1;
+    this.raf;
     //this.background = new Image();
     //this.drawBackground();
     this.sprtieSheet = new Image();
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.strokeStyle = 'white';
-    this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
     this.tileMap = [
       [0,0,0,0,0,0,0],
-      [1,5,2,6,3,10,1],
-      [0,1,7,5,6,3,4],
-      [0,0,4,0,6,3,4],
-      [1,6,4,0,2,3,4],
-      [6,1,0,8,2,0,4],
-      [1,0,4,2,1,3,0],
-      [1,6,4,5,2,3,4],
-      [1,9,0,0,6,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0]
     ];
   }
 
   draw(){
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     for(let i=0;i<this.tileMap.length;i++){
       let row = this.tileMap[i];
-      for(let j=0;j<7;j++){
+      for(let j=0;j<TILE_WIDTH;j++){
         let index =  row[j];
         switch (index){
-          case 1:
-            this.obstacle = new Obstacle(this.ctx,i,j);
-            this.obstacle.drawRectangle();
+          case SQUARE:
+            this.obstacle = new ObsSquare(this.ctx,i,j);
+            this.obstacle.drawSquare(this.level);
             break;
-          case 2:
-            this.obstacle = new Obstacle(this.ctx,i,j);
-            this.obstacle.drawTriangle1();
+          case TRIANGLE1:
+            this.obstacle = new ObsTriangle1(this.ctx,i,j);
+            this.obstacle.drawTriangle1(this.level);
             break;
-          case 3:
-            this.obstacle = new Obstacle(this.ctx,i,j);
-            this.obstacle.drawTriangle2();
+          case TRIANGLE2:
+            this.obstacle = new ObsTriangle2(this.ctx,i,j);
+            this.obstacle.drawTriangle2(this.level);
             break;
-          case 4:
-            this.obstacle = new Obstacle(this.ctx,i,j);
-            this.obstacle.drawTriangle3();
+          case TRIANGLE3:
+            this.obstacle = new ObsTriangle3(this.ctx,i,j);
+            this.obstacle.drawTriangle3(this.level);
             break;
-          case 5:
-            this.obstacle = new Obstacle(this.ctx,i,j);
-            this.obstacle.drawTriangle4();
+          case TRIANGLE4:
+            this.obstacle = new ObsTriangle4(this.ctx,i,j);
+            this.obstacle.drawTriangle4(this.level);
             break;
-          case 6:
+          case COIN:
             this.powerUps = new PowerUps(this.ctx,i,j,this.sprtieSheet,0); //type 0 for coin
             this.powerUps.drawCoin();
             break;
-          case 7:
+          case PLUS_BALL:
             this.powerUps = new PowerUps(this.ctx,i,j,this.sprtieSheet,1); //type 1 for plus
             this.powerUps.drawPlus();
             break;
-          case 8:
+          case POWER_HORZ:
             this.powerUps = new PowerUps(this.ctx,i,j,this.sprtieSheet,2); //type 2 for power horizontal
             this.powerUps.drawPowerHorizontal();
             break;
-          case 9:
+          case POWER_VERT:
             this.powerUps = new PowerUps(this.ctx,i,j,this.sprtieSheet,3); //type 3 for power vertical
             this.powerUps.drawPowerVertical();
             break;
-          case 10:
+          case POWER_SPLIT:
             this.powerUps = new PowerUps(this.ctx,i,j,this.sprtieSheet,4); //type 4 for power split
             this.powerUps.drawPowerSplit();
             break;
           default:
-            console.log("do nothing");
             //do nothing
         }
       }
     }
   }
+
+  //tile-row generator logic------------------------------------------------------------------------------------------
+  generateNewTile() {
+    let addBallPosition = getRandomNumber(TILE_COLUMNS-1,0); //position for the +1 ball powerUP
+    let newTile = [];
+    let randomValue;
+    for (let i=0;i<TILE_COLUMNS;i++) {
+      if( addBallPosition == i){
+        newTile.push(PLUS_BALL);
+      } else {
+        randomValue = getRandomNumber(8,0);
+        if (randomValue>=0 && randomValue<=5) {
+          newTile.push(SQUARE);
+        } else if (randomValue == 6) {
+          this.randomTriangle(newTile);
+        } else if (randomValue == 7) {
+          this.randomPowerUp(newTile);
+        } else {
+          newTile.push(BLANK);
+        }
+      }
+    }
+    return newTile;
+  }
+
+  //random triangle selector-------------------------------------------------------------------------------------------
+  randomTriangle(newTile) {
+    let randomValue1 = getRandomNumber(3,0);
+    switch (randomValue1) {
+      case 0:
+        newTile.push(TRIANGLE1);
+        break;
+      case 1:
+        newTile.push(TRIANGLE2);
+        break;
+      case 2:
+        newTile.push(TRIANGLE3);
+        break;
+      default:
+        newTile.push(TRIANGLE4);
+    }
+  }
+
+  //randomPowerUP selector--------------------------------------------------------------------------------------------
+  randomPowerUp(newTile) {
+    let randomValue2 = getRandomNumber(3,0);
+    switch (randomValue2) {
+      case 0:
+        newTile.push(COIN);
+        break;
+      case 1:
+        newTile.push(POWER_HORZ);
+        break;
+      case 2:
+        newTile.push(POWER_VERT);
+        break;
+      default:
+        newTile.push(POWER_SPLIT);
+    }
+  }
+
+  //updating TILE MAP ------------------------------------------------------------------------------------------------
+  updateTileMap() {
+    let tempTileMap = this.tileMap.slice();
+    for(let i=2;i<tempTileMap.length;i++){
+      this.tileMap[i] = tempTileMap[i-1];
+    }
+    this.tileMap[1] = this.generateNewTile();
+  }
 }
 
+let raf;
 let game = new Game();
-game.ctx.clearRect(0,0,game.canvas.width,game.canvas.height);
 game.sprtieSheet.onload = () => {
-  game.draw();
-}
+    this.level++;
+    game.tileMap[1] = game.generateNewTile();
+    game.draw();
+};
 game.sprtieSheet.src = 'images/sprite-sheet.png';
+game.canvas.addEventListener('mouseover',()=>{
+  raf = window.requestAnimationFrame(() => {
+    game.level++;
+    game.updateTileMap();
+    game.draw();
+  });
+});
+
+game.canvas.addEventListener('mouseout',()=>{
+  window.cancelAnimationFrame(raf);
+})
 
 
 
 
-/*
-  drawBackground() {
-    this.ctx.clearRect( 0,0,this.canvas.width,this.canvas.height );
-    this.background.onload = () => {
-      this.ctx.drawImage(this.background,0,0,this.canvas.width,this.canvas.height);
-    }
-    this.background.src = 'images/menu-bg.png';
-  }
-
-  drawObstacle() {
-    for(let i=0; i<7; i++){
-      this.obstacle = new Obstacle(this.ctx);
-      this.obstacle.draw(i);
-    }
-  }
-}
-
-//main program for starting the GAME------------------------------------------------------------------
-let game = new Game();
-*/
