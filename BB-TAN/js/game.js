@@ -151,22 +151,22 @@ function draw(){
           game.obstacle = new ObsSquare(game.ctx,i,j);
           game.obstacle.drawSquare(game.levelMap[i][j]);
           break;
-        case TRIANGLE1:
-          game.obstacle = new ObsTriangle1(game.ctx,i,j);
-          game.obstacle.drawTriangle1(game.levelMap[i][j]);
-          break;
-        case TRIANGLE2:
-          game.obstacle = new ObsTriangle2(game.ctx,i,j);
-          game.obstacle.drawTriangle2(game.levelMap[i][j]);
-          break;
-        case TRIANGLE3:
-          game.obstacle = new ObsTriangle3(game.ctx,i,j);
-          game.obstacle.drawTriangle3(game.levelMap[i][j]);
-          break;
-        case TRIANGLE4:
-          game.obstacle = new ObsTriangle4(game.ctx,i,j);
-          game.obstacle.drawTriangle4(game.levelMap[i][j]);
-          break;
+        // case TRIANGLE1:
+        //   game.obstacle = new ObsTriangle1(game.ctx,i,j);
+        //   game.obstacle.drawTriangle1(game.levelMap[i][j]);
+        //   break;
+        // case TRIANGLE2:
+        //   game.obstacle = new ObsTriangle2(game.ctx,i,j);
+        //   game.obstacle.drawTriangle2(game.levelMap[i][j]);
+        //   break;
+        // case TRIANGLE3:
+        //   game.obstacle = new ObsTriangle3(game.ctx,i,j);
+        //   game.obstacle.drawTriangle3(game.levelMap[i][j]);
+        //   break;
+        // case TRIANGLE4:
+        //   game.obstacle = new ObsTriangle4(game.ctx,i,j);
+        //   game.obstacle.drawTriangle4(game.levelMap[i][j]);
+        //   break;
         case COIN:
           game.powerUps = new PowerUps(game.ctx,i,j,game.sprtieSheet,0); //type 0 for coin
           game.powerUps.drawCoin();
@@ -208,7 +208,6 @@ function checkCollision() {
         case SQUARE:
           let tempObs = new ObsSquare(game.ctx,i,j);
           if(ballCollidingSquare(game.ball,tempObs)){
-            console.log('collided');
             game.levelMap[i][j] -= 1;
             if(game.levelMap[i][j] == 0){
               game.tileMap[i][j] = 0;

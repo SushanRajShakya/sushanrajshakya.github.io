@@ -49,6 +49,14 @@ class Ball {
 
   //after detecting collision change direction----------------------------------------------------------------------
   changeDirection(tempObs) {
-    this.dy *= -1;
+    let centerSquareX = tempObs.x + OBSTACLE_WIDTH/2;
+    let centerSquareY = tempObs.y + OBSTACLE_HEIGHT/2;
+    if(this.x<tempObs.x || this.x>(tempObs.x+OBSTACLE_WIDTH)) {
+      this.dx *= -1;
+    }
+
+    if(this.y<(tempObs.y) || this.y>(tempObs.y+OBSTACLE_HEIGHT)) {
+      this.dy *= -1;
+    }
   }
 }
