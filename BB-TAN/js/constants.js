@@ -12,7 +12,8 @@ const OBSTACLE_HEIGHT = TILE_HEIGHT - TILE_PAD_SQUARE;
 const LINE_WIDTH = 3;
 const POWER_UPS_WIDTH = OBSTACLE_WIDTH/2 + 5;
 const POWER_UPS_HEIGHT = OBSTACLE_HEIGHT/2 + 5;
-
+const BALL_RADIUS = 5;
+const BALL_VELOCITY = 5;
 
 //Sprite-Sheet locations and dimensions-------------------------------------------------------------------------------
 

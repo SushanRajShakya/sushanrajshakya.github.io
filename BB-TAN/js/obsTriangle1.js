@@ -7,6 +7,7 @@ class ObsTriangle1 {
     this.textX = 4;//aligning font at center
     this.textY = 36;//aligning font at center
     this.ctx.strokeStyle = 'white';
+    this.ctx.fillStyle = 'white';
     this.ctx.lineWidth = LINE_WIDTH;
   }
 
