@@ -3,6 +3,8 @@ class ObsSquare {
     this.x = (TILE_WIDTH * column) + TILE_PADDING;
     this.y = (TILE_HEIGHT * row) + TILE_PADDING;
     this.level;
+    this.row = row;
+    this.column = column;
     this.textX = 17;//aligning font at center
     this.textY = 26;//aligning font at center
     this.ctx = ctx;
@@ -24,5 +26,37 @@ class ObsSquare {
     this.ctx.strokeRect(this.x,this.y,OBSTACLE_WIDTH,OBSTACLE_HEIGHT);
     this.ctx.fillText(this.level,this.textX+this.x,this.textY+this.y);
     this.ctx.closePath();
+  }
+
+
+//Collision detection for square and ball----------------------------------------------------------------------------
+  checkCollision(ball) {
+    //Find the vertical & horizontal (distX/distY) distances between the ball’s center and the square’s center
+    let distX = Math.abs(ball.x - this.x - LINE_WIDTH - OBSTACLE_WIDTH / 2);
+    let distY = Math.abs(ball.y - this.y - LINE_WIDTH - OBSTACLE_HEIGHT / 2);
+
+    // If the distance is greater than ball_radius + half_Square, then they are too far apart to be colliding
+    if (distX > (OBSTACLE_WIDTH / 2 + BALL_RADIUS)) {
+      return false;
+    }
+    if (distY > (OBSTACLE_HEIGHT / 2 + BALL_RADIUS)) {
+      return false;
+    }
+
+    // If the distance is less than half_Square then they are definitely colliding
+    if (distX <= BALL_RADIUS+(OBSTACLE_WIDTH / 2)) {
+      return true;
+    }
+    if (distY <= BALL_RADIUS+(OBSTACLE_HEIGHT / 2)) {
+      return true;
+    }
+
+    /*Test for collision at square corner.
+    -Think of a line from the square center to any square corner
+    -Now extend that line by the radius of the ball
+    -If the ball’s center is on that line they are colliding at exactly that square corner*/
+    let dx=distX-OBSTACLE_WIDTH/2;
+    let dy=distY-OBSTACLE_HEIGHT/2;
+    return (dx*dx+dy*dy <= (BALL_RADIUS*BALL_RADIUS));
   }
 }

@@ -1,4 +1,4 @@
-class ObsTriangle2 {
+class ObsTriangleBotRight {
   constructor(ctx, row, column) {
     this.x = (TILE_WIDTH * column) + TILE_PADDING;
     this.y = (TILE_HEIGHT * row) + TILE_PADDING;
@@ -11,7 +11,7 @@ class ObsTriangle2 {
     this.ctx.lineWidth = LINE_WIDTH;
   }
 
-  drawTriangle2(level) {
+  drawTriangleBotRight(level) {
     this.level = level;
     if(this.level>99){
       this.textX -= 8;

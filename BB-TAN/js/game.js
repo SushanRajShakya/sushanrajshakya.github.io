@@ -9,6 +9,7 @@ class Game {
     //this.background = new Image();
     //this.drawBackground();
     this.sprtieSheet = new Image();
+    this.obstacles = [];
     this.tileMap = [
       [0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0],
@@ -120,6 +121,25 @@ class Game {
     this.tileMap[1] = tempValue[0];
     this.levelMap[1] = tempValue[1];
   }
+
+  //checking collision for all the obstacles according to their types------------------------------------------------
+  checkCollision(ball) {
+    for(let i=0;i<this.obstacles.length;i++){
+      if(this.obstacles[i][0].checkCollision(ball)){
+        ball.changeDirection(this.obstacles[i]);
+        this.updateMaps(this.obstacles[i][0].row,this.obstacles[i][0].column);
+      }
+    }
+  }
+
+  //updating both maps after collision-------------------------------------------------------------------------------
+  updateMaps(row,column){
+    console.log(row, column);
+    this.levelMap[row][column]--;
+    if (this.levelMap[row][column] == 0) {
+      this.tileMap[row][column] = 0;
+    }
+  }
 }
 
 
@@ -134,12 +154,14 @@ game.sprtieSheet.src = 'images/sprite-sheet.png';
 
 game.canvas.addEventListener('click',(evt)=>{
   game.ball = getMousePos(game.canvas, evt, game.ball);
-  console.log(game.ball.dx,game.ball.dy);
 });
 
 
 //main draw for game---------------------------------------------------------------------------------------------------
 function draw(){
+  game.obstacles = [];
+  let obstacle;
+  let powerUp;
   game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
   game.ctx.strokeRect(0,0, GAME_WIDTH,GAME_HEIGHT);
   for(let i=0;i<game.tileMap.length;i++){
@@ -148,44 +170,45 @@ function draw(){
       let index =  row[j];
       switch (index){
         case SQUARE:
-          game.obstacle = new ObsSquare(game.ctx,i,j);
-          game.obstacle.drawSquare(game.levelMap[i][j]);
+          obstacle = new ObsSquare(game.ctx,i,j);
+          obstacle.drawSquare(game.levelMap[i][j]);
+          game.obstacles.push([obstacle,SQUARE]);
           break;
         // case TRIANGLE1:
-        //   game.obstacle = new ObsTriangle1(game.ctx,i,j);
-        //   game.obstacle.drawTriangle1(game.levelMap[i][j]);
+        //   obstacle = new ObsTriangleBotLeft(game.ctx,i,j);
+        //   obstacle.drawTriangleBotLeft(game.levelMap[i][j]);
         //   break;
         // case TRIANGLE2:
-        //   game.obstacle = new ObsTriangle2(game.ctx,i,j);
-        //   game.obstacle.drawTriangle2(game.levelMap[i][j]);
+        //   obstacle = new ObsTriangleBotRight(game.ctx,i,j);
+        //   obstacle.drawTriangleBotRight(game.levelMap[i][j]);
         //   break;
         // case TRIANGLE3:
-        //   game.obstacle = new ObsTriangle3(game.ctx,i,j);
-        //   game.obstacle.drawTriangle3(game.levelMap[i][j]);
+        //   obstacle = new ObsTriangleTopRight(game.ctx,i,j);
+        //   obstacle.drawTriangleTopRight(game.levelMap[i][j]);
         //   break;
         // case TRIANGLE4:
-        //   game.obstacle = new ObsTriangle4(game.ctx,i,j);
-        //   game.obstacle.drawTriangle4(game.levelMap[i][j]);
+        //   obstacle = new ObsTriangleTopLeft(game.ctx,i,j);
+        //   obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
         //   break;
         case COIN:
-          game.powerUps = new PowerUps(game.ctx,i,j,game.sprtieSheet,0); //type 0 for coin
-          game.powerUps.drawCoin();
+          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,0); //type 0 for coin
+          powerUp.drawCoin();
           break;
         case PLUS_BALL:
-          game.powerUps = new PowerUps(game.ctx,i,j,game.sprtieSheet,1); //type 1 for plus
-          game.powerUps.drawPlus();
+          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,1); //type 1 for plus
+          powerUp.drawPlus();
           break;
         case POWER_HORZ:
-          game.powerUps = new PowerUps(game.ctx,i,j,game.sprtieSheet,2); //type 2 for power horizontal
-          game.powerUps.drawPowerHorizontal();
+          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,2); //type 2 for power horizontal
+          powerUp.drawPowerHorizontal();
           break;
         case POWER_VERT:
-          game.powerUps = new PowerUps(game.ctx,i,j,game.sprtieSheet,3); //type 3 for power vertical
-          game.powerUps.drawPowerVertical();
+          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,3); //type 3 for power vertical
+          powerUp.drawPowerVertical();
           break;
         case POWER_SPLIT:
-          game.powerUps = new PowerUps(game.ctx,i,j,game.sprtieSheet,4); //type 4 for power split
-          game.powerUps.drawPowerSplit();
+          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,4); //type 4 for power split
+          powerUp.drawPowerSplit();
           break;
         default:
         //do nothing
@@ -193,60 +216,10 @@ function draw(){
     }
   }
   game.ball.updateBall(game);
-  checkCollision();
+  game.checkCollision(game.ball);
   game.ball.drawBall();
   window.requestAnimationFrame(draw);
 }
 
-//Checking collision for each obstacle--------------------------------------------------------------------------------
-function checkCollision() {
-  for (let i = 0; i < game.tileMap.length; i++) {
-    let row = game.tileMap[i];
-    for (let j = 0; j < TILE_WIDTH; j++) {
-      let index = row[j];
-      switch (index) {
-        case SQUARE:
-          let tempObs = new ObsSquare(game.ctx,i,j);
-          if(ballCollidingSquare(game.ball,tempObs)){
-            game.levelMap[i][j] -= 1;
-            if(game.levelMap[i][j] == 0){
-              game.tileMap[i][j] = 0;
-            }
-            game.ball.changeDirection(tempObs);
-          }
-          break;
-        case TRIANGLE1:
-          //collision for triangle
-          break;
-        case TRIANGLE2:
-          //collision for triangle
-          break;
-        case TRIANGLE3:
-          //collision for triangle
-          break;
-        case TRIANGLE4:
-          //collision for triangle
-          break;
-        case COIN:
-          //collision for coin
-          break;
-        case PLUS_BALL:
-          //collision for add ball
-          break;
-        case POWER_HORZ:
-          //collision for hor_power
-          break;
-        case POWER_VERT:
-          //collision for ver_power
-          break;
-        case POWER_SPLIT:
-          //collision for split_power
-          break;
-        default:
-        //do nothing
-      }
-    }
-  }
-}
 
 

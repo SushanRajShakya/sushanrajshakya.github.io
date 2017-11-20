@@ -1,4 +1,4 @@
-class ObsTriangle4 {
+class ObsTriangleTopLeft {
   constructor(ctx,row,column) {
     this.x = (TILE_WIDTH * column) + TILE_PADDING;
     this.y = (TILE_HEIGHT * row) + TILE_PADDING;
@@ -12,7 +12,7 @@ class ObsTriangle4 {
   }
 
 
-  drawTriangle4(level) {
+  drawTriangleTopLeft(level) {
     this.level = level;
     this.ctx.beginPath();
     this.ctx.moveTo(this.x,this.y);
