@@ -141,6 +141,7 @@ game.canvas.addEventListener('click',(evt)=>{
 //main draw for game
 draw =()=>{
   game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+  game.ctx.strokeRect(0,0, GAME_WIDTH,GAME_HEIGHT);
   for(let i=0;i<game.tileMap.length;i++){
     let row = game.tileMap[i];
     for(let j=0;j<TILE_WIDTH;j++){
@@ -191,23 +192,10 @@ draw =()=>{
       }
     }
   }
-  game.ball.updateBall();
+  game.ball.updateBall(game);
   game.ball.drawBall();
   window.requestAnimationFrame(draw);
 }
 
-
-/*
- game.canvas.addEventListener('mouseover',()=>{
- raf = window.requestAnimationFrame(() => {
- game.level++;
- game.updateTileMap();
- game.draw();
- });
- });
- game.canvas.addEventListener('mouseout',()=>{
- window.cancelAnimationFrame(raf);
- })
- */
 
 

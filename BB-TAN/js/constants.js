@@ -14,6 +14,7 @@ const POWER_UPS_WIDTH = OBSTACLE_WIDTH/2 + 5;
 const POWER_UPS_HEIGHT = OBSTACLE_HEIGHT/2 + 5;
 const BALL_RADIUS = 5;
 const BALL_VELOCITY = 5;
+const BALL_Y_DEAD = 442;
 
 //Sprite-Sheet locations and dimensions-------------------------------------------------------------------------------
 
