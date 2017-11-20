@@ -5,12 +5,12 @@ class Ball {
     this.dx = 0;
     this.dy = 0;
     this.ctx = ctx;
-    this.ctx.strokeStyle = 'white';
-    this.ctx.fillStyle = 'white';
   }
 
   drawBall() {
     this.ctx.beginPath();
+    this.ctx.strokeStyle = 'white';
+    this.ctx.fillStyle = 'white';
     this.ctx.arc(this.x, this.y, BALL_RADIUS, 0, Math.PI * 2, true);
     this.ctx.fill();
     this.ctx.closePath();
@@ -45,5 +45,10 @@ class Ball {
     }else if ( this.y < (0+BALL_RADIUS) ){
       this.y = BALL_RADIUS;
     }
+  }
+
+  //after detecting collision change direction----------------------------------------------------------------------
+  changeDirection(tempObs) {
+    this.dy *= -1;
   }
 }

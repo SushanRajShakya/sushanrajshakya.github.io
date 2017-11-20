@@ -6,8 +6,8 @@ class ObsTriangle3 {
     this.level;
     this.textX = 28;//aligning font at center
     this.textY = 15;//aligning font at center
-    this.ctx.strokeStyle = 'white';
-    this.ctx.fillStyle = 'white';
+    this.ctx.strokeStyle = 'yellow';
+    this.ctx.fillStyle = 'yellow';
     this.ctx.lineWidth = LINE_WIDTH;
   }
 

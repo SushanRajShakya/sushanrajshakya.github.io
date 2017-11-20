@@ -6,8 +6,8 @@ class ObsSquare {
     this.textX = 17;//aligning font at center
     this.textY = 26;//aligning font at center
     this.ctx = ctx;
-    this.ctx.strokeStyle = 'white';
-    this.ctx.fillStyle = 'white';
+    this.ctx.strokeStyle = 'yellow';
+    this.ctx.fillStyle = 'yellow';
     this.ctx.font = 'bold 12px Arial'
     this.ctx.lineWidth = LINE_WIDTH;
   }

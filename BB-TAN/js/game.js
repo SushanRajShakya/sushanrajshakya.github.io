@@ -138,8 +138,8 @@ game.canvas.addEventListener('click',(evt)=>{
 });
 
 
-//main draw for game
-draw =()=>{
+//main draw for game---------------------------------------------------------------------------------------------------
+function draw(){
   game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
   game.ctx.strokeRect(0,0, GAME_WIDTH,GAME_HEIGHT);
   for(let i=0;i<game.tileMap.length;i++){
@@ -193,9 +193,61 @@ draw =()=>{
     }
   }
   game.ball.updateBall(game);
+  checkCollision();
   game.ball.drawBall();
   window.requestAnimationFrame(draw);
 }
 
+//Checking collision for each obstacle--------------------------------------------------------------------------------
+function checkCollision() {
+  for (let i = 0; i < game.tileMap.length; i++) {
+    let row = game.tileMap[i];
+    for (let j = 0; j < TILE_WIDTH; j++) {
+      let index = row[j];
+      switch (index) {
+        case SQUARE:
+          let tempObs = new ObsSquare(game.ctx,i,j);
+          if(ballCollidingSquare(game.ball,tempObs)){
+            console.log('collided');
+            game.levelMap[i][j] -= 1;
+            if(game.levelMap[i][j] == 0){
+              game.tileMap[i][j] = 0;
+            }
+            game.ball.changeDirection(tempObs);
+          }
+          break;
+        case TRIANGLE1:
+          //collision for triangle
+          break;
+        case TRIANGLE2:
+          //collision for triangle
+          break;
+        case TRIANGLE3:
+          //collision for triangle
+          break;
+        case TRIANGLE4:
+          //collision for triangle
+          break;
+        case COIN:
+          //collision for coin
+          break;
+        case PLUS_BALL:
+          //collision for add ball
+          break;
+        case POWER_HORZ:
+          //collision for hor_power
+          break;
+        case POWER_VERT:
+          //collision for ver_power
+          break;
+        case POWER_SPLIT:
+          //collision for split_power
+          break;
+        default:
+        //do nothing
+      }
+    }
+  }
+}
 
 
