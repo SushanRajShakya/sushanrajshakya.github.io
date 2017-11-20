@@ -122,7 +122,8 @@ class Game {
   }
 }
 
-let raf;
+
+//main game program-------------------------------------------------------------------------------------------------
 let game = new Game();
 game.sprtieSheet.onload = () => {
   this.level++;
@@ -135,19 +136,9 @@ game.canvas.addEventListener('click',(evt)=>{
   game.ball = getMousePos(game.canvas, evt, game.ball);
   console.log(game.ball.dx,game.ball.dy);
 });
-/*
-game.canvas.addEventListener('mouseover',()=>{
-  raf = window.requestAnimationFrame(() => {
-    game.level++;
-    game.updateTileMap();
-    game.draw();
-  });
-});
-game.canvas.addEventListener('mouseout',()=>{
-  window.cancelAnimationFrame(raf);
-})
-*/
 
+
+//main draw for game
 draw =()=>{
   game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
   for(let i=0;i<game.tileMap.length;i++){
@@ -205,5 +196,18 @@ draw =()=>{
   window.requestAnimationFrame(draw);
 }
 
+
+/*
+ game.canvas.addEventListener('mouseover',()=>{
+ raf = window.requestAnimationFrame(() => {
+ game.level++;
+ game.updateTileMap();
+ game.draw();
+ });
+ });
+ game.canvas.addEventListener('mouseout',()=>{
+ window.cancelAnimationFrame(raf);
+ })
+ */
 
 

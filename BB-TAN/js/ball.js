@@ -19,8 +19,6 @@ class Ball {
   updateBall(){
     this.x += this.dx;
     this.y -= this.dy;
-    this.x = parseFloat(this.x).toFixed(5);
-    this.y = parseFloat(this.y).toFixed(5);
-    console.log('x',this.dx,'and y',this.dy);
+    console.log(this.dx, this.dy);
   }
 }
