@@ -10,11 +10,11 @@ class Game {
     this.flagForSplit = true;
     this.flagForPowHor = true;
     this.flagForPowVer = true;
-    this.ball = new Ball(this.ctx);
-    this.raf;
     //this.background = new Image();
     //this.drawBackground();
     this.sprtieSheet = new Image();
+    this.ballsArray = [];
+    this.ballsArray.push(new Ball(this.ctx));
     this.obstacles = [];
     this.tileMap = [
       [0,0,0,0,0,0,0],
@@ -215,8 +215,8 @@ game.sprtieSheet.onload = () => {
 game.sprtieSheet.src = 'images/sprite-sheet.png';
 
 game.canvas.addEventListener('click',(evt)=>{
-  if(game.ball.y == BALL_Y_DEAD ) {
-    game.ball = getMousePos(game.canvas, evt, game.ball);
+  if(game.ballsArray[0].y == BALL_Y_DEAD ) {
+    game.ballsArray[0] = getMousePos(game.canvas, evt, game.ballsArray[0]);
   }
 });
 
@@ -287,9 +287,10 @@ function draw(){
       }
     }
   }
-  game.ball.updateBall(game);
-  game.checkCollision(game.ball);
-  game.ball.drawBall();
+
+  game.ballsArray[0].updateBall(game);
+  game.checkCollision(game.ballsArray[0]);
+  game.ballsArray[0].drawBall();
   window.requestAnimationFrame(draw);
 }
 

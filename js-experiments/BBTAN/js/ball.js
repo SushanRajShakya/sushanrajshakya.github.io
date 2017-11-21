@@ -93,15 +93,6 @@ class Ball {
   }
 
   changeDirectionSquare(obstacle){
-    let distX = Math.abs(this.x - obstacle.x - LINE_WIDTH - OBSTACLE_WIDTH / 2);
-    let distY = Math.abs(this.y - obstacle.y - LINE_WIDTH - OBSTACLE_HEIGHT / 2);
-    let dx=distX-OBSTACLE_WIDTH/2;
-    let dy=distY-OBSTACLE_HEIGHT/2;
-    //collision at corner condition
-    if (dx*dx+dy*dy <= (BALL_RADIUS*BALL_RADIUS)){
-      this.dx *= -1;
-      this.dy *= -1;
-    }else { //collision at edges
       if (this.x - BALL_RADIUS/2 < obstacle.x) {
         this.dx = -Math.abs(this.dx);
       } else if (this.x + BALL_RADIUS/2 > (obstacle.x + OBSTACLE_WIDTH)) {
@@ -113,7 +104,6 @@ class Ball {
       } else if (this.y + BALL_RADIUS/2 > (obstacle.y + OBSTACLE_HEIGHT)) {
         this.dy = -Math.abs(this.dy);
       }
-    }
   }
 
   changeDirectionPowerSplit() {
