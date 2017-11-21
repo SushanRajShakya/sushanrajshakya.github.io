@@ -93,16 +93,26 @@ class Ball {
   }
 
   changeDirectionSquare(obstacle){
-    if (this.x-BALL_RADIUS < obstacle.x) {
-      this.dx = -Math.abs(this.dx);
-    }else if (this.x+BALL_RADIUS > (obstacle.x + OBSTACLE_WIDTH)) {
-      this.dx = Math.abs(this.dx);
-    }
+    let distX = Math.abs(this.x - obstacle.x - LINE_WIDTH - OBSTACLE_WIDTH / 2);
+    let distY = Math.abs(this.y - obstacle.y - LINE_WIDTH - OBSTACLE_HEIGHT / 2);
+    let dx=distX-OBSTACLE_WIDTH/2;
+    let dy=distY-OBSTACLE_HEIGHT/2;
+    //collision at corner condition
+    if (dx*dx+dy*dy <= (BALL_RADIUS*BALL_RADIUS)){
+      this.dx *= -1;
+      this.dy *= -1;
+    }else { //collision at edges
+      if (this.x - BALL_RADIUS/2 < obstacle.x) {
+        this.dx = -Math.abs(this.dx);
+      } else if (this.x + BALL_RADIUS/2 > (obstacle.x + OBSTACLE_WIDTH)) {
+        this.dx = Math.abs(this.dx);
+      }
 
-    if (this.y-BALL_RADIUS < obstacle.y) {
-      this.dy = Math.abs(this.dy);
-    }else if (this.y+BALL_RADIUS > (obstacle.y + OBSTACLE_HEIGHT)) {
-      this.dy = -Math.abs(this.dy);
+      if (this.y - BALL_RADIUS/2 < obstacle.y) {
+        this.dy = Math.abs(this.dy);
+      } else if (this.y + BALL_RADIUS/2 > (obstacle.y + OBSTACLE_HEIGHT)) {
+        this.dy = -Math.abs(this.dy);
+      }
     }
   }
 
@@ -121,6 +131,7 @@ class Ball {
 
   laserHorizontal(obstacle,game) {
     let row = obstacle.row;
+    game.horizontalLaser(row);
     for(let i=0;i<TILE_COLUMNS;i++){
       game.levelMap[row][i]--;
       if(game.levelMap[row][i] <= 0){
@@ -135,6 +146,7 @@ class Ball {
 
   laserVertical(obstacle,game) {
     let column = obstacle.column;
+    game.verticalLaser(column);
     for(let i=1;i<TILE_ROWS;i++){
       game.levelMap[i][column]--;
       if(game.levelMap[i][column] <= 0){

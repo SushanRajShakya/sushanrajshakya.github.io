@@ -4,7 +4,8 @@ class Game {
     this.ctx = this.canvas.getContext('2d');
     this.level = 1;
     this.coin = 0;
-    this.ballCount = 1;
+    this.ballGapTimer = 10; //for maintaining gaps between balls, acts as counter
+    this.totalBalls = 1;
     this.flagPowerUps = [];
     this.flagForSplit = true;
     this.flagForPowHor = true;
@@ -154,8 +155,7 @@ class Game {
         this.tileMap[row][column] = 0;
         break;
       case PLUS_BALL:
-        this.ballCount++;
-        console.log('Balls: ',this.ballCount);
+        this.totalBalls++;
         this.tileMap[row][column] = 0;
         break;
       default:
@@ -180,6 +180,27 @@ class Game {
         this.tileMap[value[0]][value[1]] = 0 ;
       }
     });
+  }
+
+  //animation for horizontal laser----------------------------------------------------------------------------------
+  horizontalLaser(row) {
+    let randomHeight = getRandomNumber(OBSTACLE_HEIGHT/2,OBSTACLE_HEIGHT/5);
+    let valueY = (TILE_HEIGHT * row) + OBSTACLE_HEIGHT/2 - TILE_PADDING;
+    this.ctx.beginPath();
+    this.ctx.fillStyle = 'yellow';
+    this.ctx.fillRect(0,valueY,GAME_WIDTH,randomHeight);
+    this.ctx.closePath();
+  }
+
+  //animation for vertical laser-------------------------------------------------------------------------------------
+  //animation for horizontal laser----------------------------------------------------------------------------------
+  verticalLaser(column) {
+    let randomWidth = getRandomNumber(OBSTACLE_WIDTH/2,OBSTACLE_WIDTH/5);
+    let valueX = (TILE_WIDTH * column) + OBSTACLE_WIDTH/2 - TILE_PADDING;
+    this.ctx.beginPath();
+    this.ctx.fillStyle = 'yellow';
+    this.ctx.fillRect(valueX,0,randomWidth,GAME_HEIGHT);
+    this.ctx.closePath();
   }
 }
 
