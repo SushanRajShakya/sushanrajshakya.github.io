@@ -3,7 +3,12 @@ class Game {
     this.canvas = document.getElementById('mainCanvas');
     this.ctx = this.canvas.getContext('2d');
     this.level = 1;
+    this.coin = 0;
     this.ballCount = 1;
+    this.flagPowerUps = [];
+    this.flagForSplit = true;
+    this.flagForPowHor = true;
+    this.flagForPowVer = true;
     this.ball = new Ball(this.ctx);
     this.raf;
     //this.background = new Image();
@@ -69,19 +74,19 @@ class Game {
     let randomValue1 = getRandomNumber(3,0);
     switch (randomValue1) {
       case 0:
-        newTile.push(TRIANGLE1);
+        newTile.push(TRIANGLE_BOT_LEFT);
         newLevel.push(this.level);
         break;
       case 1:
-        newTile.push(TRIANGLE2);
+        newTile.push(TRIANGLE_BOT_RIGHT);
         newLevel.push(this.level);
         break;
       case 2:
-        newTile.push(TRIANGLE3);
+        newTile.push(TRIANGLE_TOP_LEFT);
         newLevel.push(this.level);
         break;
       default:
-        newTile.push(TRIANGLE4);
+        newTile.push(TRIANGLE_TOP_RIGHT);
         newLevel.push(this.level);
     }
   }
@@ -125,20 +130,56 @@ class Game {
   //checking collision for all the obstacles according to their types------------------------------------------------
   checkCollision(ball) {
     for(let i=0;i<this.obstacles.length;i++){
-      if(this.obstacles[i][0].checkCollision(ball)){
-        ball.changeDirection(this.obstacles[i]);
-        this.updateMaps(this.obstacles[i][0].row,this.obstacles[i][0].column);
+      if(this.obstacles[i][0].checkCollision(ball)) {
+        this.updateFlagArray(this.obstacles[i][0].row,this.obstacles[i][0].column);
+        ball.collisionOperation(this.obstacles[i],this);
+        this.updateMaps(this.obstacles[i][0].row,this.obstacles[i][0].column,this.obstacles[i][1]);
       }
     }
   }
 
   //updating both maps after collision-------------------------------------------------------------------------------
-  updateMaps(row,column){
-    console.log(row, column);
-    this.levelMap[row][column]--;
-    if (this.levelMap[row][column] == 0) {
-      this.tileMap[row][column] = 0;
+  updateMaps(row,column,type){
+    switch (type)
+    {
+      case SQUARE:
+        this.levelMap[row][column]--;
+        if (this.levelMap[row][column] == 0) {
+          this.tileMap[row][column] = 0;
+        }
+        break;
+      case COIN:
+        this.coin++;
+        console.log('Coins: ',this.coin);
+        this.tileMap[row][column] = 0;
+        break;
+      case PLUS_BALL:
+        this.ballCount++;
+        console.log('Balls: ',this.ballCount);
+        this.tileMap[row][column] = 0;
+        break;
+      default:
+      //do nothing
     }
+  }
+
+  //update flag array if collision----------------------------------------------------------------------------------
+  updateFlagArray(row,column) {
+    for(let i=0;i<this.flagPowerUps.length;i++){
+      if(this.flagPowerUps[i][0] == row && this.flagPowerUps[i][1] == column){
+        this.flagPowerUps[i][2] = true;
+        break;
+      }
+    }
+  }
+
+  //removing powerups if the ball is dead---------------------------------------------------------------------------
+  removePowerUps(){
+    this.flagPowerUps.forEach((value)=>{
+      if(value[2] == true){
+        this.tileMap[value[0]][value[1]] = 0 ;
+      }
+    });
   }
 }
 
@@ -153,7 +194,9 @@ game.sprtieSheet.onload = () => {
 game.sprtieSheet.src = 'images/sprite-sheet.png';
 
 game.canvas.addEventListener('click',(evt)=>{
-  game.ball = getMousePos(game.canvas, evt, game.ball);
+  if(game.ball.y == BALL_Y_DEAD ) {
+    game.ball = getMousePos(game.canvas, evt, game.ball);
+  }
 });
 
 
@@ -174,41 +217,49 @@ function draw(){
           obstacle.drawSquare(game.levelMap[i][j]);
           game.obstacles.push([obstacle,SQUARE]);
           break;
-        // case TRIANGLE1:
+        // case TRIANGLE_BOT_LEFT:
         //   obstacle = new ObsTriangleBotLeft(game.ctx,i,j);
         //   obstacle.drawTriangleBotLeft(game.levelMap[i][j]);
         //   break;
-        // case TRIANGLE2:
+        // case TRIANGLE_BOT_RIGHT:
         //   obstacle = new ObsTriangleBotRight(game.ctx,i,j);
         //   obstacle.drawTriangleBotRight(game.levelMap[i][j]);
         //   break;
-        // case TRIANGLE3:
+        // case TRIANGLE_TOP_LEFT:
         //   obstacle = new ObsTriangleTopRight(game.ctx,i,j);
         //   obstacle.drawTriangleTopRight(game.levelMap[i][j]);
         //   break;
-        // case TRIANGLE4:
+        // case TRIANGLE_TOP_RIGHT:
         //   obstacle = new ObsTriangleTopLeft(game.ctx,i,j);
         //   obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
         //   break;
         case COIN:
           powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,0); //type 0 for coin
           powerUp.drawCoin();
+          game.obstacles.push([powerUp,COIN]);
           break;
         case PLUS_BALL:
           powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,1); //type 1 for plus
           powerUp.drawPlus();
+          game.obstacles.push([powerUp,PLUS_BALL]);
           break;
         case POWER_HORZ:
           powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,2); //type 2 for power horizontal
           powerUp.drawPowerHorizontal();
-          break;
-        case POWER_VERT:
-          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,3); //type 3 for power vertical
-          powerUp.drawPowerVertical();
+          game.obstacles.push([powerUp,POWER_HORZ]);
+          game.flagPowerUps.push([i,j,false]);
           break;
         case POWER_SPLIT:
-          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,4); //type 4 for power split
+          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,3); //type 4 for power split
           powerUp.drawPowerSplit();
+          game.obstacles.push([powerUp,POWER_SPLIT]);
+          game.flagPowerUps.push([i,j,false]);
+          break;
+        case POWER_VERT:
+          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,4); //type 3 for power vertical
+          powerUp.drawPowerVertical();
+          game.obstacles.push([powerUp,POWER_VERT]);
+          game.flagPowerUps.push([i,j,false]);
           break;
         default:
         //do nothing

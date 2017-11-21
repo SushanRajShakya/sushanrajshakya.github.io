@@ -10,10 +10,10 @@ const TILE_HEIGHT = Math.floor(GAME_HEIGHT/9);
 const OBSTACLE_WIDTH = TILE_WIDTH - TILE_PAD_SQUARE;
 const OBSTACLE_HEIGHT = TILE_HEIGHT - TILE_PAD_SQUARE;
 const LINE_WIDTH = 3;
-const POWER_UPS_WIDTH = OBSTACLE_WIDTH/2 + 5;
-const POWER_UPS_HEIGHT = OBSTACLE_HEIGHT/2 + 5;
-const BALL_RADIUS = 5;
-const BALL_VELOCITY = 5;
+const POWER_UPS_WIDTH = OBSTACLE_WIDTH/2 + 5; //inside tile
+const POWER_UPS_HEIGHT = OBSTACLE_HEIGHT/2 + 5; // inside tile
+const BALL_RADIUS = 6;
+const BALL_VELOCITY = 8;
 const BALL_Y_DEAD = 442;
 
 //Sprite-Sheet locations and dimensions-------------------------------------------------------------------------------
@@ -25,13 +25,14 @@ const POWER_UPS_SIZE = 29; //square image so same for height and width
 //TILE_MAPPING--------------------------------------------------------------------------------------------------------
 const BLANK = 0;
 const SQUARE = 1;
-const TRIANGLE1 = 2;
-const TRIANGLE2 = 3;
-const TRIANGLE3 = 4;
-const TRIANGLE4 = 5;
+const TRIANGLE_BOT_LEFT = 2;
+const TRIANGLE_BOT_RIGHT = 3;
+const TRIANGLE_TOP_LEFT = 4;
+const TRIANGLE_TOP_RIGHT = 5;
 const COIN = 6;
 const PLUS_BALL = 7
 const POWER_HORZ = 8;
-const POWER_VERT = 9;
-const POWER_SPLIT = 10;
+const POWER_SPLIT = 9;
+const POWER_VERT = 10;
+
 

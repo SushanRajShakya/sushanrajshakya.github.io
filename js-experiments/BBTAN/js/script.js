@@ -3,6 +3,11 @@ function getRandomNumber(max, min) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+//Random number generator float-------------------------------------------------------------------------------------
+function getRandomFloat(max, min) {
+  return (Math.random() * (max - min + 1)) + min;
+}
+
 //Ball position in canvas/game -------------------------------------------------------------------------------------
 function getMousePos(canvas, evt, ball) {
   let rect = canvas.getBoundingClientRect();
