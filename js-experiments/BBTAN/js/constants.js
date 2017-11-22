@@ -15,6 +15,11 @@ const POWER_UPS_HEIGHT = OBSTACLE_HEIGHT/2 + 5; // inside tile
 const BALL_RADIUS = 6;
 const BALL_VELOCITY = 7;
 const BALL_Y_DEAD = 442;
+const BALL_GAP = 30;
+
+//Ball shooting angle limit-------------------------------------------------------------------------------------------
+const LOWEST_ANGLE = 0.261799;
+const LARGEST_ANGLE = 2.87979;
 
 //Sprite-Sheet locations and dimensions-------------------------------------------------------------------------------
 

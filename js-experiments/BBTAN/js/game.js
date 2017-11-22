@@ -4,12 +4,12 @@ class Game {
     this.ctx = this.canvas.getContext('2d');
     this.level = 1;
     this.coin = 0;
-    this.ballGapTimer = 10; //for maintaining gaps between balls, acts as counter
+    this.addBalls = 0;
     this.totalBalls = 1;
+    this.shootStatus = false;
+    this.ballsLeft = this.totalBalls;
+    this.firstDeadBallX = null;
     this.flagPowerUps = [];
-    this.flagForSplit = true;
-    this.flagForPowHor = true;
-    this.flagForPowVer = true;
     //this.background = new Image();
     //this.drawBackground();
     this.sprtieSheet = new Image();
@@ -118,6 +118,17 @@ class Game {
   updateTileMap() {
     let tempTileMap = this.tileMap.slice();
     let tempLevelMap = this.levelMap.slice();
+    let lastBall = this.ballsArray.length - 1;
+    for(let i=0;i<this.addBalls;i++){
+      let tempBall = new Ball(this.ctx);
+      tempBall.x = this.ballsArray[0].x;
+      tempBall.y = BALL_Y_DEAD  + (lastBall + i + 1)* BALL_GAP;
+      tempBall.visible = false;
+      this.ballsArray.push(tempBall);
+    }
+    this.totalBalls += this.addBalls;
+    this.addBalls = 0;
+    this.ballsLeft = this.totalBalls;
     let tempValue ;
     for(let i=2;i<tempTileMap.length;i++){
       this.tileMap[i] = tempTileMap[i-1];
@@ -155,7 +166,7 @@ class Game {
         this.tileMap[row][column] = 0;
         break;
       case PLUS_BALL:
-        this.totalBalls++;
+        this.addBalls++;
         this.tileMap[row][column] = 0;
         break;
       default:
@@ -193,7 +204,6 @@ class Game {
   }
 
   //animation for vertical laser-------------------------------------------------------------------------------------
-  //animation for horizontal laser----------------------------------------------------------------------------------
   verticalLaser(column) {
     let randomWidth = getRandomNumber(OBSTACLE_WIDTH/2,OBSTACLE_WIDTH/5);
     let valueX = (TILE_WIDTH * column) + OBSTACLE_WIDTH/2 - TILE_PADDING;
@@ -201,6 +211,16 @@ class Game {
     this.ctx.fillStyle = 'yellow';
     this.ctx.fillRect(valueX,0,randomWidth,GAME_HEIGHT);
     this.ctx.closePath();
+  }
+
+  //check if all the balls are dead or not--------------------------------------------------------------------------
+  checkDeadBall(){
+    for(let i=0;i<this.ballsArray.length;i++){
+      if(this.ballsArray[i].dx != 0 || this.ballsArray[i].dy !=0){
+        return false;
+      }
+    }
+    return true;
   }
 }
 
@@ -214,11 +234,6 @@ game.sprtieSheet.onload = () => {
 };
 game.sprtieSheet.src = 'images/sprite-sheet.png';
 
-game.canvas.addEventListener('click',(evt)=>{
-  if(game.ballsArray[0].y == BALL_Y_DEAD ) {
-    game.ballsArray[0] = getMousePos(game.canvas, evt, game.ballsArray[0]);
-  }
-});
 
 
 //main draw for game---------------------------------------------------------------------------------------------------
@@ -287,10 +302,22 @@ function draw(){
       }
     }
   }
+  for(let i=0;i<game.ballsArray.length;i++) {
+    game.ballsArray[i].updateBall(game, i);
+    game.checkCollision(game.ballsArray[i]);
+    game.ballsArray[i].drawBall();
+    console.log('chalirako xa');
+  }
 
-  game.ballsArray[0].updateBall(game);
-  game.checkCollision(game.ballsArray[0]);
-  game.ballsArray[0].drawBall();
+  game.canvas.addEventListener('click',(evt)=>{
+    if(game.checkDeadBall()) {
+      game.shootStatus = true;
+      for(let j=0;j<game.ballsArray.length;j++) {
+        game.ballsArray[j] = getMousePos(game.canvas, evt, game.ballsArray[j], j, game);
+        game.ballsArray[j].setOffSetX(j);
+      }
+    }
+  });
   window.requestAnimationFrame(draw);
 }
 

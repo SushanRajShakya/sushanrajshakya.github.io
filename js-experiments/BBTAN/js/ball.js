@@ -5,6 +5,10 @@ class Ball {
     this.dx = 0;
     this.dy = 0;
     this.ctx = ctx;
+    this.visible = true;
+    this.flagForSplit = true;
+    this.flagForPowHor = true;
+    this.flagForPowVer = true;
   }
 
   drawBall() {
@@ -16,94 +20,128 @@ class Ball {
     this.ctx.closePath();
   }
 
-  updateBall(game){
-    this.checkCanvasCollision(game);
-    this.limitBoundary(game);
-    this.x += this.dx;
-    this.y -= this.dy;
-  }
-
-  checkCanvasCollision(game) {
-    if ( (this.x > (GAME_WIDTH-BALL_RADIUS)) || (this.x < (0+BALL_RADIUS)) ){
-      this.dx *= -1;
-      game.flagForSplit = true;
-      game.flagForPowHor = true;
-      game.flagForPowVer = true;
-    }else if ( (this.y > (GAME_HEIGHT-BALL_RADIUS)) || (this.y < (0+BALL_RADIUS)) ) {
-      this.dy *= -1;
-      game.flagForSplit = true;
-      game.flagForPowHor = true;
-      game.flagForPowVer = true;
+  updateBall(game, i){
+    if(game.shootStatus) {
+      this.checkCanvasCollision();
+      this.limitBoundary(game, i);
+      this.checkBallLeft(game);
+      this.x += this.dx;
+      this.y -= this.dy;
+      this.setVisibility();
     }
   }
 
-  limitBoundary(game) {
-    if ( this.x > (GAME_WIDTH-BALL_RADIUS) ){
-      this.x = GAME_WIDTH-BALL_RADIUS;
-    }else if ( this.y > (GAME_HEIGHT-BALL_RADIUS) ) {
-      this.y = BALL_Y_DEAD;
-      this.dx = 0;
-      this.dy = 0;
+  //for multiple balls aligning according to the angle-----------------------------------------------------------------
+  setOffSetX(j){
+    this.x = getX( BALL_Y_DEAD + (j*BALL_GAP) );
+    console.log('x:',this.x,'y',this.y);
+  }
+
+  //check if the ball is visible in the game---------------------------------------------------------------------------
+  setVisibility(){
+    if(this.y < GAME_HEIGHT -BALL_RADIUS){
+      this.visible = true;
+    }
+  }
+
+  checkCanvasCollision() {
+    if ( (this.x > (GAME_WIDTH-BALL_RADIUS)) || (this.x < (0+BALL_RADIUS)) ){
+      this.dx *= -1;
+      this.flagForSplit = true;
+      this.flagForPowHor = true;
+      this.flagForPowVer = true;
+    }else if (this.y < (0+BALL_RADIUS)) {
+      this.dy *= -1;
+      this.flagForSplit = true;
+      this.flagForPowHor = true;
+      this.flagForPowVer = true;
+    }
+  }
+
+  limitBoundary(game, i) {
+    if(this.visible) {
+      if (this.x > (GAME_WIDTH - BALL_RADIUS)) {
+        this.x = GAME_WIDTH - BALL_RADIUS;
+      } else if (this.y > (GAME_HEIGHT - BALL_RADIUS)) {
+        this.y = BALL_Y_DEAD + (i * BALL_GAP);
+        this.visible = false;
+        game.ballsLeft--;
+        this.dx = 0;
+        this.dy = 0;
+        if (game.firstDeadBallX == null) {
+          game.firstDeadBallX = this.x;
+        } else {
+          this.x = game.firstDeadBallX;
+        }
+      } else if (this.x < (0 + BALL_RADIUS)) {
+        this.x = BALL_RADIUS;
+      } else if (this.y < (0 + BALL_RADIUS)) {
+        this.y = BALL_RADIUS;
+      }
+    }
+  }
+
+  checkBallLeft(game){
+    if(game.ballsLeft==0) {
+      game.firstDeadBallX = null;
       game.level++;
       game.removePowerUps();
       game.updateTileMap();
       game.flagPowerUps = [];
-    }else if ( this.x < (0+BALL_RADIUS) ){
-      this.x = BALL_RADIUS;
-    }else if ( this.y < (0+BALL_RADIUS) ){
-      this.y = BALL_RADIUS;
+      game.shootStatus = false;
+      console.log('----------------------------------------------');
     }
   }
 
   collisionOperation(obstacle,game){
     switch (obstacle[1]){
       case SQUARE:
-        game.flagForSplit = true;
-        game.flagForPowHor = true;
-        game.flagForPowVer = true;
+        this.flagForSplit = true;
+        this.flagForPowHor = true;
+        this.flagForPowVer = true;
         this.changeDirectionSquare(obstacle[0]);
         break;
       case POWER_SPLIT:
-        if(game.flagForSplit){
+        if(this.flagForSplit){
           this.changeDirectionPowerSplit();
         }
-        game.flagForSplit = false;
-        game.flagForPowHor = true;
-        game.flagForPowVer = true;
+        this.flagForSplit = false;
+        this.flagForPowHor = true;
+        this.flagForPowVer = true;
         break;
       case POWER_HORZ:
-        if(game.flagForPowHor){
+        if(this.flagForPowHor){
           this.laserHorizontal(obstacle[0],game);
         }
-        game.flagForSplit = true;
-        game.flagForPowHor = false;
-        game.flagForPowVer = true;
+        this.flagForSplit = true;
+        this.flagForPowHor = false;
+        this.flagForPowVer = true;
         break;
       case POWER_VERT:
-        if(game.flagForPowVer){
+        if(this.flagForPowVer){
           this.laserVertical(obstacle[0],game);
         }
-        game.flagForSplit = true;
-        game.flagForPowHor = true;
-        game.flagForPowVer = false;
+        this.flagForSplit = true;
+        this.flagForPowHor = true;
+        this.flagForPowVer = false;
         break;
       default:
-        //do  nothing
+      //do  nothing
     }
   }
 
   changeDirectionSquare(obstacle){
-      if (this.x - BALL_RADIUS/2 < obstacle.x) {
-        this.dx = -Math.abs(this.dx);
-      } else if (this.x + BALL_RADIUS/2 > (obstacle.x + OBSTACLE_WIDTH)) {
-        this.dx = Math.abs(this.dx);
-      }
+    if (this.x - BALL_RADIUS/2 < obstacle.x) {
+      this.dx = -Math.abs(this.dx);
+    } else if (this.x + BALL_RADIUS/2 > (obstacle.x + OBSTACLE_WIDTH)) {
+      this.dx = Math.abs(this.dx);
+    }
 
-      if (this.y - BALL_RADIUS/2 < obstacle.y) {
-        this.dy = Math.abs(this.dy);
-      } else if (this.y + BALL_RADIUS/2 > (obstacle.y + OBSTACLE_HEIGHT)) {
-        this.dy = -Math.abs(this.dy);
-      }
+    if (this.y - BALL_RADIUS/2 < obstacle.y) {
+      this.dy = Math.abs(this.dy);
+    } else if (this.y + BALL_RADIUS/2 > (obstacle.y + OBSTACLE_HEIGHT)) {
+      this.dy = -Math.abs(this.dy);
+    }
   }
 
   changeDirectionPowerSplit() {
