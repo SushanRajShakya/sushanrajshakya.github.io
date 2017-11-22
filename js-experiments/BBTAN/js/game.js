@@ -114,7 +114,7 @@ class Game {
     }
   }
 
-  //updating TILE MAP ------------------------------------------------------------------------------------------------
+  //updating TILE MAP and number of balls-------------------------------------------------------------------------
   updateTileMap() {
     let tempTileMap = this.tileMap.slice();
     let tempLevelMap = this.levelMap.slice();
@@ -122,13 +122,15 @@ class Game {
     for(let i=0;i<this.addBalls;i++){
       let tempBall = new Ball(this.ctx);
       tempBall.x = this.ballsArray[0].x;
-      tempBall.y = BALL_Y_DEAD  + (lastBall + i + 1)* BALL_GAP;
+      tempBall.dummyX = this.ballsArray[0].x;
+      tempBall.dummyY = BALL_Y_DEAD  + (lastBall + i + 1)* BALL_GAP;
       tempBall.visible = false;
       this.ballsArray.push(tempBall);
     }
     this.totalBalls += this.addBalls;
     this.addBalls = 0;
     this.ballsLeft = this.totalBalls;
+    //update tile map
     let tempValue ;
     for(let i=2;i<tempTileMap.length;i++){
       this.tileMap[i] = tempTileMap[i-1];
@@ -306,7 +308,6 @@ function draw(){
     game.ballsArray[i].updateBall(game, i);
     game.checkCollision(game.ballsArray[i]);
     game.ballsArray[i].drawBall();
-    console.log('chalirako xa');
   }
 
   game.canvas.addEventListener('click',(evt)=>{

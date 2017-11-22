@@ -2,6 +2,8 @@ class Ball {
   constructor(ctx) {
     this.x = GAME_WIDTH/2;
     this.y = BALL_Y_DEAD;
+    this.dummyY = BALL_Y_DEAD;
+    this.dummyX = GAME_WIDTH/2;
     this.dx = 0;
     this.dy = 0;
     this.ctx = ctx;
@@ -22,25 +24,31 @@ class Ball {
 
   updateBall(game, i){
     if(game.shootStatus) {
-      this.checkCanvasCollision();
-      this.limitBoundary(game, i);
-      this.checkBallLeft(game);
-      this.x += this.dx;
-      this.y -= this.dy;
-      this.setVisibility();
+      if(this.visible) {
+        this.checkCanvasCollision();
+        this.limitBoundary(game, i);
+        this.checkBallLeft(game);
+        this.x += this.dx;
+        this.y -= this.dy;
+      } else {
+        this.dummyX += this.dx;
+        this.dummyY -= this.dy;
+        this.setVisibility();
+      }
     }
   }
 
   //for multiple balls aligning according to the angle-----------------------------------------------------------------
   setOffSetX(j){
-    this.x = getX( BALL_Y_DEAD + (j*BALL_GAP) );
-    console.log('x:',this.x,'y',this.y);
+    this.dummyX = getX(BALL_Y_DEAD + (j*BALL_GAP));
   }
 
   //check if the ball is visible in the game---------------------------------------------------------------------------
   setVisibility(){
-    if(this.y < GAME_HEIGHT -BALL_RADIUS){
+    if(this.dummyY < BALL_Y_DEAD){
       this.visible = true;
+      this.y = this.dummyY;
+      this.x = this.dummyX;
     }
   }
 
@@ -59,11 +67,11 @@ class Ball {
   }
 
   limitBoundary(game, i) {
-    if(this.visible) {
       if (this.x > (GAME_WIDTH - BALL_RADIUS)) {
         this.x = GAME_WIDTH - BALL_RADIUS;
       } else if (this.y > (GAME_HEIGHT - BALL_RADIUS)) {
-        this.y = BALL_Y_DEAD + (i * BALL_GAP);
+        this.dummyY = BALL_Y_DEAD + (i * BALL_GAP);
+        this.y = BALL_Y_DEAD;
         this.visible = false;
         game.ballsLeft--;
         this.dx = 0;
@@ -78,7 +86,6 @@ class Ball {
       } else if (this.y < (0 + BALL_RADIUS)) {
         this.y = BALL_RADIUS;
       }
-    }
   }
 
   checkBallLeft(game){

@@ -22,7 +22,7 @@ function getMousePos(canvas, evt, ball, j, game) {
     let y = evt.clientY - rect.top;
     y2 = y;
     angle = Math.atan(Math.abs(y - ball.y) / Math.abs(x - ball.x));
-    angle = limitAngle(angle);
+    limitAngle(angle);
     let dx = Math.cos(angle) * BALL_VELOCITY;
     let dy = Math.sin(angle) * BALL_VELOCITY;
     ball.dx = dx;
@@ -43,12 +43,13 @@ function getX(y) {
   return x;
 }
 
+
 function limitAngle(angle){
   if(angle<LOWEST_ANGLE) {
     return LOWEST_ANGLE;
   }else if(angle>LARGEST_ANGLE){
     return LARGEST_ANGLE;
-  }else{
+  }else {
     return angle;
   }
 }
