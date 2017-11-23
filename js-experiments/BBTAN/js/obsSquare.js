@@ -8,8 +8,8 @@ class ObsSquare {
     this.textX = 17;//aligning font at center
     this.textY = 26;//aligning font at center
     this.ctx = ctx;
-    this.ctx.strokeStyle = 'yellow';
-    this.ctx.fillStyle = 'yellow';
+    this.ctx.strokeStyle = '#d7e163';
+    this.ctx.fillStyle = '#d7e163';
     this.ctx.font = 'bold 12px Arial'
     this.ctx.lineWidth = LINE_WIDTH;
   }
@@ -24,6 +24,20 @@ class ObsSquare {
     this.ctx.beginPath();
     this.ctx.lineWidth = LINE_WIDTH;
     this.ctx.strokeRect(this.x,this.y,OBSTACLE_WIDTH,OBSTACLE_HEIGHT);
+    this.ctx.fillText(this.level,this.textX+this.x,this.textY+this.y);
+    this.ctx.closePath();
+  }
+
+  drawCollidedSquare() {
+    if(this.level>99){
+      this.textX -= 6;
+    } else if (this.level>9){
+      this.textX -= 3
+    }
+    this.ctx.beginPath();
+    this.ctx.lineWidth = LINE_WIDTH;
+    this.ctx.clearRect(this.x,this.y,OBSTACLE_WIDTH,OBSTACLE_HEIGHT);
+    this.ctx.strokeRect(this.x+PADDING_SQUARE,this.y+PADDING_SQUARE,OBSTACLE_WIDTH - PADDING_SQUARE_X2,OBSTACLE_HEIGHT -PADDING_SQUARE_X2);
     this.ctx.fillText(this.level,this.textX+this.x,this.textY+this.y);
     this.ctx.closePath();
   }
@@ -45,9 +59,11 @@ class ObsSquare {
 
     // If the distance is less than half_Square then they are definitely colliding
     if (distX <= BALL_RADIUS+(OBSTACLE_WIDTH / 2)) {
+      this.drawCollidedSquare();
       return true;
     }
     if (distY <= BALL_RADIUS+(OBSTACLE_HEIGHT / 2)) {
+      this.drawCollidedSquare();
       return true;
     }
 
@@ -57,6 +73,12 @@ class ObsSquare {
     -If the ball’s center is on that line they are colliding at exactly that square corner*/
     let dx=distX-OBSTACLE_WIDTH/2;
     let dy=distY-OBSTACLE_HEIGHT/2;
-    return (dx*dx+dy*dy <= (BALL_RADIUS*BALL_RADIUS));
+    if (dx*dx+dy*dy <= (BALL_RADIUS*BALL_RADIUS)) {
+      this.drawCollidedSquare();
+      return true;
+    }else {
+      return false;
+    }
+
   }
 }

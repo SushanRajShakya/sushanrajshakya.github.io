@@ -4,12 +4,13 @@ class Game {
     this.ctx = this.canvas.getContext('2d');
     this.level = 1;
     this.coin = 0;
-    this.addBalls = 0;
+    this.addBalls = 0; //number of balls to add on next level
     this.totalBalls = 1;
     this.shootStatus = false;
-    this.ballsLeft = this.totalBalls;
+    this.ballsLeft = this.totalBalls; //number of balls left to move
     this.firstDeadBallX = null;
     this.flagPowerUps = [];
+    this.plus1Score = [];
     //this.background = new Image();
     //this.drawBackground();
     this.sprtieSheet = new Image();
@@ -169,7 +170,10 @@ class Game {
         break;
       case PLUS_BALL:
         this.addBalls++;
-        this.tileMap[row][column] = 0;
+        this.tileMap[row][column] = 11;
+        let newPlus1Score = new Plus1(this.ctx,row,column);
+        newPlus1Score.drawPlus1();
+        this.plus1Score.push(newPlus1Score);
         break;
       default:
       //do nothing
@@ -243,6 +247,7 @@ function draw(){
   game.obstacles = [];
   let obstacle;
   let powerUp;
+  let score;
   game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
   game.ctx.strokeRect(0,0, GAME_WIDTH,GAME_HEIGHT);
   for(let i=0;i<game.tileMap.length;i++){
@@ -299,11 +304,35 @@ function draw(){
           game.obstacles.push([powerUp,POWER_VERT]);
           game.flagPowerUps.push([i,j,false]);
           break;
+        case PLUS_1:
+          score = new Plus1(game.ctx,i,j); //displaying +1 after eating coins or addBallPowerUp
+          score.drawPlus1();
+          break;
         default:
         //do nothing
       }
     }
   }
+
+  let tempPlus1Score = game.plus1Score.slice();
+  for(let i=0;i<tempPlus1Score.length;i++){
+    if(tempPlus1Score[i].counter>=30){
+      game.plus1Score.splice(game.plus1Score.indexOf(game.plus1Score[i]),1);
+    }
+  }
+  console.log(game.plus1Score);
+
+  for(let i=0;i<game.plus1Score.length;i++){
+    let row = game.plus1Score[i].row;
+    let column = game.plus1Score[i].column;
+    game.plus1Score[i].updatePlus1();
+    if(game.plus1Score[i].counter>=30){
+      game.tileMap[row][column] = 0;
+    }
+  }
+  console.log(game.plus1Score);
+
+
   for(let i=0;i<game.ballsArray.length;i++) {
     game.ballsArray[i].updateBall(game, i);
     game.checkCollision(game.ballsArray[i]);

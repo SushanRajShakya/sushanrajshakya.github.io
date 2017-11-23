@@ -38,5 +38,8 @@ const PLUS_BALL = 7
 const POWER_HORZ = 8;
 const POWER_SPLIT = 9;
 const POWER_VERT = 10;
+const PLUS_1 = 11;
 
-
+//dimensions for obstacles when collision occurs----------------------------------------------------------------------
+const PADDING_SQUARE = 4;
+const PADDING_SQUARE_X2 = PADDING_SQUARE * 2;
