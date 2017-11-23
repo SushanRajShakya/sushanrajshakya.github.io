@@ -88,6 +88,7 @@ class Ball {
       }
   }
 
+  //if no balls left to shoot go to next level---------------------------------------------------------------------
   checkBallLeft(game){
     if(game.ballsLeft==0) {
       game.firstDeadBallX = null;
@@ -96,7 +97,6 @@ class Ball {
       game.updateTileMap();
       game.flagPowerUps = [];
       game.shootStatus = false;
-      console.log('----------------------------------------------');
     }
   }
 
