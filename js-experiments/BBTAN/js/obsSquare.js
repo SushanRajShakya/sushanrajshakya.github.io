@@ -1,7 +1,7 @@
 class ObsSquare {
   constructor(ctx,row,column) {
     this.x = (TILE_WIDTH * column) + TILE_PADDING;
-    this.y = (TILE_HEIGHT * row) + TILE_PADDING;
+    this.y = (TILE_HEIGHT * row) + TILE_PADDING + TOP_HEIGHT;
     this.level;
     this.row = row;
     this.column = column;
@@ -35,6 +35,8 @@ class ObsSquare {
       this.textX -= 3
     }
     this.ctx.beginPath();
+    this.ctx.strokeStyle = '#d7e163';
+    this.ctx.fillStyle = '#d7e163';
     this.ctx.lineWidth = LINE_WIDTH;
     this.ctx.clearRect(this.x,this.y,OBSTACLE_WIDTH,OBSTACLE_HEIGHT);
     this.ctx.strokeRect(this.x+PADDING_SQUARE,this.y+PADDING_SQUARE,OBSTACLE_WIDTH - PADDING_SQUARE_X2,OBSTACLE_HEIGHT -PADDING_SQUARE_X2);

@@ -1,8 +1,20 @@
 class Game {
   constructor() {
     this.canvas = document.getElementById('mainCanvas');
+    this.canvas.width = GAME_WIDTH;
+    this.canvas.height = GAME_HEIGHT + TOP_HEIGHT;
     this.ctx = this.canvas.getContext('2d');
+    this.bgTop = new BbtanBgTop(this.ctx);
+    this.bgBot = new BbtanBgBot(this.ctx);
+    this.botScoreBoard = new BotScoreBoard(this.ctx);
     this.level = 1;
+    //Setting the time for game----------------------------------------------------------------------------------------
+    this.gameTime = TOTAL_TIME;
+    this.gameTimeSec = '00';
+    this.gameTimeMin = '30';
+    this.timerCounter = 0;
+    this.setTimer();
+    this.gameStatus = 'inGame';
     this.coin = 0;
     this.addBalls = 0; //number of balls to add on next level
     this.totalBalls = 1;
@@ -10,10 +22,9 @@ class Game {
     this.ballsLeft = this.totalBalls; //number of balls left to move
     this.firstDeadBallX = null;
     this.flagPowerUps = [];
-    this.plus1Score = [];
-    //this.background = new Image();
-    //this.drawBackground();
-    this.sprtieSheet = new Image();
+    this.plus1Score = []; //for storing +1 symbol objects
+    this.spriteSheet = new Image();
+    this.spriteSheet.src = 'images/sprite-sheet.png';
     this.ballsArray = [];
     this.ballsArray.push(new Ball(this.ctx));
     this.obstacles = [];
@@ -41,7 +52,11 @@ class Game {
     ];
   }
 
-
+  setTimer() {
+    let getTimeValue = new Date();
+    let min = getTimeValue.getMinutes();
+    let sec = getTimeValue.getSeconds();
+  }
 
   //tile-row generator logic------------------------------------------------------------------------------------------
   generateNewTile() {
@@ -155,6 +170,7 @@ class Game {
 
   //updating both maps after collision-------------------------------------------------------------------------------
   updateMaps(row,column,type){
+    let newPlus1Score;
     switch (type)
     {
       case SQUARE:
@@ -165,13 +181,15 @@ class Game {
         break;
       case COIN:
         this.coin++;
-        console.log('Coins: ',this.coin);
-        this.tileMap[row][column] = 0;
+        this.tileMap[row][column] = 11;
+        newPlus1Score = new Plus1(this.ctx,row,column);
+        newPlus1Score.drawPlus1();
+        this.plus1Score.push(newPlus1Score);
         break;
       case PLUS_BALL:
         this.addBalls++;
         this.tileMap[row][column] = 11;
-        let newPlus1Score = new Plus1(this.ctx,row,column);
+        newPlus1Score = new Plus1(this.ctx,row,column);
         newPlus1Score.drawPlus1();
         this.plus1Score.push(newPlus1Score);
         break;
@@ -201,21 +219,19 @@ class Game {
 
   //animation for horizontal laser----------------------------------------------------------------------------------
   horizontalLaser(row) {
-    let randomHeight = getRandomNumber(OBSTACLE_HEIGHT/2,OBSTACLE_HEIGHT/5);
-    let valueY = (TILE_HEIGHT * row) + OBSTACLE_HEIGHT/2 - TILE_PADDING;
+    let valueY = (TILE_HEIGHT * row) + OBSTACLE_HEIGHT/2 - TILE_PADDING + TOP_HEIGHT;
     this.ctx.beginPath();
     this.ctx.fillStyle = 'yellow';
-    this.ctx.fillRect(0,valueY,GAME_WIDTH,randomHeight);
+    this.ctx.fillRect(0,valueY,GAME_WIDTH,TILE_HEIGHT/3);
     this.ctx.closePath();
   }
 
   //animation for vertical laser-------------------------------------------------------------------------------------
   verticalLaser(column) {
-    let randomWidth = getRandomNumber(OBSTACLE_WIDTH/2,OBSTACLE_WIDTH/5);
     let valueX = (TILE_WIDTH * column) + OBSTACLE_WIDTH/2 - TILE_PADDING;
     this.ctx.beginPath();
     this.ctx.fillStyle = 'yellow';
-    this.ctx.fillRect(valueX,0,randomWidth,GAME_HEIGHT);
+    this.ctx.fillRect(valueX,0,TILE_WIDTH/3,GAME_HEIGHT - TOP_HEIGHT - BOT_HEIGHT);
     this.ctx.closePath();
   }
 
@@ -228,18 +244,56 @@ class Game {
     }
     return true;
   }
+
+  //update +1 symbol after eating ADDBALL POWERUP or COIN-----------------------------------------------------------
+  updatePlusOneSymbol() {
+    let tempPlus1Score = this.plus1Score.slice();
+    for(let i=0;i<tempPlus1Score.length;i++){
+      if(tempPlus1Score[i].counter>=30){
+        this.plus1Score.splice(this.plus1Score.indexOf(this.plus1Score[i]),1);
+      }
+    }
+    for(let i=0;i<this.plus1Score.length;i++){
+      let row = this.plus1Score[i].row;
+      let column = this.plus1Score[i].column;
+      this.plus1Score[i].updatePlus1();
+      if(this.plus1Score[i].counter>=30){
+        this.tileMap[row][column] = 0;
+      }
+    }
+  }
+
+  //timer counter for 60 FPS into 1 sec------------------------------------------------------------------------------
+  timer(){
+    if(this.gameStatus == 'inGame') {
+      this.timerCounter++;
+      if (this.timerCounter >= 60) {
+        this.timerCounter = 0;
+        setTime(this);
+      }
+    }
+  }
+
+  //display time at bottom--------------------------------------------------------------------------------------------
+  drawTime() {
+    if(this.gameStatus == 'inGame') {
+      let color = getRandomNumber(TIMER_COLOR.length-1,0);
+      this.ctx.beginPath();
+      this.ctx.font = 'normal 45px SquareFont';
+      this.ctx.fillStyle = 'white'
+      this.ctx.fillText(this.gameTimeMin + ":" + this.gameTimeSec,TIMERX,TIMERY);
+      this.ctx.closePath();
+    }
+  }
 }
 
 
 //main game program-------------------------------------------------------------------------------------------------
 let game = new Game();
-game.sprtieSheet.onload = () => {
-  this.level++;
+game.spriteSheet.onload = () => {
   game.updateTileMap();
   draw();
 };
-game.sprtieSheet.src = 'images/sprite-sheet.png';
-
 
 
 //main draw for game---------------------------------------------------------------------------------------------------
@@ -249,7 +303,6 @@ function draw(){
   let powerUp;
   let score;
   game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
-  game.ctx.strokeRect(0,0, GAME_WIDTH,GAME_HEIGHT);
   for(let i=0;i<game.tileMap.length;i++){
     let row = game.tileMap[i];
     for(let j=0;j<TILE_WIDTH;j++){
@@ -277,29 +330,29 @@ function draw(){
         //   obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
         //   break;
         case COIN:
-          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,0); //type 0 for coin
+          powerUp = new PowerUps(game.ctx,i,j,game.spriteSheet,0); //type 0 for coin
           powerUp.drawCoin();
           game.obstacles.push([powerUp,COIN]);
           break;
         case PLUS_BALL:
-          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,1); //type 1 for plus
+          powerUp = new PowerUps(game.ctx,i,j,game.spriteSheet,1); //type 1 for plus
           powerUp.drawPlus();
           game.obstacles.push([powerUp,PLUS_BALL]);
           break;
         case POWER_HORZ:
-          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,2); //type 2 for power horizontal
+          powerUp = new PowerUps(game.ctx,i,j,game.spriteSheet,2); //type 2 for power horizontal
           powerUp.drawPowerHorizontal();
           game.obstacles.push([powerUp,POWER_HORZ]);
           game.flagPowerUps.push([i,j,false]);
           break;
         case POWER_SPLIT:
-          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,3); //type 4 for power split
+          powerUp = new PowerUps(game.ctx,i,j,game.spriteSheet,3); //type 4 for power split
           powerUp.drawPowerSplit();
           game.obstacles.push([powerUp,POWER_SPLIT]);
           game.flagPowerUps.push([i,j,false]);
           break;
         case POWER_VERT:
-          powerUp = new PowerUps(game.ctx,i,j,game.sprtieSheet,4); //type 3 for power vertical
+          powerUp = new PowerUps(game.ctx,i,j,game.spriteSheet,4); //type 3 for power vertical
           powerUp.drawPowerVertical();
           game.obstacles.push([powerUp,POWER_VERT]);
           game.flagPowerUps.push([i,j,false]);
@@ -313,43 +366,39 @@ function draw(){
       }
     }
   }
+  game.bgTop.drawBbtanBgTop(game.gameStatus);
+  game.bgBot.drawBbtanBgBot(game.gameStatus ,game);
+  game.botScoreBoard.drawBotScoreBoards(game.level);
 
-  let tempPlus1Score = game.plus1Score.slice();
-  for(let i=0;i<tempPlus1Score.length;i++){
-    if(tempPlus1Score[i].counter>=30){
-      game.plus1Score.splice(game.plus1Score.indexOf(game.plus1Score[i]),1);
-    }
-  }
-  console.log(game.plus1Score);
-
-  for(let i=0;i<game.plus1Score.length;i++){
-    let row = game.plus1Score[i].row;
-    let column = game.plus1Score[i].column;
-    game.plus1Score[i].updatePlus1();
-    if(game.plus1Score[i].counter>=30){
-      game.tileMap[row][column] = 0;
-    }
-  }
-  console.log(game.plus1Score);
-
-
+  game.updatePlusOneSymbol(); //for maintaining animation of +1 symbol while eating powerUps
   for(let i=0;i<game.ballsArray.length;i++) {
-    game.ballsArray[i].updateBall(game, i);
+    game.ballsArray[i].updateBall(game, i); //update ball position, moves the ball in the canvas
     game.checkCollision(game.ballsArray[i]);
     game.ballsArray[i].drawBall();
   }
 
-  game.canvas.addEventListener('click',(evt)=>{
-    if(game.checkDeadBall()) {
-      game.shootStatus = true;
-      for(let j=0;j<game.ballsArray.length;j++) {
-        game.ballsArray[j] = getMousePos(game.canvas, evt, game.ballsArray[j], j, game);
-        game.ballsArray[j].setOffSetX(j);
+  //check time and change it accordingly-----------------------------------------------------------------------------
+  game.timer();
+  game.drawTime();
+
+  //for shooting the ball click event listener
+  game.canvas.addEventListener('click',(evt)=> {
+    if (getMouseCoOrdinates(game.canvas,evt)) {
+      if (game.checkDeadBall()) {
+        game.shootStatus = true;
+        for (let j = 0; j < game.ballsArray.length; j++) {
+          game.ballsArray[j] = getMousePos(game.canvas, evt, game.ballsArray[j], j, game);
+          game.ballsArray[j].setOffSetX(j);
+        }
       }
     }
   });
   window.requestAnimationFrame(draw);
 }
+
+
+
+
 
 
 

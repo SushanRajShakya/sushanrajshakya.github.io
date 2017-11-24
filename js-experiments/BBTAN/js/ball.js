@@ -59,7 +59,7 @@ class Ball {
       this.flagForSplit = true;
       this.flagForPowHor = true;
       this.flagForPowVer = true;
-    }else if (this.y < (0+BALL_RADIUS)) {
+    }else if (this.y < (TOP_HEIGHT+BALL_RADIUS)) {
       this.dy *= -1;
       this.flagForSplit = true;
       this.flagForPowHor = true;
@@ -70,23 +70,44 @@ class Ball {
   limitBoundary(game, i) {
       if (this.x > (GAME_WIDTH - BALL_RADIUS)) {
         this.x = GAME_WIDTH - BALL_RADIUS;
-      } else if (this.y > (GAME_HEIGHT - BALL_RADIUS)) {
+      } else if (this.y > (GAME_HEIGHT - BOT_HEIGHT - BALL_RADIUS)) {
         this.dummyY = BALL_Y_DEAD + (i * BALL_GAP);
-        this.y = BALL_Y_DEAD;
-        this.visible = false;
-        game.ballsLeft--;
-        this.dx = 0;
+        // this.visible = false;
+        // game.ballsLeft--;
+        // this.dx = 0;
         this.dy = 0;
         if (game.firstDeadBallX == null) {
           game.firstDeadBallX = this.x;
-        } else {
-          this.x = game.firstDeadBallX;
+          this.y = BALL_Y_DEAD;
+          this.dx = 0;
+          game.ballsLeft--;
+          this.visible = false;
+        }else {
+          this.moveToFirstBall(game);
         }
       } else if (this.x < (0 + BALL_RADIUS)) {
         this.x = BALL_RADIUS;
-      } else if (this.y < (0 + BALL_RADIUS)) {
-        this.y = BALL_RADIUS;
+      } else if (this.y < (TOP_HEIGHT + BALL_RADIUS)) {
+        this.y = TOP_HEIGHT + BALL_RADIUS;
       }
+  }
+
+  //animate the dead ball to first ball----------------------------------------------------------------------------
+  moveToFirstBall(game) {
+    if ( (this.x >= game.firstDeadBallX-6) && (this.x <= game.firstDeadBallX+6) ) {
+        this.y = BALL_Y_DEAD;
+        this.x = game.firstDeadBallX;
+        this.dx = 0;
+        game.ballsLeft--;
+        this.visible = false;
+    }else {
+      this.y = BALL_Y_DEAD + 3;
+      if (this.x < game.firstDeadBallX) {
+        this.dx = BALL_VELOCITY;
+      } else {
+        this.dx = -1 * BALL_VELOCITY;
+      }
+    }
   }
 
   //if no balls left to shoot go to next level---------------------------------------------------------------------

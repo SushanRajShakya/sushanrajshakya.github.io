@@ -1,7 +1,7 @@
 class PowerUps {
   constructor(ctx,row,column,spriteSheet,type) {
     this.x = (TILE_WIDTH * column) + TILE_PAD_POWER;
-    this.y = (TILE_HEIGHT * row) + TILE_PAD_POWER;
+    this.y = (TILE_HEIGHT * row) + TILE_PAD_POWER + TOP_HEIGHT;
     this.type = type;
     this.row = row;
     this.column = column;
