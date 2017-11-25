@@ -66,22 +66,22 @@ function limitAngle(angle){
 }
 
 //show dotted line for shooting the ball direction--------------------------------------------------------------------
-function showShootDirection(game,evt) {
-  let ballX = 0;
-  let ballY = 0;
-  let rect = game.canvas.getBoundingClientRect();
-  if(game.firstDeadBallX == null){
-    ballX = game.ballsArray[0].x;
-    ballY = game.ballsArray[0].y;
-  }else {
-    ballX = game.firstDeadBallX;
-    ballY = BALL_Y_DEAD;
-  }
-  let pointerX = evt.clientX - rect.left;
-  let pointerY = evt.clientY - rect.top;
-  let lineAngle = Math.atan(Math.abs(pointerY - ballY) / Math.abs(pointerX - ballX));
-  lineAngle = limitAngle(lineAngle);
-}
+// function showShootDirection(game,evt) {
+//   let ballX = 0;
+//   let ballY = 0;
+//   let rect = game.canvas.getBoundingClientRect();
+//   if(game.firstDeadBallX == null){
+//     ballX = game.ballsArray[0].x;
+//     ballY = game.ballsArray[0].y;
+//   }else {
+//     ballX = game.firstDeadBallX;
+//     ballY = BALL_Y_DEAD;
+//   }
+//   let pointerX = evt.clientX - rect.left;
+//   let pointerY = evt.clientY - rect.top;
+//   let lineAngle = Math.atan(Math.abs(pointerY - ballY) / Math.abs(pointerX - ballX));
+//   lineAngle = limitAngle(lineAngle);
+// }
 
 //sets 5 to 05, 6 to 06 and so on-------------------------------------------------------------------------------------
 function calc(value) {

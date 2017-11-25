@@ -25,10 +25,15 @@ const BALL_GAP = 30;
 const LOWEST_ANGLE = 0.26;
 
 //Sprite-Sheet locations and dimensions-------------------------------------------------------------------------------
-
 const POWER_UPS_X = 210;
 const POWER_UPS_Y = 361;
 const POWER_UPS_SIZE = 29; //square image so same for height and width
+const BBTAN_GAME_BOT_X = 72;
+const BBTAN_GAME_BOT_Y = 361;
+const BBTAN_GAME_BOT_WIDTH = 138; //for spritesheet width
+const BBTAN_GAME_BOT_HEIGHT = 251; //for spritesheet height
+const BBTAN_BOT_GAME_WIDTH = 73; //for canvas setting the width
+const BBTAN_BOT_GAME_HEIGHT = BOT_BG_HEIGHT * 2; // for canvas setting the height
 
 //TILE_MAPPING--------------------------------------------------------------------------------------------------------
 const BLANK = 0;
@@ -62,4 +67,4 @@ const TIMERX = GAME_WIDTH/3;
 const TIMERY = GAME_HEIGHT - 11;
 
 //colors for time ----------------------------------------------------------------------------------------------------
-const TIMER_COLOR = ['#f10b1c','#eb0cc4','#9a0ceb','#1c0ceb','#43bbe7','#10c379','#0d7d05','#d2de15','#d0700a','#b51909','white'];
+const TIMER_COLOR = ['#e6644a','#f344bb','#7eff3e','#bd0000','#f10b1c','#eb0cc4','#9a0ceb','#1c0ceb','#43bbe7','#10c379','#0d7d05','#d2de15','#d0700a','#b51909','white'];

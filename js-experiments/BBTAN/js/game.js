@@ -7,6 +7,7 @@ class Game {
     this.bgTop = new BbtanBgTop(this.ctx);
     this.bgBot = new BbtanBgBot(this.ctx);
     this.botScoreBoard = new BotScoreBoard(this.ctx);
+    this.bbtanGameBot = new BbtanGameBot(this.ctx);
     this.level = 1;
     //Setting the time for game----------------------------------------------------------------------------------------
     this.gameTime = TOTAL_TIME;
@@ -14,6 +15,7 @@ class Game {
     this.gameTimeMin = '30';
     this.timerCounter = 0;
     this.setTimer();
+    this.timerColor = TIMER_COLOR[getRandomNumber(TIMER_COLOR.length - 1 , 0)];
     this.gameStatus = 'inGame';
     this.coin = 0;
     this.addBalls = 0; //number of balls to add on next level
@@ -269,6 +271,7 @@ class Game {
       this.timerCounter++;
       if (this.timerCounter >= 60) {
         this.timerCounter = 0;
+        this.timerColor = TIMER_COLOR[getRandomNumber(TIMER_COLOR.length - 1 , 0)];
         setTime(this);
       }
     }
@@ -280,7 +283,7 @@ class Game {
       let color = getRandomNumber(TIMER_COLOR.length-1,0);
       this.ctx.beginPath();
       this.ctx.font = 'normal 45px SquareFont';
-      this.ctx.fillStyle = 'white'
+      this.ctx.fillStyle = game.timerColor;
       this.ctx.fillText(this.gameTimeMin + ":" + this.gameTimeSec,TIMERX,TIMERY);
       this.ctx.closePath();
     }
@@ -376,10 +379,10 @@ function draw(){
     game.checkCollision(game.ballsArray[i]);
     game.ballsArray[i].drawBall();
   }
-
   //check time and change it accordingly-----------------------------------------------------------------------------
   game.timer();
   game.drawTime();
+  game.bbtanGameBot.drawBbtanBot(game.gameStatus,game);
 
   //for shooting the ball click event listener
   game.canvas.addEventListener('click',(evt)=> {
