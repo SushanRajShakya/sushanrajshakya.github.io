@@ -1,24 +1,42 @@
 class BbtanGameBot {
-  constructor (ctx) {
+  constructor (ctx,botPositionX) {
     this.ctx = ctx;
     this.sx = BBTAN_GAME_BOT_X;
     this.sy = BBTAN_GAME_BOT_Y;
-    this.x = GAME_WIDTH/2;
+    this.x = botPositionX;
+    this.newX = this.x;
+    this.dx = 0;
     this.y = BALL_Y_DEAD - BOT_BG_HEIGHT + BALL_RADIUS + 2;
   }
 
   drawBbtanBot(gameStatus, game) {
     if (gameStatus == 'inGame') {
-      this.checkFirstBall(game);
+      this.updateBot();
       this.ctx.drawImage(game.spriteSheet, this.sx, this.sy, BBTAN_GAME_BOT_WIDTH,BBTAN_GAME_BOT_HEIGHT, this.x,this.y,BBTAN_BOT_GAME_WIDTH,BBTAN_BOT_GAME_HEIGHT);
     }
   }
 
-  checkFirstBall(game) {
-    if(game.firstDeadBallX == null){
-      this.x = game.ballsArray[0].x;
-    }else {
-      this.x = game.firstDeadBallX;
+  setBotNewX(newX) {
+    this.newX = newX;
+    this.checkDirectionToMove(newX);
+  }
+
+  updateBot() {
+    this.x += this.dx;
+    if ( (this.x >= (this.newX-BOT_VELOCITY)) && (this.x <= (this.newX+BOT_VELOCITY)) ) {
+      this.x = this.newX;
+      this.dx = 0;
+      this.newX = this.x;
+    }
+  }
+
+  checkDirectionToMove(newX){
+    if (newX < this.x) {
+      this.dx = -BOT_VELOCITY;
+    }else if (newX > this.x) {
+      this.dx = BOT_VELOCITY;
+    }else{
+      this.dx = 0;
     }
   }
 }

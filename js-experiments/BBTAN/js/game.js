@@ -7,7 +7,6 @@ class Game {
     this.bgTop = new BbtanBgTop(this.ctx);
     this.bgBot = new BbtanBgBot(this.ctx);
     this.botScoreBoard = new BotScoreBoard(this.ctx);
-    this.bbtanGameBot = new BbtanGameBot(this.ctx);
     this.level = 1;
     //Setting the time for game----------------------------------------------------------------------------------------
     this.gameTime = TOTAL_TIME;
@@ -29,6 +28,7 @@ class Game {
     this.spriteSheet.src = 'images/sprite-sheet.png';
     this.ballsArray = [];
     this.ballsArray.push(new Ball(this.ctx));
+    this.bbtanGameBot = new BbtanGameBot(this.ctx,this.ballsArray[0].x);
     this.obstacles = [];
     this.tileMap = [
       [0,0,0,0,0,0,0],

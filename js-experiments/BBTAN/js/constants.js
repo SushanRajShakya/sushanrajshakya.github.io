@@ -20,6 +20,7 @@ const BALL_RADIUS = 6;
 const BALL_VELOCITY = 6;
 const BALL_Y_DEAD = GAME_HEIGHT - BALL_RADIUS - 2 - BOT_HEIGHT;
 const BALL_GAP = 30;
+const BOT_VELOCITY = 10;
 
 //Ball shooting angle limit-------------------------------------------------------------------------------------------
 const LOWEST_ANGLE = 0.26;

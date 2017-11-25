@@ -78,6 +78,7 @@ class Ball {
         this.dy = 0;
         if (game.firstDeadBallX == null) {
           game.firstDeadBallX = this.x;
+          game.bbtanGameBot.setBotNewX(game.firstDeadBallX);
           this.y = BALL_Y_DEAD;
           this.dx = 0;
           game.ballsLeft--;
@@ -94,7 +95,7 @@ class Ball {
 
   //animate the dead ball to first ball----------------------------------------------------------------------------
   moveToFirstBall(game) {
-    if ( (this.x >= game.firstDeadBallX-6) && (this.x <= game.firstDeadBallX+6) ) {
+    if ( (this.x >= game.firstDeadBallX-BALL_RADIUS) && (this.x <= game.firstDeadBallX+BALL_RADIUS) ) {
         this.y = BALL_Y_DEAD;
         this.x = game.firstDeadBallX;
         this.dx = 0;
