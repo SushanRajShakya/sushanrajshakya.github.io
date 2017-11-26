@@ -66,19 +66,23 @@ function limitAngle(angle){
 }
 
 //get mouse co-ordinates for various operations-----------------------------------------------------------------------
-function checkCoOrdinates(canvas, evt){
+function checkCoOrdinates(canvas, evt,game){
   let rect = canvas.getBoundingClientRect();
   let x = evt.clientX - rect.left;
   let y = evt.clientY - rect.top;
-  if (x>=PAUSE_X && y>=PAUSE_Y && x<=(PAUSE_WIDTH+PAUSE_X) && y<=(PAUSE_Y+PAUSE_HEIGHT)) {
+  if (x>=PAUSE_X && y>=PAUSE_Y && x<=(PAUSE_WIDTH+PAUSE_X) && y<=(PAUSE_Y+PAUSE_HEIGHT) && game.gameStatus == 'inGame') {
     return 'paused';
-  }else if(x>=RESUME_X && y>=RESUME_Y && x<=(RESUME_WIDTH+RESUME_X) && y<=(RESUME_Y+RESUME_HEIGHT)){
+  }else if(x>=RESUME_X && y>=RESUME_Y && x<=(RESUME_WIDTH+RESUME_X) && y<=(RESUME_Y+RESUME_HEIGHT) && game.gameStatus == 'paused'){
     return 'resumed';
-  }else if(x>=RESTART_X && y>=RESTART_Y && x<=(RESTART_WIDTH+RESTART_X) && y<=(RESTART_Y+RESTART_HEIGHT)){
+  }else if(x>=RESTART_X && y>=RESTART_Y && x<=(RESTART_WIDTH+RESTART_X) && y<=(RESTART_Y+RESTART_HEIGHT) && game.gameStatus == 'paused'){
     return 'restart';
-  }else if(x>=MAIN_MENU_X && y>=MAIN_MENU_Y && x<=(MAIN_MENU_WIDTH+MAIN_MENU_X) && y<=(MAIN_MENU_Y+MAIN_MENU_HEIGHT)){
+  }else if(x>=MAIN_MENU_X && y>=MAIN_MENU_Y && x<=(MAIN_MENU_WIDTH+MAIN_MENU_X) && y<=(MAIN_MENU_Y+MAIN_MENU_HEIGHT) && game.gameStatus == 'paused'){
     return 'start-menu';
-  }else if(x>=PLAY_BTN_GAME_X && y>=PLAY_BTN_GAME_Y && x<=(PLAY_BTN_GAME_WIDTH+PLAY_BTN_GAME_X) && y<=(PLAY_BTN_GAME_Y+PLAY_BTN_GAME_HEIGHT)) {
+  }else if(x>=PLAY_BTN_GAME_X && y>=PLAY_BTN_GAME_Y && x<=(PLAY_BTN_GAME_WIDTH+PLAY_BTN_GAME_X) && y<=(PLAY_BTN_GAME_Y+PLAY_BTN_GAME_HEIGHT) && game.gameStatus=='startMenu') {
+    return 'play';
+  }else if(x>=GO_MAIN_MENU_X && x<=(GO_MAIN_MENU_WIDTH+GO_MAIN_MENU_X) && y>=GO_MAIN_MENU_Y && y<=(GO_MAIN_MENU_Y+GO_MAIN_MENU_HEIGHT) && game.gameStatus=='gameOver'){
+    return 'start-menu';
+  }else if(x>=PLAY_AGAIN_X && x<=(PLAY_AGAIN_WIDTH+PLAY_AGAIN_X) && y>=PLAY_AGAIN_Y && y<=(PLAY_AGAIN_Y+PLAY_AGAIN_HEIGHT) && game.gameStatus=='gameOver'){
     return 'play';
   }
 }

@@ -164,15 +164,30 @@ class Game {
     this.ballsCounter = this.totalBalls;
     this.tileMap[1] = tempValue[0];
     this.levelMap[1] = tempValue[1];
+    this.checkTileMap();
+  }
+
+
+  //check tileMap for gameover---------------------------------------------------------------------------------------
+  checkTileMap(){
+    let lastRow = this.tileMap.length - 1;
+    for(let i=0; i<TILE_COLUMNS; i++){
+      if(this.tileMap[lastRow][i] == SQUARE){
+        this.gameStatus = 'gameOver';
+        break;
+      }
+    }
   }
 
   //checking collision for all the obstacles according to their types------------------------------------------------
   checkCollision(ball) {
-    for(let i=0;i<this.obstacles.length;i++){
-      if(this.obstacles[i][0].checkCollision(ball)) {
-        this.updateFlagArray(this.obstacles[i][0].row,this.obstacles[i][0].column);
-        ball.collisionOperation(this.obstacles[i],this);
-        this.updateMaps(this.obstacles[i][0].row,this.obstacles[i][0].column,this.obstacles[i][1]);
+    if(this.gameStatus == 'inGame') {
+      for (let i = 0; i < this.obstacles.length; i++) {
+        if (this.obstacles[i][0].checkCollision(ball)) {
+          this.updateFlagArray(this.obstacles[i][0].row, this.obstacles[i][0].column);
+          ball.collisionOperation(this.obstacles[i], this);
+          this.updateMaps(this.obstacles[i][0].row, this.obstacles[i][0].column, this.obstacles[i][1]);
+        }
       }
     }
   }
@@ -286,7 +301,7 @@ class Game {
 
   //display time at bottom--------------------------------------------------------------------------------------------
   drawTime() {
-    if(this.gameStatus == 'inGame') {
+    if(this.gameStatus == 'inGame' || this.gameStatus == 'gameOver') {
       let color = getRandomNumber(TIMER_COLOR.length-1,0);
       this.ctx.beginPath();
       this.ctx.font = 'normal 45px SquareFont';
@@ -402,6 +417,64 @@ class Game {
     }
   }
 
+  drawGameOver() {
+    this.ctx.beginPath();
+    this.ctx.fillStyle = '#12374d'; //for background gameover menu
+    this.ctx.strokeStyle = 'white';
+    this.ctx.globalAlpha = .98;
+    this.ctx.fillRect(GAMEOVER_BG_X, GAMEOVER_BG_Y, GAMEOVER_BG_WIDTH, GAMEOVER_BG_HEIGHT);
+    this.ctx.fillRect(GAMEOVER_BG_BOT_X, GAMEOVER_BG_BOT_Y, GAMEOVER_BG_BOT_WIDTH, GAMEOVER_BG_BOT_HEIGHT);
+    this.ctx.fillStyle = '#90bad3'; //for text
+    this.ctx.font = 'normal 40px SquareFont';
+    this.ctx.fillText('SCORE :',GAMEOVER_SCORE_X,GAMEOVER_SCORE_Y);
+    this.ctx.font = 'normal 20px SquareFont';
+    this.ctx.fillText('BEST SCORE :',GAMEOVER_BEST_SCORE_X,GAMEOVER_BEST_SCORE_Y);
+    this.ctx.fillStyle = 'white';
+    this.ctx.font = 'normal 60px SquareFont';
+    this.ctx.fillText(this.level,GAMEOVER_SCORE_NUM_X,GAMEOVER_SCORE_NUM_Y);
+    this.ctx.fillStyle = 'white';
+    this.ctx.font = 'normal 40px SquareFont';
+    this.ctx.fillText(this.level,GAMEOVER_BEST_SCORE_NUM_X,GAMEOVER_BEST_SCORE_NUM_Y);
+    this.drawGameOverCoin();
+    this.ctx.globalAlpha = 1;
+    this.drawGameOverMenu();
+  }
+
+  drawGameOverCoin(){
+    let coinX = GAMEOVER_COIN_X;
+    let coinY = GAMEOVER_COIN_Y;
+    let sx = POWER_UPS_X;
+    let sy = POWER_UPS_Y;
+    this.ctx.font = 'normal 50px SquareFont';
+    this.ctx.fillStyle = 'white';
+    this.ctx.drawImage(this.spriteSheet,sx,sy,POWER_UPS_SIZE,POWER_UPS_SIZE,coinX,coinY,GAMEOVER_COIN_WIDTH,GAMEOVER_COIN_HEIGHT);
+    this.ctx.fillText(this.coin,GAMEOVER_COIN_TEXT_X,GAMEOVER_COIN_TEXT_Y);
+  }
+
+  drawGameOverMenu(){
+    //PLAY AGAIN BUTTON
+    this.ctx.beginPath();
+    this.ctx.fillStyle = '#f6d917';
+    this.ctx.strokeStyle = 'white';
+    this.ctx.globalAlpha = .8;
+    this.ctx.fillRect(PLAY_AGAIN_X,PLAY_AGAIN_Y,PLAY_AGAIN_WIDTH,PLAY_AGAIN_HEIGHT);
+    this.ctx.strokeRect(PLAY_AGAIN_X,PLAY_AGAIN_Y,PLAY_AGAIN_WIDTH,PLAY_AGAIN_HEIGHT);
+    this.ctx.fillStyle = 'white';
+    this.ctx.font = 'normal 25px SquareFont'
+    this.ctx.fillText('PLAY AGAIN',PLAY_AGAIN_TEXT_X,PLAY_AGAIN_TEXT_Y);
+    this.ctx.closePath();
+    //MAIN MENU BUTTON
+    this.ctx.beginPath();
+    this.ctx.fillStyle = '#00c2ce';
+    this.ctx.strokeStyle = 'white';
+    this.ctx.globalAlpha = .8;
+    this.ctx.fillRect(GO_MAIN_MENU_X,GO_MAIN_MENU_Y,GO_MAIN_MENU_WIDTH,GO_MAIN_MENU_HEIGHT);
+    this.ctx.strokeRect(GO_MAIN_MENU_X,GO_MAIN_MENU_Y,GO_MAIN_MENU_WIDTH,GO_MAIN_MENU_HEIGHT);
+    this.ctx.fillStyle = 'white';
+    this.ctx.font = 'normal 25px SquareFont'
+    this.ctx.fillText('MAIN MENU',GO_MAIN_MENU_TEXT_X,GO_MAIN_MENU_TEXT_Y);
+    this.ctx.closePath();
+  }
 
   //reset game
   reset(){
@@ -464,7 +537,7 @@ game.spriteSheet.onload = () => {
 
 //main draw for game---------------------------------------------------------------------------------------------------
 function draw() {
-  if(game.gameStatus == 'inGame'){
+  if(game.gameStatus == 'inGame' || game.gameStatus == 'gameOver'){
     game.obstacles = [];
     let obstacle;
     let powerUp;
@@ -547,6 +620,10 @@ function draw() {
     game.timer();
     game.drawTime();
     game.bbtanGameBot.drawBbtanBot(game.gameStatus, game);
+    //display only for gameover----------------------------------------------------------------------------------------
+    if (game.gameStatus == 'gameOver') {
+      game.drawGameOver();
+    }
   }else if(game.gameStatus == 'startMenu'){
     game.drawStartMenu();
   }
@@ -577,26 +654,33 @@ function shootBalls(game,evt) {
 }
 
 
-//check if the player has paused the game-----------------------------------------------------------------------------
+//check which game state is and where user clicked--------------------------------------------------------------------
 function checkClickOperation(game, evt) {
   if (game.gameStatus == 'paused') {
-    if (checkCoOrdinates(game.canvas,evt) == 'resumed') {
+    if (checkCoOrdinates(game.canvas,evt,game) == 'resumed') {
       game.gameStatus = 'inGame';
-    }else if(checkCoOrdinates(game.canvas, evt) == 'restart') {
+    }else if(checkCoOrdinates(game.canvas, evt,game) == 'restart') {
       game.reset();
       game.updateTileMap();
-    }else if(checkCoOrdinates(game.canvas, evt) == 'start-menu') {
+    }else if(checkCoOrdinates(game.canvas, evt,game) == 'start-menu') {
       game.gameStatus = 'startMenu';
     }
   }else if(game.gameStatus == 'inGame'){
-    if (checkCoOrdinates(game.canvas,evt) == 'paused') {
+    if (checkCoOrdinates(game.canvas,evt,game) == 'paused') {
       game.gameStatus = 'paused';
       game.drawPauseMenu();
     }
   }else if(game.gameStatus == 'startMenu') {
-    if(checkCoOrdinates(game.canvas,evt) == 'play'){
+    if(checkCoOrdinates(game.canvas,evt,game) == 'play'){
       game.reset();
       game.updateTileMap();
+    }
+  }else if(game.gameStatus == 'gameOver') {
+    if(checkCoOrdinates(game.canvas,evt,game) == 'play'){
+      game.reset();
+      game.updateTileMap();
+    }else if(checkCoOrdinates(game.canvas,evt,game) == 'start-menu') {
+      game.gameStatus = 'startMenu';
     }
   }
 }

@@ -35,7 +35,7 @@ class BbtanBgBot {
 
 
   changeOpacity(gameStatus) {
-    if(gameStatus == 'inGame'){
+    if(gameStatus == 'inGame' || gameStatus == 'gameOver'){
       this.opacityIndex = .5;
     }else{
       this.opacityIndex = 1;

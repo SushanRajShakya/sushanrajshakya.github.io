@@ -10,7 +10,7 @@ class BbtanGameBot {
   }
 
   drawBbtanBot(gameStatus, game) {
-    if (gameStatus == 'inGame') {
+    if (gameStatus == 'inGame' || gameStatus == 'gameOver') {
       this.updateBot();
       this.ctx.beginPath();
       this.ctx.drawImage(game.spriteSheet, this.sx, this.sy, BBTAN_GAME_BOT_WIDTH, BBTAN_GAME_BOT_HEIGHT, this.x, this.y, BBTAN_BOT_GAME_WIDTH, BBTAN_BOT_GAME_HEIGHT);
