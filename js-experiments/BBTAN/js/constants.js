@@ -16,14 +16,11 @@ const OBSTACLE_HEIGHT = TILE_HEIGHT - TILE_PAD_SQUARE;
 const LINE_WIDTH = 3;
 const POWER_UPS_WIDTH = OBSTACLE_WIDTH/2 + 5; //inside tile
 const POWER_UPS_HEIGHT = OBSTACLE_HEIGHT/2 + 5; // inside tile
-const BALL_RADIUS = 6;
-const BALL_VELOCITY = 6;
+const BALL_RADIUS = 5;
+const BALL_VELOCITY = 8;
 const BALL_Y_DEAD = GAME_HEIGHT - BALL_RADIUS - 2 - BOT_HEIGHT;
 const BALL_GAP = 30;
 const BOT_VELOCITY = 10;
-
-//Ball shooting angle limit-------------------------------------------------------------------------------------------
-const LOWEST_ANGLE = 0.26;
 
 //Sprite-Sheet locations and dimensions-------------------------------------------------------------------------------
 const POWER_UPS_X = 210;
@@ -35,6 +32,9 @@ const BBTAN_GAME_BOT_WIDTH = 138; //for spritesheet width
 const BBTAN_GAME_BOT_HEIGHT = 251; //for spritesheet height
 const BBTAN_BOT_GAME_WIDTH = 73; //for canvas setting the width
 const BBTAN_BOT_GAME_HEIGHT = BOT_BG_HEIGHT * 2; // for canvas setting the height
+
+//Ball shooting angle limit and BBTAN BOT rotate---------------------------------------------------------------------
+const LOWEST_ANGLE = 0.26;
 
 //TILE_MAPPING--------------------------------------------------------------------------------------------------------
 const BLANK = 0;
@@ -69,3 +69,64 @@ const TIMERY = GAME_HEIGHT - 11;
 
 //colors for time ----------------------------------------------------------------------------------------------------
 const TIMER_COLOR = ['#e6644a','#f344bb','#7eff3e','#bd0000','#f10b1c','#eb0cc4','#9a0ceb','#1c0ceb','#43bbe7','#10c379','#0d7d05','#d2de15','#d0700a','#b51909','white'];
+
+//co-ordinates for pause menu-----------------------------------------------------------------------------------------
+const PAUSE_MENU_X = 20;
+const PAUSE_MENU_Y = TOP_HEIGHT+20;
+const PAUSE_MENU_WIDTH = GAME_WIDTH-40;
+const PAUSE_MENU_HEIGHT = GAME_HEIGHT-TOP_HEIGHT-BOT_HEIGHT-100;
+const RESUME_X = PAUSE_MENU_WIDTH/3.2;
+const RESUME_Y = TOP_HEIGHT + 100;
+const RESUME_WIDTH = PAUSE_MENU_WIDTH/2;
+const RESUME_HEIGHT = 40;
+const RESUME_TEXT_X = RESUME_X+32;
+const RESUME_TEXT_Y = RESUME_Y+28;
+const RESTART_X = PAUSE_MENU_WIDTH/3.2;
+const RESTART_Y = RESUME_Y+RESUME_HEIGHT+30;
+const RESTART_WIDTH = PAUSE_MENU_WIDTH/2;
+const RESTART_HEIGHT = 40;
+const RESTART_TEXT_X = RESTART_X+30;
+const RESTART_TEXT_Y = RESUME_Y+RESUME_HEIGHT+58;
+const MAIN_MENU_X = PAUSE_MENU_WIDTH/3.2;
+const MAIN_MENU_Y = RESTART_Y+RESTART_HEIGHT+30;
+const MAIN_MENU_WIDTH = PAUSE_MENU_WIDTH/2;
+const MAIN_MENU_HEIGHT = 40;
+const MAIN_MENU_TEXT_X = MAIN_MENU_X+20;
+const MAIN_MENU_TEXT_Y = RESTART_Y+RESTART_HEIGHT+58;
+
+//start menu text ---------------------------------------------------------------------------------------------------
+const START_TEXT = ' WHAT HAPPENS AFTER 30M.. ';
+const START_TEXT_LENGTH = 560;
+const START_MENU_TEXT_VELOCITY = 1.5;
+
+//BBTAN LOGO dimensions ----------------------------------------------------------------------------------------------
+const LOGO_GAME_X = 57;
+const LOGO_GAME_Y = GAME_HEIGHT/2.5;
+const LOGO_GAME_WIDTH = GAME_WIDTH - (LOGO_GAME_X*2);
+const LOGO_GAME_HEIGHT = 83;
+const LOGO_WIDTH = 393;
+const LOGO_HEIGHT = 138;
+
+//START MENU PLAY BUTTON-----------------------------------------------------------------------------------------------
+const PLAY_BTN_X = 156;
+const PLAY_BTN_Y = 139;
+const PLAY_BTN_WIDTH = 156;
+const PLAY_BTN_HEIGHT = 78;
+const PLAY_BTN_GAME_X = GAME_WIDTH/3
+const PLAY_BTN_GAME_Y = LOGO_GAME_Y + LOGO_GAME_HEIGHT +70;
+const PLAY_BTN_GAME_WIDTH = GAME_WIDTH - (2*PLAY_BTN_GAME_X);
+const PLAY_BTN_GAME_HEIGHT = 50;
+
+//START menu ball bounce height ---------------------------------------------------------------------------------------
+const BOUNCE_HEIGHT = 40;
+
+//START Menu BBTAN BOT ------------------------------------------------------------------------------------------------
+const START_BOT_X = 0;
+const START_BOT_Y = 361;
+const START_BOT_WIDTH = 72;
+const START_BOT_HEIGHT = 208;
+const START_BOT_GAME_X = 57;
+const START_BOT_GAME_Y = TOP_HEIGHT + 30;
+const START_BOT_GAME_WIDTH = 50;
+const START_BOT_GAME_HEIGHT = 160;
+const START_BOT_VELOCITY = .5;

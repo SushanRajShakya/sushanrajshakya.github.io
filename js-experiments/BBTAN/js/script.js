@@ -8,8 +8,8 @@ function getRandomFloat(max, min) {
   return (Math.random() * (max - min + 1)) + min;
 }
 
-//function for getting mouse click co-ordinates---------------------------------------------------------------------
-function getMouseCoOrdinates(canvas,evt){
+//function for getting shoot co-ordinates---------------------------------------------------------------------
+function getShootCoOrdinates(canvas, evt){
   let rect = canvas.getBoundingClientRect();
   let x = evt.clientX - rect.left;
   let y = evt.clientY - rect.top;
@@ -23,7 +23,7 @@ function getMouseCoOrdinates(canvas,evt){
 
 let x1,x2,y1,y2,angle;
 //Ball position in canvas/game -------------------------------------------------------------------------------------
-function getMousePos(canvas, evt, ball, j, game) {
+function setShootingAngle(canvas, evt, ball, j, game) {
   if(j == 0) {
     x1 = ball.x;
     y1 = ball.y;
@@ -65,23 +65,24 @@ function limitAngle(angle){
   }
 }
 
-//show dotted line for shooting the ball direction--------------------------------------------------------------------
-// function showShootDirection(game,evt) {
-//   let ballX = 0;
-//   let ballY = 0;
-//   let rect = game.canvas.getBoundingClientRect();
-//   if(game.firstDeadBallX == null){
-//     ballX = game.ballsArray[0].x;
-//     ballY = game.ballsArray[0].y;
-//   }else {
-//     ballX = game.firstDeadBallX;
-//     ballY = BALL_Y_DEAD;
-//   }
-//   let pointerX = evt.clientX - rect.left;
-//   let pointerY = evt.clientY - rect.top;
-//   let lineAngle = Math.atan(Math.abs(pointerY - ballY) / Math.abs(pointerX - ballX));
-//   lineAngle = limitAngle(lineAngle);
-// }
+//get mouse co-ordinates for various operations-----------------------------------------------------------------------
+function checkCoOrdinates(canvas, evt){
+  let rect = canvas.getBoundingClientRect();
+  let x = evt.clientX - rect.left;
+  let y = evt.clientY - rect.top;
+  if (x>=PAUSE_X && y>=PAUSE_Y && x<=(PAUSE_WIDTH+PAUSE_X) && y<=(PAUSE_Y+PAUSE_HEIGHT)) {
+    return 'paused';
+  }else if(x>=RESUME_X && y>=RESUME_Y && x<=(RESUME_WIDTH+RESUME_X) && y<=(RESUME_Y+RESUME_HEIGHT)){
+    return 'resumed';
+  }else if(x>=RESTART_X && y>=RESTART_Y && x<=(RESTART_WIDTH+RESTART_X) && y<=(RESTART_Y+RESTART_HEIGHT)){
+    return 'restart';
+  }else if(x>=MAIN_MENU_X && y>=MAIN_MENU_Y && x<=(MAIN_MENU_WIDTH+MAIN_MENU_X) && y<=(MAIN_MENU_Y+MAIN_MENU_HEIGHT)){
+    return 'start-menu';
+  }else if(x>=PLAY_BTN_GAME_X && y>=PLAY_BTN_GAME_Y && x<=(PLAY_BTN_GAME_WIDTH+PLAY_BTN_GAME_X) && y<=(PLAY_BTN_GAME_Y+PLAY_BTN_GAME_HEIGHT)) {
+    return 'play';
+  }
+}
+
 
 //sets 5 to 05, 6 to 06 and so on-------------------------------------------------------------------------------------
 function calc(value) {

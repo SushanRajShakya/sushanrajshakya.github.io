@@ -34,7 +34,7 @@ class Ball {
       } else {
         this.dummyX += this.dx;
         this.dummyY -= this.dy;
-        this.setVisibility();
+        this.setVisibility(game);
       }
     }
   }
@@ -45,11 +45,12 @@ class Ball {
   }
 
   //check if the ball is visible in the game---------------------------------------------------------------------------
-  setVisibility(){
+  setVisibility(game){
     if(this.dummyY < BALL_Y_DEAD){
       this.visible = true;
       this.y = this.dummyY;
       this.x = this.dummyX;
+      game.ballsCounter--;
     }
   }
 
@@ -59,7 +60,7 @@ class Ball {
       this.flagForSplit = true;
       this.flagForPowHor = true;
       this.flagForPowVer = true;
-    }else if (this.y < (TOP_HEIGHT+BALL_RADIUS)) {
+    }else if (this.y < (TOP_HEIGHT+(BALL_RADIUS*2))) {
       this.dy *= -1;
       this.flagForSplit = true;
       this.flagForPowHor = true;
@@ -78,6 +79,7 @@ class Ball {
         this.dy = 0;
         if (game.firstDeadBallX == null) {
           game.firstDeadBallX = this.x;
+          game.ballsLeftPosX = this.x;
           game.bbtanGameBot.setBotNewX(game.firstDeadBallX);
           this.y = BALL_Y_DEAD;
           this.dx = 0;
@@ -88,8 +90,8 @@ class Ball {
         }
       } else if (this.x < (0 + BALL_RADIUS)) {
         this.x = BALL_RADIUS;
-      } else if (this.y < (TOP_HEIGHT + BALL_RADIUS)) {
-        this.y = TOP_HEIGHT + BALL_RADIUS;
+      } else if (this.y < (TOP_HEIGHT + (BALL_RADIUS*2))) {
+        this.y = TOP_HEIGHT + (BALL_RADIUS*2);
       }
   }
 

@@ -2,7 +2,7 @@ class Game {
   constructor() {
     this.canvas = document.getElementById('mainCanvas');
     this.canvas.width = GAME_WIDTH;
-    this.canvas.height = GAME_HEIGHT + TOP_HEIGHT;
+    this.canvas.height = GAME_HEIGHT;
     this.ctx = this.canvas.getContext('2d');
     this.bgTop = new BbtanBgTop(this.ctx);
     this.bgBot = new BbtanBgBot(this.ctx);
@@ -15,12 +15,14 @@ class Game {
     this.timerCounter = 0;
     this.setTimer();
     this.timerColor = TIMER_COLOR[getRandomNumber(TIMER_COLOR.length - 1 , 0)];
-    this.gameStatus = 'inGame';
+    this.startMenuTextX = 10;
+    this.gameStatus = 'startMenu';
     this.coin = 0;
     this.addBalls = 0; //number of balls to add on next level
     this.totalBalls = 1;
     this.shootStatus = false;
-    this.ballsLeft = this.totalBalls; //number of balls left to move
+    this.ballsLeft = this.totalBalls; //number of balls moving i.e. not dead
+    this.ballsCounter = 0;
     this.firstDeadBallX = null;
     this.flagPowerUps = [];
     this.plus1Score = []; //for storing +1 symbol objects
@@ -29,7 +31,11 @@ class Game {
     this.ballsArray = [];
     this.ballsArray.push(new Ball(this.ctx));
     this.bbtanGameBot = new BbtanGameBot(this.ctx,this.ballsArray[0].x);
+    this.ballsLeftPosX = this.ballsArray[0].x;
     this.obstacles = [];
+    //start menu objects --------------------------------------------------------------------------------------------
+    this.startMenuBall = new StartMenuBall(this.ctx);
+    this.startMenuBot = new BbtanStartBot(this.ctx);
     this.tileMap = [
       [0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0],
@@ -155,6 +161,7 @@ class Game {
       this.levelMap[i] = tempLevelMap[i-1];
     }
     tempValue = this.generateNewTile();
+    this.ballsCounter = this.totalBalls;
     this.tileMap[1] = tempValue[0];
     this.levelMap[1] = tempValue[1];
   }
@@ -288,11 +295,167 @@ class Game {
       this.ctx.closePath();
     }
   }
+
+  //display number of balls left--------------------------------------------------------------------------------------
+  drawBallsLeft() {
+    if(this.gameStatus == 'inGame' && this.ballsCounter > 1) {
+      this.ctx.beginPath();
+      this.ctx.font = 'normal 15px SquareFont';
+      this.ctx.fillStyle = 'white';
+      this.ctx.fillText('x'+this.ballsCounter,this.ballsLeftPosX,BALL_Y_DEAD - (BALL_RADIUS*2));
+      this.ctx.closePath();
+    }
+  }
+
+  drawPauseMenu() {
+    if(this.gameStatus == 'paused') {
+      this.ctx.beginPath();
+      this.ctx.fillStyle = '#5d5756';
+      this.ctx.strokeStyle = 'white';
+      this.ctx.globalAlpha = .8;
+      this.ctx.fillRect(PAUSE_MENU_X,PAUSE_MENU_Y,PAUSE_MENU_WIDTH,PAUSE_MENU_HEIGHT);
+      this.ctx.strokeRect(PAUSE_MENU_X,PAUSE_MENU_Y,PAUSE_MENU_WIDTH,PAUSE_MENU_HEIGHT);
+      this.drawResume();
+      this.drawRestart();
+      this.drawMainMenu();
+      this.ctx.globalAlpha = 1;
+      this.ctx.closePath();
+    }
+  }
+
+  drawResume() {
+    this.ctx.beginPath();
+    this.ctx.fillStyle = '#f6d917';
+    this.ctx.strokeStyle = 'white';
+    this.ctx.globalAlpha = .8;
+    this.ctx.fillRect(RESUME_X,RESUME_Y,RESUME_WIDTH,RESUME_HEIGHT);
+    this.ctx.strokeRect(RESUME_X,RESUME_Y,RESUME_WIDTH,RESUME_HEIGHT);
+    this.ctx.fillStyle = 'white';
+    this.ctx.font = 'normal 25px SquareFont'
+    this.ctx.fillText('RESUME',RESUME_TEXT_X,RESUME_TEXT_Y);
+    this.ctx.closePath();
+  }
+
+  drawRestart() {
+    this.ctx.beginPath();
+    this.ctx.fillStyle = '#c0289a';
+    this.ctx.strokeStyle = 'white';
+    this.ctx.globalAlpha = .8;
+    this.ctx.fillRect(RESTART_X,RESTART_Y,RESTART_WIDTH,RESTART_HEIGHT);
+    this.ctx.strokeRect(RESTART_X,RESTART_Y,RESTART_WIDTH,RESTART_HEIGHT);
+    this.ctx.fillStyle = 'white';
+    this.ctx.font = 'normal 25px SquareFont'
+    this.ctx.fillText('RESTART',RESTART_TEXT_X,RESTART_TEXT_Y);
+    this.ctx.closePath();
+  }
+
+  drawMainMenu() {
+    this.ctx.beginPath();
+    this.ctx.fillStyle = '#00c2ce';
+    this.ctx.strokeStyle = 'white';
+    this.ctx.globalAlpha = .8;
+    this.ctx.fillRect(MAIN_MENU_X,MAIN_MENU_Y,MAIN_MENU_WIDTH,MAIN_MENU_HEIGHT);
+    this.ctx.strokeRect(MAIN_MENU_X,MAIN_MENU_Y,MAIN_MENU_WIDTH,MAIN_MENU_HEIGHT);
+    this.ctx.fillStyle = 'white';
+    this.ctx.font = 'normal 25px SquareFont'
+    this.ctx.fillText('MAIN MENU',MAIN_MENU_TEXT_X,MAIN_MENU_TEXT_Y);
+    this.ctx.closePath();
+  }
+
+  //startMenu for game -----------------------------------------------------------------------------------------------
+  drawStartMenu() {
+    if(this.gameStatus == 'startMenu') {
+      this.ctx.beginPath();
+      this.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+      this.ctx.fillStyle = 'black';
+      this.ctx.strokeStyle = 'white';
+      this.ctx.fillRect(0, 0, game.canvas.width, game.canvas.height);
+      this.bgTop.drawBbtanBgTop(game.gameStatus);
+      let logo = new Logo(this.ctx);
+      logo.drawLogo(this);
+      this.startMenuBall.drawBall();
+      this.startMenuBall.updateBall();
+      this.startMenuBot.drawBbtanBot(this);
+      let playBtn = new StartMenuPlayBtn(this.ctx);
+      playBtn.drawBtn(this);
+      this.bgBot.drawBbtanBgBot(game.gameStatus, game);
+      this.botScoreBoard.drawBotScoreBoards(game.level);
+      this.drawStartMenuText();
+      this.ctx.closePath();
+    }
+  }
+
+  //What happens after 30M text at bottom in start menu --------------------------------------------------------------
+  drawStartMenuText(){
+    this.updateStartMenuText();
+    this.ctx.beginPath();
+    this.ctx.font = 'normal 45px SquareFont';
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillText(START_TEXT,this.startMenuTextX,TIMERY);
+    this.ctx.closePath();
+  }
+
+  updateStartMenuText() {
+    this.startMenuTextX -= START_MENU_TEXT_VELOCITY;
+    if(this.startMenuTextX < -START_TEXT_LENGTH){
+      this.startMenuTextX = GAME_WIDTH - 10;
+    }
+  }
+
+
+  //reset game
+  reset(){
+    this.gameTime = TOTAL_TIME;
+    this.level = 1;
+    this.gameTimeSec = '00';
+    this.gameTimeMin = '30';
+    this.timerCounter = 0;
+    this.setTimer();
+    this.timerColor = TIMER_COLOR[getRandomNumber(TIMER_COLOR.length - 1 , 0)];
+    this.gameStatus = 'inGame';
+    this.coin = 0;
+    this.addBalls = 0; //number of balls to add on next level
+    this.totalBalls = 1;
+    this.shootStatus = false;
+    this.ballsLeft = this.totalBalls; //number of balls moving i.e. not dead
+    this.ballsCounter = 0;
+    this.firstDeadBallX = null;
+    this.flagPowerUps = [];
+    this.plus1Score = []; //for storing +1 symbol objects
+    this.ballsArray = [];
+    this.ballsArray.push(new Ball(this.ctx));
+    this.bbtanGameBot = new BbtanGameBot(this.ctx,this.ballsArray[0].x);
+    this.ballsLeftPosX = this.ballsArray[0].x;
+    this.obstacles = [];
+    this.tileMap = [
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0]
+    ];
+    this.levelMap = [
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0]
+    ];
+  }
 }
 
 
 //main game program-------------------------------------------------------------------------------------------------
 let game = new Game();
+let raf;
 game.spriteSheet.onload = () => {
   game.updateTileMap();
   draw();
@@ -300,104 +463,144 @@ game.spriteSheet.onload = () => {
 
 
 //main draw for game---------------------------------------------------------------------------------------------------
-function draw(){
-  game.obstacles = [];
-  let obstacle;
-  let powerUp;
-  let score;
-  game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
-  for(let i=0;i<game.tileMap.length;i++){
-    let row = game.tileMap[i];
-    for(let j=0;j<TILE_WIDTH;j++){
-      let index =  row[j];
-      switch (index){
-        case SQUARE:
-          obstacle = new ObsSquare(game.ctx,i,j);
-          obstacle.drawSquare(game.levelMap[i][j]);
-          game.obstacles.push([obstacle,SQUARE]);
-          break;
-        // case TRIANGLE_BOT_LEFT:
-        //   obstacle = new ObsTriangleBotLeft(game.ctx,i,j);
-        //   obstacle.drawTriangleBotLeft(game.levelMap[i][j]);
-        //   break;
-        // case TRIANGLE_BOT_RIGHT:
-        //   obstacle = new ObsTriangleBotRight(game.ctx,i,j);
-        //   obstacle.drawTriangleBotRight(game.levelMap[i][j]);
-        //   break;
-        // case TRIANGLE_TOP_LEFT:
-        //   obstacle = new ObsTriangleTopRight(game.ctx,i,j);
-        //   obstacle.drawTriangleTopRight(game.levelMap[i][j]);
-        //   break;
-        // case TRIANGLE_TOP_RIGHT:
-        //   obstacle = new ObsTriangleTopLeft(game.ctx,i,j);
-        //   obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
-        //   break;
-        case COIN:
-          powerUp = new PowerUps(game.ctx,i,j,game.spriteSheet,0); //type 0 for coin
-          powerUp.drawCoin();
-          game.obstacles.push([powerUp,COIN]);
-          break;
-        case PLUS_BALL:
-          powerUp = new PowerUps(game.ctx,i,j,game.spriteSheet,1); //type 1 for plus
-          powerUp.drawPlus();
-          game.obstacles.push([powerUp,PLUS_BALL]);
-          break;
-        case POWER_HORZ:
-          powerUp = new PowerUps(game.ctx,i,j,game.spriteSheet,2); //type 2 for power horizontal
-          powerUp.drawPowerHorizontal();
-          game.obstacles.push([powerUp,POWER_HORZ]);
-          game.flagPowerUps.push([i,j,false]);
-          break;
-        case POWER_SPLIT:
-          powerUp = new PowerUps(game.ctx,i,j,game.spriteSheet,3); //type 4 for power split
-          powerUp.drawPowerSplit();
-          game.obstacles.push([powerUp,POWER_SPLIT]);
-          game.flagPowerUps.push([i,j,false]);
-          break;
-        case POWER_VERT:
-          powerUp = new PowerUps(game.ctx,i,j,game.spriteSheet,4); //type 3 for power vertical
-          powerUp.drawPowerVertical();
-          game.obstacles.push([powerUp,POWER_VERT]);
-          game.flagPowerUps.push([i,j,false]);
-          break;
-        case PLUS_1:
-          score = new Plus1(game.ctx,i,j); //displaying +1 after eating coins or addBallPowerUp
-          score.drawPlus1();
-          break;
-        default:
-        //do nothing
+function draw() {
+  if(game.gameStatus == 'inGame'){
+    game.obstacles = [];
+    let obstacle;
+    let powerUp;
+    let score;
+    game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+    for (let i = 0; i < game.tileMap.length; i++) {
+      let row = game.tileMap[i];
+      for (let j = 0; j < TILE_WIDTH; j++) {
+        let index = row[j];
+        switch (index) {
+          case SQUARE:
+            obstacle = new ObsSquare(game.ctx, i, j);
+            obstacle.drawSquare(game.levelMap[i][j]);
+            game.obstacles.push([obstacle, SQUARE]);
+            break;
+          // case TRIANGLE_BOT_LEFT:
+          //   obstacle = new ObsTriangleBotLeft(game.ctx,i,j);
+          //   obstacle.drawTriangleBotLeft(game.levelMap[i][j]);
+          //   break;
+          // case TRIANGLE_BOT_RIGHT:
+          //   obstacle = new ObsTriangleBotRight(game.ctx,i,j);
+          //   obstacle.drawTriangleBotRight(game.levelMap[i][j]);
+          //   break;
+          // case TRIANGLE_TOP_LEFT:
+          //   obstacle = new ObsTriangleTopRight(game.ctx,i,j);
+          //   obstacle.drawTriangleTopRight(game.levelMap[i][j]);
+          //   break;
+          // case TRIANGLE_TOP_RIGHT:
+          //   obstacle = new ObsTriangleTopLeft(game.ctx,i,j);
+          //   obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
+          //   break;
+          case COIN:
+            powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 0); //type 0 for coin
+            powerUp.drawCoin();
+            game.obstacles.push([powerUp, COIN]);
+            break;
+          case PLUS_BALL:
+            powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 1); //type 1 for plus
+            powerUp.drawPlus();
+            game.obstacles.push([powerUp, PLUS_BALL]);
+            break;
+          case POWER_HORZ:
+            powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 2); //type 2 for power horizontal
+            powerUp.drawPowerHorizontal();
+            game.obstacles.push([powerUp, POWER_HORZ]);
+            game.flagPowerUps.push([i, j, false]);
+            break;
+          case POWER_SPLIT:
+            powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 3); //type 4 for power split
+            powerUp.drawPowerSplit();
+            game.obstacles.push([powerUp, POWER_SPLIT]);
+            game.flagPowerUps.push([i, j, false]);
+            break;
+          case POWER_VERT:
+            powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 4); //type 3 for power vertical
+            powerUp.drawPowerVertical();
+            game.obstacles.push([powerUp, POWER_VERT]);
+            game.flagPowerUps.push([i, j, false]);
+            break;
+          case PLUS_1:
+            score = new Plus1(game.ctx, i, j); //displaying +1 after eating coins or addBallPowerUp
+            score.drawPlus1();
+            break;
+          default:
+          //do nothing
+        }
       }
     }
+    game.bgTop.drawBbtanBgTop(game.gameStatus);
+    game.bgBot.drawBbtanBgBot(game.gameStatus, game);
+    game.botScoreBoard.drawBotScoreBoards(game.level);
+    game.drawBallsLeft();
+    game.updatePlusOneSymbol(); //for maintaining animation of +1 symbol while eating powerUps
+    for (let i = 0; i < game.ballsArray.length; i++) {
+      game.ballsArray[i].updateBall(game, i); //update ball position, moves the ball in the canvas
+      game.checkCollision(game.ballsArray[i]);
+      game.ballsArray[i].drawBall();
+    }
+    //check time and change it accordingly-----------------------------------------------------------------------------
+    game.timer();
+    game.drawTime();
+    game.bbtanGameBot.drawBbtanBot(game.gameStatus, game);
+  }else if(game.gameStatus == 'startMenu'){
+    game.drawStartMenu();
   }
-  game.bgTop.drawBbtanBgTop(game.gameStatus);
-  game.bgBot.drawBbtanBgBot(game.gameStatus ,game);
-  game.botScoreBoard.drawBotScoreBoards(game.level);
 
-  game.updatePlusOneSymbol(); //for maintaining animation of +1 symbol while eating powerUps
-  for(let i=0;i<game.ballsArray.length;i++) {
-    game.ballsArray[i].updateBall(game, i); //update ball position, moves the ball in the canvas
-    game.checkCollision(game.ballsArray[i]);
-    game.ballsArray[i].drawBall();
-  }
-  //check time and change it accordingly-----------------------------------------------------------------------------
-  game.timer();
-  game.drawTime();
-  game.bbtanGameBot.drawBbtanBot(game.gameStatus,game);
+  raf = window.requestAnimationFrame(draw);
+}
 
-  //for shooting the ball click event listener
-  game.canvas.addEventListener('click',(evt)=> {
-    if (getMouseCoOrdinates(game.canvas,evt)) {
-      if (game.checkDeadBall()) {
+//for shooting the ball click event listener
+game.canvas.addEventListener('click',(evt)=> {
+  shootBalls(game, evt);
+  checkClickOperation(game, evt);
+});
+
+
+//shooting the ball after clicking -----------------------------------------------------------------------------------
+function shootBalls(game,evt) {
+  if(game.gameStatus != 'paused' && game.gameStatus!='startMenu') {
+    if (getShootCoOrdinates(game.canvas, evt)) {
+      if (game.checkDeadBall() && game.gameStatus == 'inGame') {
         game.shootStatus = true;
         for (let j = 0; j < game.ballsArray.length; j++) {
-          game.ballsArray[j] = getMousePos(game.canvas, evt, game.ballsArray[j], j, game);
+          game.ballsArray[j] = setShootingAngle(game.canvas, evt, game.ballsArray[j], j, game);
           game.ballsArray[j].setOffSetX(j);
         }
       }
     }
-  });
-  window.requestAnimationFrame(draw);
+  }
 }
+
+
+//check if the player has paused the game-----------------------------------------------------------------------------
+function checkClickOperation(game, evt) {
+  if (game.gameStatus == 'paused') {
+    if (checkCoOrdinates(game.canvas,evt) == 'resumed') {
+      game.gameStatus = 'inGame';
+    }else if(checkCoOrdinates(game.canvas, evt) == 'restart') {
+      game.reset();
+      game.updateTileMap();
+    }else if(checkCoOrdinates(game.canvas, evt) == 'start-menu') {
+      game.gameStatus = 'startMenu';
+    }
+  }else if(game.gameStatus == 'inGame'){
+    if (checkCoOrdinates(game.canvas,evt) == 'paused') {
+      game.gameStatus = 'paused';
+      game.drawPauseMenu();
+    }
+  }else if(game.gameStatus == 'startMenu') {
+    if(checkCoOrdinates(game.canvas,evt) == 'play'){
+      game.reset();
+      game.updateTileMap();
+    }
+  }
+}
+
 
 
 
