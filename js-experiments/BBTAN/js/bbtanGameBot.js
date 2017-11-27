@@ -13,7 +13,11 @@ class BbtanGameBot {
     if (gameStatus == 'inGame' || gameStatus == 'gameOver') {
       this.updateBot();
       this.ctx.beginPath();
-      this.ctx.drawImage(game.spriteSheet, this.sx, this.sy, BBTAN_GAME_BOT_WIDTH, BBTAN_GAME_BOT_HEIGHT, this.x, this.y, BBTAN_BOT_GAME_WIDTH, BBTAN_BOT_GAME_HEIGHT);
+      if (game.ballsCounter >= 0 && game.shootStatus === true){
+        this.ctx.drawImage(game.spriteSheet, BBTAN_GAME_BOT_ROT_X, BBTAN_GAME_BOT_ROT_Y, BBTAN_GAME_BOT_ROT_WIDTH, BBTAN_GAME_BOT_ROT_HEIGHT, this.x, this.y, BBTAN_BOT_ROT_GAME_WIDTH, BBTAN_BOT_ROT_GAME_HEIGHT);
+      }else {
+        this.ctx.drawImage(game.spriteSheet, this.sx, this.sy, BBTAN_GAME_BOT_WIDTH, BBTAN_GAME_BOT_HEIGHT, this.x, this.y, BBTAN_BOT_GAME_WIDTH, BBTAN_BOT_GAME_HEIGHT);
+      }
       this.ctx.closePath();
     }
   }

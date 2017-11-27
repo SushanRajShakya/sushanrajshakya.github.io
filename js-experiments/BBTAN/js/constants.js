@@ -32,6 +32,13 @@ const BBTAN_GAME_BOT_WIDTH = 137; //for spritesheet width
 const BBTAN_GAME_BOT_HEIGHT = 251; //for spritesheet height
 const BBTAN_BOT_GAME_WIDTH = 73; //for canvas setting the width
 const BBTAN_BOT_GAME_HEIGHT = BOT_BG_HEIGHT * 2; // for canvas setting the height
+const BBTAN_GAME_BOT_ROT_X = BBTAN_GAME_BOT_X + BBTAN_GAME_BOT_WIDTH;
+const BBTAN_GAME_BOT_ROT_Y = BBTAN_GAME_BOT_Y + POWER_UPS_SIZE;
+const BBTAN_GAME_BOT_ROT_WIDTH = 151; //for spritesheet width
+const BBTAN_GAME_BOT_ROT_HEIGHT = 256; //for spritesheet height
+const BBTAN_BOT_ROT_GAME_WIDTH = 73; //for canvas setting the width
+const BBTAN_BOT_ROT_GAME_HEIGHT = BOT_BG_HEIGHT * 2; // for canvas setting the height
+
 
 //Ball shooting angle limit and BBTAN BOT rotate---------------------------------------------------------------------
 const LOWEST_ANGLE = 0.26;
@@ -115,7 +122,7 @@ const LOGO_HEIGHT = 138;
 const PLAY_BTN_X = 156;
 const PLAY_BTN_Y = 139;
 const PLAY_BTN_WIDTH = 156;
-const PLAY_BTN_HEIGHT = 78;
+const PLAY_BTN_HEIGHT = 77;
 const PLAY_BTN_GAME_X = GAME_WIDTH/3
 const PLAY_BTN_GAME_Y = LOGO_GAME_Y + LOGO_GAME_HEIGHT +70;
 const PLAY_BTN_GAME_WIDTH = GAME_WIDTH - (2*PLAY_BTN_GAME_X);
