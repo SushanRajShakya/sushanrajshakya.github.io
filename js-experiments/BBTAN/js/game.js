@@ -676,6 +676,7 @@ function shootBalls(game,evt) {
     if (getShootCoOrdinates(game.canvas, evt)) {
       if (game.checkDeadBall() && game.gameStatus == 'inGame') {
         game.shootStatus = true;
+        game.dottedLine = [];
         for (let j = 0; j < game.ballsArray.length; j++) {
           game.ballsArray[j] = setShootingAngle(game.canvas, evt, game.ballsArray[j], j, game);
           game.ballsArray[j].setOffSetX(j);
