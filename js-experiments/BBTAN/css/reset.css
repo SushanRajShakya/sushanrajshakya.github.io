@@ -1,5 +1,11 @@
+@font-face {
+    font-family: SquareFont;
+    src: url(../fonts/Square.ttf);
+}
+
 *{
     padding: 0px;
     margin: 0px;
     font-family: "SquareFont","Arial","SansSerif";
 }
+
