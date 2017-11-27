@@ -118,6 +118,7 @@ class Ball {
     if(game.ballsLeft==0) {
       game.firstDeadBallX = null;
       game.level++;
+      game.setColorChangeIndex();
       game.removePowerUps();
       game.updateTileMap();
       game.flagPowerUps = [];

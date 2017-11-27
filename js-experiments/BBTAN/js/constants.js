@@ -170,3 +170,9 @@ const PLAY_AGAIN_WIDTH = GAME_WIDTH/2.2;
 const PLAY_AGAIN_HEIGHT = GAME_HEIGHT/8.8;
 const PLAY_AGAIN_TEXT_X = PLAY_AGAIN_X+15;
 const PLAY_AGAIN_TEXT_Y = PLAY_AGAIN_Y+45;
+
+//RGB color code max and min------------------------------------------------------------------------------------------
+const RED = 255;
+const GREEN_MAX = 255;
+const GREEN_MIN = 0;
+const BLUE = 102;

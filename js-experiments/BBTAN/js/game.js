@@ -8,13 +8,13 @@ class Game {
     this.bgBot = new BbtanBgBot(this.ctx);
     this.botScoreBoard = new BotScoreBoard(this.ctx);
     this.level = 1;
+    this.colorChange = 0;
     //Setting the time for game----------------------------------------------------------------------------------------
     this.gameTime = TOTAL_TIME;
     this.gameTimeSec = '00';
     this.gameTimeMin = '30';
     this.timerCounter = 0;
     this.dottedLine = [];
-    this.setTimer();
     this.timerColor = TIMER_COLOR[getRandomNumber(TIMER_COLOR.length - 1 , 0)];
     this.startMenuTextX = 10;
     this.gameStatus = 'startMenu';
@@ -61,12 +61,6 @@ class Game {
     ];
   }
 
-  setTimer() {
-    let getTimeValue = new Date();
-    let min = getTimeValue.getMinutes();
-    let sec = getTimeValue.getSeconds();
-  }
-
   //tile-row generator logic------------------------------------------------------------------------------------------
   generateNewTile() {
     let addBallPosition = getRandomNumber(TILE_COLUMNS-1,0); //position for the +1 ball powerUP
@@ -74,7 +68,7 @@ class Game {
     let newLevel = [];
     let randomValue;
     for (let i=0;i<TILE_COLUMNS;i++) {
-      if( addBallPosition == i){
+      if( addBallPosition === i){
         newTile.push(PLUS_BALL);
         newLevel.push(this.level);
       } else {
@@ -82,9 +76,9 @@ class Game {
         if (randomValue>=0 && randomValue<=5) {
           newTile.push(SQUARE);
           newLevel.push(this.level);
-        } else if (randomValue == 6) {
+        } else if (randomValue === 6) {
           this.randomTriangle(newTile,newLevel);
-        } else if (randomValue == 7) {
+        } else if (randomValue === 7) {
           this.randomPowerUp(newTile,newLevel);
         } else {
           newTile.push(BLANK);
@@ -173,7 +167,7 @@ class Game {
   checkTileMap(){
     let lastRow = this.tileMap.length - 1;
     for(let i=0; i<TILE_COLUMNS; i++){
-      if(this.tileMap[lastRow][i] == SQUARE){
+      if(this.tileMap[lastRow][i] === SQUARE){
         this.gameStatus = 'gameOver';
         break;
       }
@@ -182,7 +176,7 @@ class Game {
 
   //checking collision for all the obstacles according to their types------------------------------------------------
   checkCollision(ball) {
-    if(this.gameStatus == 'inGame') {
+    if(this.gameStatus === 'inGame') {
       for (let i = 0; i < this.obstacles.length; i++) {
         if (this.obstacles[i][0].checkCollision(ball)) {
           this.updateFlagArray(this.obstacles[i][0].row, this.obstacles[i][0].column);
@@ -200,7 +194,7 @@ class Game {
     {
       case SQUARE:
         this.levelMap[row][column]--;
-        if (this.levelMap[row][column] == 0) {
+        if (this.levelMap[row][column] === 0) {
           this.tileMap[row][column] = 0;
         }
         break;
@@ -226,7 +220,7 @@ class Game {
   //update flag array if collision----------------------------------------------------------------------------------
   updateFlagArray(row,column) {
     for(let i=0;i<this.flagPowerUps.length;i++){
-      if(this.flagPowerUps[i][0] == row && this.flagPowerUps[i][1] == column){
+      if(this.flagPowerUps[i][0] === row && this.flagPowerUps[i][1] === column){
         this.flagPowerUps[i][2] = true;
         break;
       }
@@ -236,7 +230,7 @@ class Game {
   //removing powerups if the ball is dead---------------------------------------------------------------------------
   removePowerUps(){
     this.flagPowerUps.forEach((value)=>{
-      if(value[2] == true){
+      if(value[2] === true){
         this.tileMap[value[0]][value[1]] = 0 ;
       }
     });
@@ -290,7 +284,7 @@ class Game {
 
   //timer counter for 60 FPS into 1 sec------------------------------------------------------------------------------
   timer(){
-    if(this.gameStatus == 'inGame') {
+    if(this.gameStatus === 'inGame') {
       this.timerCounter++;
       if (this.timerCounter >= 60) {
         this.timerCounter = 0;
@@ -302,7 +296,7 @@ class Game {
 
   //display time at bottom--------------------------------------------------------------------------------------------
   drawTime() {
-    if(this.gameStatus == 'inGame' || this.gameStatus == 'gameOver') {
+    if(this.gameStatus === 'inGame' || this.gameStatus === 'gameOver') {
       let color = getRandomNumber(TIMER_COLOR.length-1,0);
       this.ctx.beginPath();
       this.ctx.font = 'normal 45px SquareFont';
@@ -314,7 +308,7 @@ class Game {
 
   //display number of balls left--------------------------------------------------------------------------------------
   drawBallsLeft() {
-    if(this.gameStatus == 'inGame' && this.ballsCounter > 1) {
+    if(this.gameStatus === 'inGame' && this.ballsCounter > 1) {
       this.ctx.beginPath();
       this.ctx.font = 'normal 15px SquareFont';
       this.ctx.fillStyle = 'white';
@@ -324,7 +318,7 @@ class Game {
   }
 
   drawPauseMenu() {
-    if(this.gameStatus == 'paused') {
+    if(this.gameStatus === 'paused') {
       this.ctx.beginPath();
       this.ctx.fillStyle = '#5d5756';
       this.ctx.strokeStyle = 'white';
@@ -380,7 +374,7 @@ class Game {
 
   //startMenu for game -----------------------------------------------------------------------------------------------
   drawStartMenu() {
-    if(this.gameStatus == 'startMenu') {
+    if(this.gameStatus === 'startMenu') {
       this.ctx.beginPath();
       this.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
       this.ctx.fillStyle = 'black';
@@ -479,7 +473,7 @@ class Game {
 
   //draw Dotted line--------------------------------------------------------------------------------------------------
   drawDottedLine() {
-    if(this.gameStatus == 'inGame' && this.shootStatus == false) {
+    if(this.gameStatus === 'inGame' && this.shootStatus === false) {
       for (let i = 0; i < this.dottedLine.length; i++) {
         this.ctx.beginPath();
         this.ctx.strokeStyle = 'white';
@@ -494,14 +488,23 @@ class Game {
     }
   }
 
+  //setting colors for current level----------------------------------------------------------------------------------
+  setColorChangeIndex() {
+    if(this.level === 1){
+      this.colorChange = 0;
+    }else if(this.level > 1) {
+      this.colorChange = Math.floor(GREEN_MAX / (this.level-1));
+    }
+  }
+
   //reset game
   reset(){
     this.gameTime = TOTAL_TIME;
     this.level = 1;
+    this.colorChange = 0;
     this.gameTimeSec = '00';
     this.gameTimeMin = '30';
     this.timerCounter = 0;
-    this.setTimer();
     this.timerColor = TIMER_COLOR[getRandomNumber(TIMER_COLOR.length - 1 , 0)];
     this.gameStatus = 'inGame';
     this.coin = 0;
@@ -554,20 +557,21 @@ game.spriteSheet.onload = () => {
 
 
 //main draw for game---------------------------------------------------------------------------------------------------
-function draw() {
-  if(game.gameStatus == 'inGame' || game.gameStatus == 'gameOver'){
+function  draw() {
+  if(game.gameStatus === 'inGame' || game.gameStatus === 'gameOver'){
     game.obstacles = [];
     let obstacle;
     let powerUp;
     let score;
     game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+    //  game.ctx.strokeRect(0,TOP_HEIGHT, GAME_WIDTH,GAME_HEIGHT-TOP_HEIGHT-BOT_HEIGHT);
     for (let i = 0; i < game.tileMap.length; i++) {
       let row = game.tileMap[i];
       for (let j = 0; j < TILE_WIDTH; j++) {
         let index = row[j];
         switch (index) {
           case SQUARE:
-            obstacle = new ObsSquare(game.ctx, i, j);
+            obstacle = new ObsSquare(game.ctx, i, j,game);
             obstacle.drawSquare(game.levelMap[i][j]);
             game.obstacles.push([obstacle, SQUARE]);
             break;
@@ -640,10 +644,10 @@ function draw() {
     game.bbtanGameBot.drawBbtanBot(game.gameStatus, game);
     game.drawDottedLine();
     //display only for gameover----------------------------------------------------------------------------------------
-    if (game.gameStatus == 'gameOver') {
+    if (game.gameStatus === 'gameOver') {
       game.drawGameOver();
     }
-  }else if(game.gameStatus == 'startMenu'){
+  }else if(game.gameStatus === 'startMenu'){
     game.drawStartMenu();
   }
 
@@ -658,14 +662,14 @@ game.canvas.addEventListener('click',(evt)=> {
 
 //for direction on mouse over----------------------------------------------------------------------------------------
 game.canvas.addEventListener('mousemove',(evt)=> {
-  if(game.gameStatus == 'inGame' && game.shootStatus == false) {
+  if(game.gameStatus === 'inGame' && game.shootStatus === false) {
     drawDottedLine(game,evt);
   }
 });
 
 //for direction on mouse over----------------------------------------------------------------------------------------
 game.canvas.addEventListener('mouseout',(evt)=> {
-  if(game.gameStatus == 'inGame' && game.shootStatus == false) {
+  if(game.gameStatus === 'inGame' && game.shootStatus === false) {
     game.dottedLine = [];
   }
 });
@@ -674,7 +678,7 @@ game.canvas.addEventListener('mouseout',(evt)=> {
 function shootBalls(game,evt) {
   if(game.gameStatus != 'paused' && game.gameStatus!='startMenu') {
     if (getShootCoOrdinates(game.canvas, evt)) {
-      if (game.checkDeadBall() && game.gameStatus == 'inGame') {
+      if (game.checkDeadBall() && game.gameStatus === 'inGame') {
         game.shootStatus = true;
         game.dottedLine = [];
         for (let j = 0; j < game.ballsArray.length; j++) {
@@ -689,30 +693,30 @@ function shootBalls(game,evt) {
 
 //check which game state is and where user clicked--------------------------------------------------------------------
 function checkClickOperation(game, evt) {
-  if (game.gameStatus == 'paused') {
-    if (checkCoOrdinates(game.canvas,evt,game) == 'resumed') {
+  if (game.gameStatus === 'paused') {
+    if (checkCoOrdinates(game.canvas,evt,game) === 'resumed') {
       game.gameStatus = 'inGame';
-    }else if(checkCoOrdinates(game.canvas, evt,game) == 'restart') {
+    }else if(checkCoOrdinates(game.canvas, evt,game) === 'restart') {
       game.reset();
       game.updateTileMap();
-    }else if(checkCoOrdinates(game.canvas, evt,game) == 'start-menu') {
+    }else if(checkCoOrdinates(game.canvas, evt,game) === 'start-menu') {
       game.gameStatus = 'startMenu';
     }
-  }else if(game.gameStatus == 'inGame'){
-    if (checkCoOrdinates(game.canvas,evt,game) == 'paused') {
+  }else if(game.gameStatus === 'inGame'){
+    if (checkCoOrdinates(game.canvas,evt,game) === 'paused') {
       game.gameStatus = 'paused';
       game.drawPauseMenu();
     }
-  }else if(game.gameStatus == 'startMenu') {
-    if(checkCoOrdinates(game.canvas,evt,game) == 'play'){
+  }else if(game.gameStatus === 'startMenu') {
+    if(checkCoOrdinates(game.canvas,evt,game) === 'play'){
       game.reset();
       game.updateTileMap();
     }
-  }else if(game.gameStatus == 'gameOver') {
-    if(checkCoOrdinates(game.canvas,evt,game) == 'play'){
+  }else if(game.gameStatus === 'gameOver') {
+    if(checkCoOrdinates(game.canvas,evt,game) === 'play'){
       game.reset();
       game.updateTileMap();
-    }else if(checkCoOrdinates(game.canvas,evt,game) == 'start-menu') {
+    }else if(checkCoOrdinates(game.canvas,evt,game) === 'start-menu') {
       game.gameStatus = 'startMenu';
     }
   }

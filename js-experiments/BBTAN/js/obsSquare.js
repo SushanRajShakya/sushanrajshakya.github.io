@@ -1,15 +1,15 @@
 class ObsSquare {
-  constructor(ctx,row,column) {
+  constructor(ctx,row,column,game) {
     this.x = (TILE_WIDTH * column) + TILE_PADDING;
     this.y = (TILE_HEIGHT * row) + TILE_PADDING + TOP_HEIGHT;
-    this.level;
+    this.level = game.level;
+    this.game = game;
     this.row = row;
+    this.obsColor = GREEN_MIN;
     this.column = column;
     this.textX = 17;//aligning font at center
     this.textY = 26;//aligning font at center
     this.ctx = ctx;
-    this.ctx.strokeStyle = '#d7e163';
-    this.ctx.fillStyle = '#d7e163';
     this.ctx.font = 'bold 12px Arial';
     this.ctx.lineWidth = LINE_WIDTH;
   }
@@ -21,9 +21,12 @@ class ObsSquare {
     } else if (this.level>9){
       this.textX -= 3
     }
+    this.setColor();
     this.ctx.beginPath();
     this.ctx.font = 'bold 12px Arial';
     this.ctx.lineWidth = LINE_WIDTH;
+    this.ctx.strokeStyle = 'rgb(' + RED + ',' + this.obsColor + ', ' + BLUE + ')';
+    this.ctx.fillStyle = 'rgb(' + RED + ',' + this.obsColor + ', ' + BLUE + ')';
     this.ctx.strokeRect(this.x,this.y,OBSTACLE_WIDTH,OBSTACLE_HEIGHT);
     this.ctx.fillText(this.level,this.textX+this.x,this.textY+this.y);
     this.ctx.closePath();
@@ -35,17 +38,30 @@ class ObsSquare {
     } else if (this.level>9){
       this.textX -= 3
     }
+    this.setColor();
     this.ctx.beginPath();
     this.ctx.font = 'bold 12px Arial';
-    this.ctx.strokeStyle = '#d7e163';
-    this.ctx.fillStyle = '#d7e163';
     this.ctx.lineWidth = LINE_WIDTH;
+    this.ctx.strokeStyle = 'rgb(' + RED + ',' + this.obsColor + ', ' + BLUE + ')';
+    this.ctx.fillStyle = 'rgb(' + RED + ',' + this.obsColor + ', ' + BLUE + ')';
     this.ctx.clearRect(this.x,this.y,OBSTACLE_WIDTH,OBSTACLE_HEIGHT);
     this.ctx.strokeRect(this.x+PADDING_SQUARE,this.y+PADDING_SQUARE,OBSTACLE_WIDTH - PADDING_SQUARE_X2,OBSTACLE_HEIGHT -PADDING_SQUARE_X2);
     this.ctx.fillText(this.level,this.textX+this.x,this.textY+this.y);
     this.ctx.closePath();
   }
 
+  setColor() {
+    this.obsColor = GREEN_MIN;
+    if(this.game.level > this.level){
+      for(let i=this.game.level;i>this.level;i--){
+        this.obsColor += this.game.colorChange;
+        if(this.obsColor > GREEN_MAX){
+          this.obsColor = GREEN_MAX;
+          break;
+        }
+      }
+    }
+  }
 
 //Collision detection for square and ball----------------------------------------------------------------------------
   checkCollision(ball) {
