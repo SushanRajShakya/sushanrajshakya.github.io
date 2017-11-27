@@ -36,7 +36,7 @@ const BBTAN_GAME_BOT_ROT_X = BBTAN_GAME_BOT_X + BBTAN_GAME_BOT_WIDTH;
 const BBTAN_GAME_BOT_ROT_Y = BBTAN_GAME_BOT_Y + POWER_UPS_SIZE;
 const BBTAN_GAME_BOT_ROT_WIDTH = 151; //for spritesheet width
 const BBTAN_GAME_BOT_ROT_HEIGHT = 256; //for spritesheet height
-const BBTAN_BOT_ROT_GAME_WIDTH = 73; //for canvas setting the width
+const BBTAN_BOT_ROT_GAME_WIDTH = 78; //for canvas setting the width
 const BBTAN_BOT_ROT_GAME_HEIGHT = BOT_BG_HEIGHT * 2; // for canvas setting the height
 
 
@@ -138,7 +138,7 @@ const START_BOT_WIDTH = 72;
 const START_BOT_HEIGHT = 208;
 const START_BOT_GAME_X = 57;
 const START_BOT_GAME_Y = TOP_HEIGHT + 30;
-const START_BOT_GAME_WIDTH = 50;
+const START_BOT_GAME_WIDTH = 60;
 const START_BOT_GAME_HEIGHT = 160;
 const START_BOT_VELOCITY = .5;
 
