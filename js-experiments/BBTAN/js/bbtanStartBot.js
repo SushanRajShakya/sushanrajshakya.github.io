@@ -15,7 +15,7 @@ class BbtanStartBot {
 
   updateBot() {
     this.x += this.dx;
-    if (this.x >= (LOGO_GAME_WIDTH + 10)) {
+    if (this.x >= (LOGO_GAME_WIDTH)) {
       this.dx = -this.dx;
     }else if(this.x <= START_BOT_GAME_X) {
       this.dx = -this.dx;

@@ -18,10 +18,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="constants.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="constants.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/constants.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
+            <state relative-caret-position="1223">
               <caret line="140" column="31" lean-forward="false" selection-start-line="140" selection-start-column="31" selection-end-line="140" selection-end-column="31" />
               <folding />
             </state>
@@ -54,8 +54,18 @@
       <file leaf-file-name="game.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/game.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6615">
-              <caret line="315" column="27" lean-forward="false" selection-start-line="315" selection-start-column="27" selection-end-line="315" selection-end-column="27" />
+            <state relative-caret-position="-1518">
+              <caret line="103" column="13" lean-forward="true" selection-start-line="103" selection-start-column="13" selection-end-line="103" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bbtanStartBot.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/bbtanStartBot.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="17" column="34" lean-forward="false" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -83,7 +93,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ball_gap</find>
       <find>consol</find>
       <find>console.l</find>
       <find>ball_vel</find>
@@ -113,6 +122,7 @@
       <find>game.level</find>
       <find>colorChan</find>
       <find>BBTAN BOT</find>
+      <find>generet</find>
     </findStrings>
     <replaceStrings>
       <replace>drawtriangle</replace>
@@ -147,17 +157,17 @@
         <option value="$PROJECT_DIR$/js/logo.js" />
         <option value="$PROJECT_DIR$/js/startMenuPlayBtn.js" />
         <option value="$PROJECT_DIR$/js/startMenuBall.js" />
-        <option value="$PROJECT_DIR$/js/bbtanStartBot.js" />
         <option value="$PROJECT_DIR$/js/bgTOP.js" />
         <option value="$PROJECT_DIR$/js/bgBOT.js" />
         <option value="$PROJECT_DIR$/js/script.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/css/reset.css" />
         <option value="$PROJECT_DIR$/js/ball.js" />
-        <option value="$PROJECT_DIR$/js/game.js" />
         <option value="$PROJECT_DIR$/js/obsSquare.js" />
         <option value="$PROJECT_DIR$/js/bbtanGameBot.js" />
         <option value="$PROJECT_DIR$/js/constants.js" />
+        <option value="$PROJECT_DIR$/js/game.js" />
+        <option value="$PROJECT_DIR$/js/bbtanStartBot.js" />
       </list>
     </option>
   </component>
@@ -376,12 +386,12 @@
       <workItem from="1511662395899" duration="23436000" />
       <workItem from="1511710709385" duration="8843000" />
       <workItem from="1511754882302" duration="15311000" />
-      <workItem from="1511795523171" duration="2090000" />
+      <workItem from="1511795523171" duration="2428000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="242216000" />
+    <option name="totallyTimeSpent" value="242554000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -393,7 +403,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13909224" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -732,22 +742,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/game.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6615">
-          <caret line="315" column="27" lean-forward="false" selection-start-line="315" selection-start-column="27" selection-end-line="315" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/bbtanStartBot.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="17" column="39" lean-forward="false" selection-start-line="17" selection-start-column="39" selection-end-line="17" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/bottomScore.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -808,8 +802,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/constants.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
+        <state relative-caret-position="1223">
           <caret line="140" column="31" lean-forward="false" selection-start-line="140" selection-start-column="31" selection-end-line="140" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/game.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1518">
+          <caret line="103" column="13" lean-forward="true" selection-start-line="103" selection-start-column="13" selection-end-line="103" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/bbtanStartBot.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="17" column="34" lean-forward="false" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
           <folding />
         </state>
       </provider>
