@@ -13,6 +13,7 @@ class Game {
     this.gameTimeSec = '00';
     this.gameTimeMin = '30';
     this.timerCounter = 0;
+    this.dottedLine = [];
     this.setTimer();
     this.timerColor = TIMER_COLOR[getRandomNumber(TIMER_COLOR.length - 1 , 0)];
     this.startMenuTextX = 10;
@@ -476,6 +477,23 @@ class Game {
     this.ctx.closePath();
   }
 
+  //draw Dotted line--------------------------------------------------------------------------------------------------
+  drawDottedLine() {
+    if(this.gameStatus == 'inGame' && this.shootStatus == false) {
+      for (let i = 0; i < this.dottedLine.length; i++) {
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = 'white';
+        this.ctx.fillStyle = 'white';
+        this.ctx.globalAlpha = .5;
+        this.ctx.arc(this.dottedLine[i][0], this.dottedLine[i][1], DOT_RADIUS, 0, Math.PI * 2, true);
+        this.ctx.stroke();
+        this.ctx.fill();
+        this.ctx.globalAlpha = 1;
+        this.ctx.closePath();
+      }
+    }
+  }
+
   //reset game
   reset(){
     this.gameTime = TOTAL_TIME;
@@ -620,6 +638,7 @@ function draw() {
     game.timer();
     game.drawTime();
     game.bbtanGameBot.drawBbtanBot(game.gameStatus, game);
+    game.drawDottedLine();
     //display only for gameover----------------------------------------------------------------------------------------
     if (game.gameStatus == 'gameOver') {
       game.drawGameOver();
@@ -631,12 +650,25 @@ function draw() {
   raf = window.requestAnimationFrame(draw);
 }
 
-//for shooting the ball click event listener
+//for shooting the ball click event listener-------------------------------------------------------------------------
 game.canvas.addEventListener('click',(evt)=> {
   shootBalls(game, evt);
   checkClickOperation(game, evt);
 });
 
+//for direction on mouse over----------------------------------------------------------------------------------------
+game.canvas.addEventListener('mousemove',(evt)=> {
+  if(game.gameStatus == 'inGame' && game.shootStatus == false) {
+    drawDottedLine(game,evt);
+  }
+});
+
+//for direction on mouse over----------------------------------------------------------------------------------------
+game.canvas.addEventListener('mouseout',(evt)=> {
+  if(game.gameStatus == 'inGame' && game.shootStatus == false) {
+    game.dottedLine = [];
+  }
+});
 
 //shooting the ball after clicking -----------------------------------------------------------------------------------
 function shootBalls(game,evt) {

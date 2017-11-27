@@ -55,6 +55,10 @@ const TOTAL_TIME = 1800; //30 mins in seconds
 const PADDING_SQUARE = 4;
 const PADDING_SQUARE_X2 = PADDING_SQUARE * 2;
 
+//ball shoot direction dots gap---------------------------------------------------------------------------------------
+const DOT_GAP = 15;
+const DOT_RADIUS = 2;
+
 //co-ordinates for pause button and ques-mark-------------------------------------------------------------------------
 const PAUSE_X = 10;
 const PAUSE_Y = 10;

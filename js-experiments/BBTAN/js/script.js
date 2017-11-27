@@ -1,3 +1,5 @@
+let x1,x2,y1,y2,angle; // for balls
+
 //Random number generator------------------------------------------------------------------------------------------
 function getRandomNumber(max, min) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -20,8 +22,28 @@ function getShootCoOrdinates(canvas, evt){
   }
 }
 
+function drawDottedLine(game,evt) {
+  let rect = game.canvas.getBoundingClientRect();
+  let x = evt.clientX - rect.left;
+  let y = evt.clientY - rect.top;
+  if(y > TOP_HEIGHT) {
+    let ball = game.ballsArray[0];
+    let mouseAngle = Math.atan(Math.abs(y - ball.y) / Math.abs(x - ball.x));
+    mouseAngle = limitAngle(mouseAngle);
+    game.dottedLine = [];
+    if (x - ball.x > 0) {
+      mouseAngle *= -1;
+    }
+    while (y < BALL_Y_DEAD) {
+      x = dotX(ball.x, ball.y, y, mouseAngle);
+      game.dottedLine.push([x, y]);
+      y += DOT_GAP;
+    }
+  }else{
+    game.dottedLine = [];
+  }
+}
 
-let x1,x2,y1,y2,angle;
 //Ball position in canvas/game -------------------------------------------------------------------------------------
 function setShootingAngle(canvas, evt, ball, j, game) {
   if(j == 0) {
@@ -53,6 +75,12 @@ function setShootingAngle(canvas, evt, ball, j, game) {
 //get x value of (x,y) in a line with known slope --------------------------------------------------------------------
 function getX(y) {
   let x = ( ( (y - y1)/Math.tan(angle) ) + x1);
+  return x;
+}
+
+//get x value of (x,y) for dotted line-------- --------------------------------------------------------------------
+function dotX(ballX1,ballY1,mouseY,mouseAngle) {
+  let x = ( ( (mouseY - ballY1)/Math.tan(mouseAngle) ) + ballX1);
   return x;
 }
 
