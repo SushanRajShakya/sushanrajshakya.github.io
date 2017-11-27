@@ -139,4 +139,18 @@ function setTime(game) {
   game.gameTimeMin = calc(parseInt(game.gameTime/60));
 }
 
+//storing at local storage--------------------------------------------------------------------------------------------
+function storeHighScore(score){
+  window.localStorage.setItem('HIGHSCORE',score);
+}
+
+//retrieving highscore------------------------------------------------------------------------------------------------
+function getHighScore(){
+  return window.localStorage.getItem('HIGHSCORE');
+}
+
+//clearing HighScore--------------------------------------------------------------------------------------------------
+function removeHS(){
+  window.localStorage.removeItem('HIGHSCORE');
+}
 

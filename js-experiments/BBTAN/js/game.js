@@ -2,7 +2,9 @@ class Game {
   constructor() {
     this.canvas = document.getElementById('mainCanvas');
     this.canvas.width = GAME_WIDTH;
+    this.highScore = this.setHighScore();
     this.canvas.height = GAME_HEIGHT;
+    this.gameSound = new GameSound();
     this.ctx = this.canvas.getContext('2d');
     this.bgTop = new BbtanBgTop(this.ctx);
     this.bgBot = new BbtanBgBot(this.ctx);
@@ -30,7 +32,7 @@ class Game {
     this.spriteSheet = new Image();
     this.spriteSheet.src = 'images/sprite-sheet.png';
     this.ballsArray = [];
-    this.ballsArray.push(new Ball(this.ctx));
+    this.ballsArray.push(new Ball(this.ctx,this));
     this.bbtanGameBot = new BbtanGameBot(this.ctx,this.ballsArray[0].x);
     this.ballsLeftPosX = this.ballsArray[0].x;
     this.obstacles = [];
@@ -59,6 +61,14 @@ class Game {
       [0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0]
     ];
+  }
+
+  setHighScore() {
+    if(getHighScore() === null){
+      return 0;
+    }else {
+      return getHighScore();
+    }
   }
 
   //tile-row generator logic------------------------------------------------------------------------------------------
@@ -139,7 +149,7 @@ class Game {
     let tempLevelMap = this.levelMap.slice();
     let lastBall = this.ballsArray.length - 1;
     for(let i=0;i<this.addBalls;i++){
-      let tempBall = new Ball(this.ctx);
+      let tempBall = new Ball(this.ctx,this);
       tempBall.x = this.ballsArray[0].x;
       tempBall.dummyX = this.ballsArray[0].x;
       tempBall.dummyY = BALL_Y_DEAD  + (lastBall + i + 1)* BALL_GAP;
@@ -169,8 +179,18 @@ class Game {
     for(let i=0; i<TILE_COLUMNS; i++){
       if(this.tileMap[lastRow][i] === SQUARE){
         this.gameStatus = 'gameOver';
+        this.gameSound.play('gameOver');
+        this.checkHighScore();
         break;
       }
+    }
+  }
+
+  //check HIGHSCORE--------------------------------------------------------------------------------------------------
+  checkHighScore() {
+    if(this.highScore < this.level){
+      storeHighScore(this.level);
+      this.highScore = this.level;
     }
   }
 
@@ -203,6 +223,7 @@ class Game {
         this.tileMap[row][column] = 11;
         newPlus1Score = new Plus1(this.ctx,row,column);
         newPlus1Score.drawPlus1();
+        this.gameSound.play('coin');
         this.plus1Score.push(newPlus1Score);
         break;
       case PLUS_BALL:
@@ -210,6 +231,7 @@ class Game {
         this.tileMap[row][column] = 11;
         newPlus1Score = new Plus1(this.ctx,row,column);
         newPlus1Score.drawPlus1();
+        this.gameSound.play('addBall');
         this.plus1Score.push(newPlus1Score);
         break;
       default:
@@ -217,7 +239,7 @@ class Game {
     }
   }
 
-  //update flag array if collision----------------------------------------------------------------------------------
+  //update startGameflag array if collision----------------------------------------------------------------------------------
   updateFlagArray(row,column) {
     for(let i=0;i<this.flagPowerUps.length;i++){
       if(this.flagPowerUps[i][0] === row && this.flagPowerUps[i][1] === column){
@@ -242,6 +264,7 @@ class Game {
     this.ctx.beginPath();
     this.ctx.fillStyle = 'yellow';
     this.ctx.fillRect(0,valueY,GAME_WIDTH,TILE_HEIGHT/3);
+    this.gameSound.play('powerUpLaser');
     this.ctx.closePath();
   }
 
@@ -250,7 +273,8 @@ class Game {
     let valueX = (TILE_WIDTH * column) + OBSTACLE_WIDTH/2 - TILE_PADDING;
     this.ctx.beginPath();
     this.ctx.fillStyle = 'yellow';
-    this.ctx.fillRect(valueX,0,TILE_WIDTH/3,GAME_HEIGHT - TOP_HEIGHT - BOT_HEIGHT);
+    this.ctx.fillRect(valueX,TOP_HEIGHT,TILE_WIDTH/3,GAME_HEIGHT - TOP_HEIGHT - BOT_HEIGHT);
+    this.gameSound.play('powerUpLaser');
     this.ctx.closePath();
   }
 
@@ -429,7 +453,7 @@ class Game {
     this.ctx.fillText(this.level,GAMEOVER_SCORE_NUM_X,GAMEOVER_SCORE_NUM_Y);
     this.ctx.fillStyle = 'white';
     this.ctx.font = 'normal 40px SquareFont';
-    this.ctx.fillText(this.level,GAMEOVER_BEST_SCORE_NUM_X,GAMEOVER_BEST_SCORE_NUM_Y);
+    this.ctx.fillText(this.highScore,GAMEOVER_BEST_SCORE_NUM_X,GAMEOVER_BEST_SCORE_NUM_Y);
     this.drawGameOverCoin();
     this.ctx.globalAlpha = 1;
     this.drawGameOverMenu();
@@ -517,7 +541,7 @@ class Game {
     this.flagPowerUps = [];
     this.plus1Score = []; //for storing +1 symbol objects
     this.ballsArray = [];
-    this.ballsArray.push(new Ball(this.ctx));
+    this.ballsArray.push(new Ball(this.ctx,this));
     this.bbtanGameBot = new BbtanGameBot(this.ctx,this.ballsArray[0].x);
     this.ballsLeftPosX = this.ballsArray[0].x;
     this.obstacles = [];
@@ -649,6 +673,7 @@ function  draw() {
     }
   }else if(game.gameStatus === 'startMenu'){
     game.drawStartMenu();
+    game.gameSound.play('startGame');
   }
 
   raf = window.requestAnimationFrame(draw);
@@ -696,28 +721,37 @@ function checkClickOperation(game, evt) {
   if (game.gameStatus === 'paused') {
     if (checkCoOrdinates(game.canvas,evt,game) === 'resumed') {
       game.gameStatus = 'inGame';
+      game.gameSound.play('button');
     }else if(checkCoOrdinates(game.canvas, evt,game) === 'restart') {
       game.reset();
       game.updateTileMap();
+      game.gameSound.play('button');
     }else if(checkCoOrdinates(game.canvas, evt,game) === 'start-menu') {
       game.gameStatus = 'startMenu';
+      game.gameSound.startGameflag = true;
+      game.gameSound.play('button');
     }
   }else if(game.gameStatus === 'inGame'){
     if (checkCoOrdinates(game.canvas,evt,game) === 'paused') {
       game.gameStatus = 'paused';
       game.drawPauseMenu();
+      game.gameSound.play('button');
     }
   }else if(game.gameStatus === 'startMenu') {
     if(checkCoOrdinates(game.canvas,evt,game) === 'play'){
       game.reset();
       game.updateTileMap();
+      game.gameSound.play('button');
     }
   }else if(game.gameStatus === 'gameOver') {
     if(checkCoOrdinates(game.canvas,evt,game) === 'play'){
       game.reset();
       game.updateTileMap();
+      game.gameSound.play('button');
     }else if(checkCoOrdinates(game.canvas,evt,game) === 'start-menu') {
       game.gameStatus = 'startMenu';
+      game.gameSound.startGameflag = true;
+      game.gameSound.play('button');
     }
   }
 }

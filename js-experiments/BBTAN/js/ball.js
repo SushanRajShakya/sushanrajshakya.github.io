@@ -1,9 +1,10 @@
 class Ball {
-  constructor(ctx) {
+  constructor(ctx,game) {
     this.x = GAME_WIDTH/2;
     this.y = BALL_Y_DEAD;
     this.dummyY = BALL_Y_DEAD;
     this.dummyX = GAME_WIDTH/2;
+    this.game = game;
     this.dx = 0;
     this.dy = 0;
     this.ctx = ctx;
@@ -175,6 +176,7 @@ class Ball {
     } else if (this.y + BALL_RADIUS/2 > (obstacle.y + OBSTACLE_HEIGHT)) {
       this.dy = -Math.abs(this.dy);
     }
+    this.game.gameSound.play('collision');
   }
 
   changeDirectionPowerSplit() {
@@ -183,6 +185,7 @@ class Ball {
     let dy = Math.sin(angle) * BALL_VELOCITY;
     this.dx = dx;
     let random = getRandomNumber(4,3);
+    this.game.gameSound.play('powerUpSplit');
     //for negative dx random value;
     if(random == 3){
       this.dx *= -1;
