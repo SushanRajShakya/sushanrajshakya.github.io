@@ -690,7 +690,7 @@ function  draw() {
     game.drawStartMenu();
     game.gameSound.play('startGame');
   }
-
+  console.log(game.animation);
   raf = window.requestAnimationFrame(draw);
 }
 

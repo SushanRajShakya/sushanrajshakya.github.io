@@ -48,6 +48,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="obsSquare.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/obsSquare.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-399">
+              <caret line="29" column="70" lean-forward="true" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="70" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -64,8 +74,18 @@
       <file leaf-file-name="game.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/game.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="532" column="8" lean-forward="true" selection-start-line="532" selection-start-column="8" selection-end-line="532" selection-end-column="8" />
+            <state relative-caret-position="267">
+              <caret line="692" column="28" lean-forward="false" selection-start-line="692" selection-start-column="28" selection-end-line="692" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ball.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/ball.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="436">
+              <caret line="222" column="57" lean-forward="false" selection-start-line="222" selection-start-column="57" selection-end-line="222" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -83,9 +103,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>bgtop</find>
-      <find>laser</find>
-      <find>sprite</find>
       <find>level</find>
       <find>glo</find>
       <find>mouseClick</find>
@@ -113,6 +130,9 @@
       <find>gameover</find>
       <find>gamesound</find>
       <find>updateTile</find>
+      <find>update</find>
+      <find>updateMap</find>
+      <find>updat</find>
     </findStrings>
     <replaceStrings>
       <replace>drawtriangle</replace>
@@ -152,16 +172,16 @@
         <option value="$PROJECT_DIR$/js/bbtanStartBot.js" />
         <option value="$PROJECT_DIR$/css/reset.css" />
         <option value="$PROJECT_DIR$/js/bbtanGameBot.js" />
-        <option value="$PROJECT_DIR$/js/ball.js" />
         <option value="$PROJECT_DIR$/js/gameSound.js" />
         <option value="$PROJECT_DIR$/js/ballSound.js" />
         <option value="$PROJECT_DIR$/js/startMenuBall.js" />
         <option value="$PROJECT_DIR$/js/script.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/js/animationSquare.js" />
-        <option value="$PROJECT_DIR$/js/game.js" />
         <option value="$PROJECT_DIR$/js/animation.js" />
         <option value="$PROJECT_DIR$/js/constants.js" />
+        <option value="$PROJECT_DIR$/js/ball.js" />
+        <option value="$PROJECT_DIR$/js/game.js" />
       </list>
     </option>
   </component>
@@ -409,12 +429,12 @@
       <workItem from="1511710709385" duration="8843000" />
       <workItem from="1511754882302" duration="15311000" />
       <workItem from="1511795523171" duration="14776000" />
-      <workItem from="1511840971690" duration="12922000" />
+      <workItem from="1511840971690" duration="13475000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="267824000" />
+    <option name="totallyTimeSpent" value="268377000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -773,14 +793,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/ball.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1223">
-          <caret line="213" column="14" lean-forward="true" selection-start-line="213" selection-start-column="14" selection-end-line="213" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/ballSound.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -797,26 +809,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/obsSquare.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="29" column="70" lean-forward="true" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/animationSquare.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
           <caret line="21" column="29" lean-forward="false" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/animation.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="23" column="25" lean-forward="true" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
           <folding />
         </state>
       </provider>
@@ -840,10 +836,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/animation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="23" column="25" lean-forward="true" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/obsSquare.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-399">
+          <caret line="29" column="70" lean-forward="true" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/ball.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="222" column="57" lean-forward="false" selection-start-line="222" selection-start-column="57" selection-end-line="222" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/game.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="532" column="8" lean-forward="true" selection-start-line="532" selection-start-column="8" selection-end-line="532" selection-end-column="8" />
+        <state relative-caret-position="267">
+          <caret line="692" column="28" lean-forward="false" selection-start-line="692" selection-start-column="28" selection-end-line="692" selection-end-column="28" />
           <folding />
         </state>
       </provider>

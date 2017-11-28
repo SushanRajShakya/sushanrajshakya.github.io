@@ -204,6 +204,7 @@ class Ball {
         let tempValue = game.tileMap[row][i];
         if (tempValue<=5 && tempValue>=1) {
           game.tileMap[row][i] = 0;
+          game.animation.push(new Animation(game,row,i));
         }
       }
     }
@@ -219,6 +220,7 @@ class Ball {
         let tempValue = game.tileMap[i][column];
         if (tempValue<=5 && tempValue>=1) {
           game.tileMap[i][column] = 0;
+          game.animation.push(new Animation(game,i,column));
         }
       }
     }
