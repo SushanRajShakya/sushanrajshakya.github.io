@@ -16,8 +16,9 @@ class Animation {
     this.dy = 0;
     let angleIndex = 0;
     for(let i=0;i<NUMBER_OF_SQUARES;i++){
-      this.dx = Math.cos(angleForAnimation[angleIndex]) * ANIMATE_VELOCITY;
-      this.dy = Math.sin(angleForAnimation[angleIndex]) * ANIMATE_VELOCITY;
+      let animateVel = getRandomFloat(ANIMATE_VELOCITY_MAX,ANIMATE_VELOCITY_MIN)
+      this.dx = Math.cos(angleForAnimation[angleIndex]) * animateVel;
+      this.dy = Math.sin(angleForAnimation[angleIndex]) * animateVel;
       if(i<changeSignAt && i>=0){
         this.squares.push(new AnimationSquare(this.row,this.column,this.game,-this.dx,this.dy));
         console.log('1');
