@@ -21,7 +21,7 @@ class BbtanBgBot {
   }
 
   drawCoin(gameStatus,game){
-    if(gameStatus == 'inGame') {
+    if(gameStatus == 'inGame' || gameStatus == 'nextLevel') {
       let coinX = TILE_PAD_POWER;
       let coinY = this.y + (BOT_BG_HEIGHT/4) + 2;
       let sx = POWER_UPS_X;
@@ -35,7 +35,7 @@ class BbtanBgBot {
 
 
   changeOpacity(gameStatus) {
-    if(gameStatus == 'inGame' || gameStatus == 'gameOver'){
+    if(gameStatus == 'inGame' || gameStatus == 'gameOver' || gameStatus == 'nextLevel'){
       this.opacityIndex = .5;
     }else{
       this.opacityIndex = 1;

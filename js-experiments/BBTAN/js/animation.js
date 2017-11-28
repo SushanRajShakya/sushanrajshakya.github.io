@@ -44,7 +44,6 @@ class Animation {
       this.squares[i].drawSquare(this.opacityIndex);
     }
     this.opacityIndex -= OPACITY_VELOCITY;
-    console.log(this.opacityIndex);
   }
 }
 

@@ -37,6 +37,7 @@ class Game {
     this.ballsLeftPosX = this.ballsArray[0].x;
     this.obstacles = [];
     this.animation = [];
+    this.nextLevelCounter = 1;
     //start menu objects --------------------------------------------------------------------------------------------
     this.startMenuBall = new StartMenuBall(this.ctx);
     this.startMenuBot = new BbtanStartBot(this.ctx);
@@ -162,17 +163,93 @@ class Game {
     this.ballsLeft = this.totalBalls;
     //update tile map
     let tempValue ;
-    for(let i=2;i<tempTileMap.length;i++){
-      this.tileMap[i] = tempTileMap[i-1];
-      this.levelMap[i] = tempLevelMap[i-1];
-    }
     tempValue = this.generateNewTile();
     this.ballsCounter = this.totalBalls;
-    this.tileMap[1] = tempValue[0];
-    this.levelMap[1] = tempValue[1];
-    this.checkTileMap();
+    this.tileMap[0] = tempValue[0];
+    this.levelMap[0] = tempValue[1];
+    this.gameStatus = 'nextLevel';
   }
 
+  //animation for next level sliding downwards ----------------------------------------------------------------------
+  animateToNextLevel(obstacle,powerUp){
+    let animateIndex = NEXT_LEVEL_SLIDE_SPEED * this.nextLevelCounter;
+    for (let i = 0; i < game.tileMap.length; i++) {
+      let row = game.tileMap[i];
+      for (let j = 0; j < TILE_WIDTH; j++) {
+        let index = row[j];
+        switch (index) {
+          case SQUARE:
+            obstacle = new ObsSquare(game.ctx, i + animateIndex, j,game);
+            obstacle.drawSquare(game.levelMap[i][j]);
+            game.obstacles.push([obstacle, SQUARE]);
+            break;
+          // case TRIANGLE_BOT_LEFT:
+          //   obstacle = new ObsTriangleBotLeft(game.ctx,i,j);
+          //   obstacle.drawTriangleBotLeft(game.levelMap[i][j]);
+          //   break;
+          // case TRIANGLE_BOT_RIGHT:
+          //   obstacle = new ObsTriangleBotRight(game.ctx,i,j);
+          //   obstacle.drawTriangleBotRight(game.levelMap[i][j]);
+          //   break;
+          // case TRIANGLE_TOP_LEFT:
+          //   obstacle = new ObsTriangleTopRight(game.ctx,i,j);
+          //   obstacle.drawTriangleTopRight(game.levelMap[i][j]);
+          //   break;
+          // case TRIANGLE_TOP_RIGHT:
+          //   obstacle = new ObsTriangleTopLeft(game.ctx,i,j);
+          //   obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
+          //   break;
+          case COIN:
+            powerUp = new PowerUps(game.ctx,i + animateIndex, j, game.spriteSheet, 0); //type 0 for coin
+            powerUp.drawCoin();
+            game.obstacles.push([powerUp, COIN]);
+            break;
+          case PLUS_BALL:
+            powerUp = new PowerUps(game.ctx,i + animateIndex, j, game.spriteSheet, 1); //type 1 for plus
+            powerUp.drawPlus();
+            game.obstacles.push([powerUp, PLUS_BALL]);
+            break;
+          case POWER_HORZ:
+            powerUp = new PowerUps(game.ctx, i + animateIndex, j, game.spriteSheet, 2); //type 2 for power horizontal
+            powerUp.drawPowerHorizontal();
+            game.obstacles.push([powerUp, POWER_HORZ]);
+            game.flagPowerUps.push([i, j, false]);
+            break;
+          case POWER_SPLIT:
+            powerUp = new PowerUps(game.ctx,i + animateIndex, j, game.spriteSheet, 3); //type 4 for power split
+            powerUp.drawPowerSplit();
+            game.obstacles.push([powerUp, POWER_SPLIT]);
+            game.flagPowerUps.push([i, j, false]);
+            break;
+          case POWER_VERT:
+            powerUp = new PowerUps(game.ctx, i + animateIndex, j, game.spriteSheet, 4); //type 3 for power vertical
+            powerUp.drawPowerVertical();
+            game.obstacles.push([powerUp, POWER_VERT]);
+            game.flagPowerUps.push([i, j, false]);
+            break;
+          default:
+          //do nothing
+        }
+      }
+    }
+    this.nextLevelCounter++;
+    if(animateIndex >= 1){
+      let tempTileMap = this.tileMap.slice();
+      let tempLevelMap = this.levelMap.slice();
+      this.nextLevelCounter = 1;
+      this.gameStatus = 'inGame';
+      //update tile map
+      this.ballsCounter = this.totalBalls;
+      for(let i=1;i<tempTileMap.length;i++){
+        this.tileMap[i] = tempTileMap[i-1];
+        this.levelMap[i] = tempLevelMap[i-1];
+      }
+      this.tileMap[0] = [0,0,0,0,0,0,0];
+      this.levelMap[0] = [0,0,0,0,0,0,0];
+      this.gameStatus = 'inGame';
+      this.checkTileMap();
+    }
+  }
 
   //check tileMap for gameover---------------------------------------------------------------------------------------
   checkTileMap(){
@@ -310,7 +387,7 @@ class Game {
 
   //timer counter for 60 FPS into 1 sec------------------------------------------------------------------------------
   timer(){
-    if(this.gameStatus === 'inGame') {
+    if(this.gameStatus === 'inGame' || this.gameStatus === 'nextLevel') {
       this.timerCounter++;
       if (this.timerCounter >= 60) {
         this.timerCounter = 0;
@@ -322,7 +399,7 @@ class Game {
 
   //display time at bottom--------------------------------------------------------------------------------------------
   drawTime() {
-    if(this.gameStatus === 'inGame' || this.gameStatus === 'gameOver') {
+    if(this.gameStatus === 'inGame' || this.gameStatus === 'gameOver' || this.gameStatus === 'nextLevel') {
       let color = getRandomNumber(TIMER_COLOR.length-1,0);
       this.ctx.beginPath();
       this.ctx.font = 'normal 45px SquareFont';
@@ -334,7 +411,7 @@ class Game {
 
   //display number of balls left--------------------------------------------------------------------------------------
   drawBallsLeft() {
-    if(this.gameStatus === 'inGame' && this.ballsCounter > 1) {
+    if((this.gameStatus === 'inGame' || this.gameStatus ==='nextLevel') && this.ballsCounter > 1) {
       this.ctx.beginPath();
       this.ctx.font = 'normal 15px SquareFont';
       this.ctx.fillStyle = 'white';
@@ -596,73 +673,77 @@ game.spriteSheet.onload = () => {
 
 //main draw for game---------------------------------------------------------------------------------------------------
 function  draw() {
-  if(game.gameStatus === 'inGame' || game.gameStatus === 'gameOver'){
+  if(game.gameStatus === 'inGame' || game.gameStatus === 'gameOver' || game.gameStatus === 'nextLevel'){
     game.obstacles = [];
-    let obstacle;
-    let powerUp;
+    let obstacle = null;
+    let powerUp = null;
     let score;
     game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
-    //  game.ctx.strokeRect(0,TOP_HEIGHT, GAME_WIDTH,GAME_HEIGHT-TOP_HEIGHT-BOT_HEIGHT);
-    for (let i = 0; i < game.tileMap.length; i++) {
-      let row = game.tileMap[i];
-      for (let j = 0; j < TILE_WIDTH; j++) {
-        let index = row[j];
-        switch (index) {
-          case SQUARE:
-            obstacle = new ObsSquare(game.ctx, i, j,game);
-            obstacle.drawSquare(game.levelMap[i][j]);
-            game.obstacles.push([obstacle, SQUARE]);
-            break;
-          // case TRIANGLE_BOT_LEFT:
-          //   obstacle = new ObsTriangleBotLeft(game.ctx,i,j);
-          //   obstacle.drawTriangleBotLeft(game.levelMap[i][j]);
-          //   break;
-          // case TRIANGLE_BOT_RIGHT:
-          //   obstacle = new ObsTriangleBotRight(game.ctx,i,j);
-          //   obstacle.drawTriangleBotRight(game.levelMap[i][j]);
-          //   break;
-          // case TRIANGLE_TOP_LEFT:
-          //   obstacle = new ObsTriangleTopRight(game.ctx,i,j);
-          //   obstacle.drawTriangleTopRight(game.levelMap[i][j]);
-          //   break;
-          // case TRIANGLE_TOP_RIGHT:
-          //   obstacle = new ObsTriangleTopLeft(game.ctx,i,j);
-          //   obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
-          //   break;
-          case COIN:
-            powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 0); //type 0 for coin
-            powerUp.drawCoin();
-            game.obstacles.push([powerUp, COIN]);
-            break;
-          case PLUS_BALL:
-            powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 1); //type 1 for plus
-            powerUp.drawPlus();
-            game.obstacles.push([powerUp, PLUS_BALL]);
-            break;
-          case POWER_HORZ:
-            powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 2); //type 2 for power horizontal
-            powerUp.drawPowerHorizontal();
-            game.obstacles.push([powerUp, POWER_HORZ]);
-            game.flagPowerUps.push([i, j, false]);
-            break;
-          case POWER_SPLIT:
-            powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 3); //type 4 for power split
-            powerUp.drawPowerSplit();
-            game.obstacles.push([powerUp, POWER_SPLIT]);
-            game.flagPowerUps.push([i, j, false]);
-            break;
-          case POWER_VERT:
-            powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 4); //type 3 for power vertical
-            powerUp.drawPowerVertical();
-            game.obstacles.push([powerUp, POWER_VERT]);
-            game.flagPowerUps.push([i, j, false]);
-            break;
-          case PLUS_1:
-            score = new Plus1(game.ctx, i, j); //displaying +1 after eating coins or addBallPowerUp
-            score.drawPlus1();
-            break;
-          default:
-          //do nothing
+    if(game.gameStatus === 'nextLevel'){
+      game.animateToNextLevel(obstacle,powerUp);
+    }else {
+      //  game.ctx.strokeRect(0,TOP_HEIGHT, GAME_WIDTH,GAME_HEIGHT-TOP_HEIGHT-BOT_HEIGHT);
+      for (let i = 0; i < game.tileMap.length; i++) {
+        let row = game.tileMap[i];
+        for (let j = 0; j < TILE_WIDTH; j++) {
+          let index = row[j];
+          switch (index) {
+            case SQUARE:
+              obstacle = new ObsSquare(game.ctx, i, j, game);
+              obstacle.drawSquare(game.levelMap[i][j]);
+              game.obstacles.push([obstacle, SQUARE]);
+              break;
+            // case TRIANGLE_BOT_LEFT:
+            //   obstacle = new ObsTriangleBotLeft(game.ctx,i,j);
+            //   obstacle.drawTriangleBotLeft(game.levelMap[i][j]);
+            //   break;
+            // case TRIANGLE_BOT_RIGHT:
+            //   obstacle = new ObsTriangleBotRight(game.ctx,i,j);
+            //   obstacle.drawTriangleBotRight(game.levelMap[i][j]);
+            //   break;
+            // case TRIANGLE_TOP_LEFT:
+            //   obstacle = new ObsTriangleTopRight(game.ctx,i,j);
+            //   obstacle.drawTriangleTopRight(game.levelMap[i][j]);
+            //   break;
+            // case TRIANGLE_TOP_RIGHT:
+            //   obstacle = new ObsTriangleTopLeft(game.ctx,i,j);
+            //   obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
+            //   break;
+            case COIN:
+              powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 0); //type 0 for coin
+              powerUp.drawCoin();
+              game.obstacles.push([powerUp, COIN]);
+              break;
+            case PLUS_BALL:
+              powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 1); //type 1 for plus
+              powerUp.drawPlus();
+              game.obstacles.push([powerUp, PLUS_BALL]);
+              break;
+            case POWER_HORZ:
+              powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 2); //type 2 for power horizontal
+              powerUp.drawPowerHorizontal();
+              game.obstacles.push([powerUp, POWER_HORZ]);
+              game.flagPowerUps.push([i, j, false]);
+              break;
+            case POWER_SPLIT:
+              powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 3); //type 4 for power split
+              powerUp.drawPowerSplit();
+              game.obstacles.push([powerUp, POWER_SPLIT]);
+              game.flagPowerUps.push([i, j, false]);
+              break;
+            case POWER_VERT:
+              powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 4); //type 3 for power vertical
+              powerUp.drawPowerVertical();
+              game.obstacles.push([powerUp, POWER_VERT]);
+              game.flagPowerUps.push([i, j, false]);
+              break;
+            case PLUS_1:
+              score = new Plus1(game.ctx, i, j); //displaying +1 after eating coins or addBallPowerUp
+              score.drawPlus1();
+              break;
+            default:
+            //do nothing
+          }
         }
       }
     }
@@ -690,7 +771,6 @@ function  draw() {
     game.drawStartMenu();
     game.gameSound.play('startGame');
   }
-  console.log(game.animation);
   raf = window.requestAnimationFrame(draw);
 }
 

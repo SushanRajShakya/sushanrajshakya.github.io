@@ -21,6 +21,7 @@ const BALL_VELOCITY = 8;
 const BALL_Y_DEAD = GAME_HEIGHT - BALL_RADIUS - 2 - BOT_HEIGHT;
 const BALL_GAP = 30;
 const BOT_VELOCITY = 10;
+const NEXT_LEVEL_SLIDE_SPEED = .025;
 
 //Sprite-Sheet locations and dimensions-------------------------------------------------------------------------------
 const POWER_UPS_X = 210;

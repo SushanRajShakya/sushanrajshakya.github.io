@@ -10,7 +10,7 @@ class BbtanGameBot {
   }
 
   drawBbtanBot(gameStatus, game) {
-    if (gameStatus == 'inGame' || gameStatus == 'gameOver') {
+    if (gameStatus == 'inGame' || gameStatus == 'gameOver' || gameStatus == 'nextLevel') {
       this.updateBot();
       this.ctx.beginPath();
       if (game.ballsCounter >= 1 && game.shootStatus === true){

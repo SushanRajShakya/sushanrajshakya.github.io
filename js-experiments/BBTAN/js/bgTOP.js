@@ -26,7 +26,7 @@ class BbtanBgTop {
 
   //top middle score-------------------------------------------------------------------------------------------------
   drawScore(gameStatus,game){
-    if(gameStatus == 'inGame') {
+    if(gameStatus == 'inGame' || gameStatus == 'nextLevel') {
       let scoreX = GAME_WIDTH/2.1;
       let scoreY = TOP_HEIGHT/1.44;
       if(game.level > 99){
@@ -42,7 +42,7 @@ class BbtanBgTop {
 
   //top right score--------------------------------------------------------------------------------------------------
   drawTopRightScore(gameStatus,game){
-    if(gameStatus == 'inGame') {
+    if(gameStatus == 'inGame' || gameStatus == 'nextLevel') {
       let topX = GAME_WIDTH - 45;
       let topY = 20;
       let scoreX = GAME_WIDTH - 25;
@@ -64,7 +64,7 @@ class BbtanBgTop {
 
   //top left pause button and help sign------------------------------------------------------------------------------
   drawTopLeftScore(gameStatus){
-    if(gameStatus == 'inGame') {
+    if(gameStatus == 'inGame' || gameStatus == 'nextLevel') {
       this.ctx.beginPath();
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(PAUSE_X,PAUSE_Y,PAUSE_WIDTH,PAUSE_HEIGHT);
@@ -76,7 +76,7 @@ class BbtanBgTop {
   }
 
   changeOpacity(gameStatus) {
-    if(gameStatus == 'inGame' || gameStatus == 'gameOver'){
+    if(gameStatus == 'inGame' || gameStatus == 'gameOver' || gameStatus == 'nextLevel'){
       this.opacityIndex = .5;
     }else{
       this.opacityIndex = 1;

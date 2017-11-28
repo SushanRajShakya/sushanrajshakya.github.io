@@ -21,38 +21,8 @@
       <file leaf-file-name="constants.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/constants.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="190" column="51" lean-forward="true" selection-start-line="190" selection-start-column="51" selection-end-line="190" selection-end-column="51" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="animationSquare.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/animationSquare.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="21" column="29" lean-forward="false" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="animation.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/animation.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="23" column="25" lean-forward="true" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="obsSquare.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/obsSquare.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-399">
-              <caret line="29" column="70" lean-forward="true" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="70" />
+            <state relative-caret-position="194">
+              <caret line="23" column="34" lean-forward="false" selection-start-line="23" selection-start-column="34" selection-end-line="23" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -74,18 +44,58 @@
       <file leaf-file-name="game.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/game.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="692" column="28" lean-forward="false" selection-start-line="692" selection-start-column="28" selection-end-line="692" selection-end-column="28" />
+            <state relative-caret-position="233">
+              <caret line="413" column="97" lean-forward="false" selection-start-line="413" selection-start-column="97" selection-end-line="413" selection-end-column="97" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ball.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/ball.js">
+      <file leaf-file-name="bgBOT.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/bgBOT.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
-              <caret line="222" column="57" lean-forward="false" selection-start-line="222" selection-start-column="57" selection-end-line="222" selection-end-column="57" />
+            <state relative-caret-position="777">
+              <caret line="37" column="85" lean-forward="false" selection-start-line="37" selection-start-column="85" selection-end-line="37" selection-end-column="85" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="powerUps.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/powerUps.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="5" column="12" lean-forward="false" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="obsSquare.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/obsSquare.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-126">
+              <caret line="6" column="12" lean-forward="false" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bbtanGameBot.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/bbtanGameBot.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="12" column="86" lean-forward="true" selection-start-line="12" selection-start-column="86" selection-end-line="12" selection-end-column="86" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="script.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/script.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="246">
+              <caret line="151" column="0" lean-forward="false" selection-start-line="151" selection-start-column="0" selection-end-line="154" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -103,14 +113,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>level</find>
-      <find>glo</find>
-      <find>mouseClick</find>
-      <find>start_menu</find>
-      <find>ballsCounter</find>
-      <find>drawGame</find>
-      <find>GAMEOVER_BG_HEIGHT</find>
-      <find>gameovermen</find>
       <find>drawGA</find>
       <find>dottedL</find>
       <find>dottedLIne</find>
@@ -133,6 +135,14 @@
       <find>update</find>
       <find>updateMap</find>
       <find>updat</find>
+      <find>checkL</find>
+      <find>animate</find>
+      <find>this.row</find>
+      <find>this.nextLEve</find>
+      <find>draw()</find>
+      <find>updateMaps</find>
+      <find>NEXT_LEVE</find>
+      <find>drawTimer</find>
     </findStrings>
     <replaceStrings>
       <replace>drawtriangle</replace>
@@ -166,21 +176,21 @@
         <option value="$PROJECT_DIR$/js/bottomScore.js" />
         <option value="$PROJECT_DIR$/js/logo.js" />
         <option value="$PROJECT_DIR$/js/startMenuPlayBtn.js" />
-        <option value="$PROJECT_DIR$/js/bgTOP.js" />
-        <option value="$PROJECT_DIR$/js/bgBOT.js" />
-        <option value="$PROJECT_DIR$/js/obsSquare.js" />
         <option value="$PROJECT_DIR$/js/bbtanStartBot.js" />
         <option value="$PROJECT_DIR$/css/reset.css" />
-        <option value="$PROJECT_DIR$/js/bbtanGameBot.js" />
         <option value="$PROJECT_DIR$/js/gameSound.js" />
         <option value="$PROJECT_DIR$/js/ballSound.js" />
         <option value="$PROJECT_DIR$/js/startMenuBall.js" />
         <option value="$PROJECT_DIR$/js/script.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/js/animationSquare.js" />
-        <option value="$PROJECT_DIR$/js/animation.js" />
-        <option value="$PROJECT_DIR$/js/constants.js" />
         <option value="$PROJECT_DIR$/js/ball.js" />
+        <option value="$PROJECT_DIR$/js/obsSquare.js" />
+        <option value="$PROJECT_DIR$/js/constants.js" />
+        <option value="$PROJECT_DIR$/js/bgTOP.js" />
+        <option value="$PROJECT_DIR$/js/bgBOT.js" />
+        <option value="$PROJECT_DIR$/js/animation.js" />
+        <option value="$PROJECT_DIR$/js/bbtanGameBot.js" />
         <option value="$PROJECT_DIR$/js/game.js" />
       </list>
     </option>
@@ -429,12 +439,12 @@
       <workItem from="1511710709385" duration="8843000" />
       <workItem from="1511754882302" duration="15311000" />
       <workItem from="1511795523171" duration="14776000" />
-      <workItem from="1511840971690" duration="13475000" />
+      <workItem from="1511840971690" duration="18068000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="268377000" />
+    <option name="totallyTimeSpent" value="272970000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -698,22 +708,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/bgTOP.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="78" column="56" lean-forward="false" selection-start-line="78" selection-start-column="56" selection-end-line="78" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/bgBOT.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="36" column="29" lean-forward="false" selection-start-line="36" selection-start-column="29" selection-end-line="36" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/bottomScore.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -726,14 +720,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="9" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="12" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/powerUps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="1" column="29" lean-forward="false" selection-start-line="1" selection-start-column="29" selection-end-line="1" selection-end-column="29" />
           <folding />
         </state>
       </provider>
@@ -761,14 +747,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/gameSound.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="20" column="37" lean-forward="true" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/css/reset.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -785,14 +763,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/bbtanGameBot.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="17" column="13" lean-forward="true" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/ballSound.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -801,10 +771,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/script.js">
+    <entry file="file://$PROJECT_DIR$/js/gameSound.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="59" column="45" lean-forward="true" selection-start-line="58" selection-start-column="4" selection-end-line="59" selection-end-column="45" />
+        <state relative-caret-position="84">
+          <caret line="4" column="54" lean-forward="true" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="54" />
           <folding />
         </state>
       </provider>
@@ -817,10 +787,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/constants.js">
+    <entry file="file://$PROJECT_DIR$/js/ball.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="190" column="51" lean-forward="true" selection-start-line="190" selection-start-column="51" selection-end-line="190" selection-end-column="51" />
+        <state relative-caret-position="436">
+          <caret line="222" column="57" lean-forward="false" selection-start-line="222" selection-start-column="57" selection-end-line="222" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/script.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="151" column="0" lean-forward="false" selection-start-line="151" selection-start-column="0" selection-end-line="154" selection-end-column="1" />
           <folding />
         </state>
       </provider>
@@ -836,34 +814,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/animation.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="23" column="25" lean-forward="true" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/obsSquare.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-399">
-          <caret line="29" column="70" lean-forward="true" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="70" />
+        <state relative-caret-position="-126">
+          <caret line="6" column="12" lean-forward="false" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/ball.js">
+    <entry file="file://$PROJECT_DIR$/js/powerUps.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="222" column="57" lean-forward="false" selection-start-line="222" selection-start-column="57" selection-end-line="222" selection-end-column="57" />
+        <state relative-caret-position="105">
+          <caret line="5" column="12" lean-forward="false" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/constants.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="23" column="34" lean-forward="false" selection-start-line="23" selection-start-column="34" selection-end-line="23" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/bgTOP.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="945">
+          <caret line="78" column="85" lean-forward="false" selection-start-line="78" selection-start-column="85" selection-end-line="78" selection-end-column="85" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/animation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="45" column="42" lean-forward="false" selection-start-line="45" selection-start-column="42" selection-end-line="45" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/bgBOT.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="777">
+          <caret line="37" column="85" lean-forward="false" selection-start-line="37" selection-start-column="85" selection-end-line="37" selection-end-column="85" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/bbtanGameBot.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="12" column="86" lean-forward="true" selection-start-line="12" selection-start-column="86" selection-end-line="12" selection-end-column="86" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/game.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="692" column="28" lean-forward="false" selection-start-line="692" selection-start-column="28" selection-end-line="692" selection-end-column="28" />
+        <state relative-caret-position="233">
+          <caret line="413" column="97" lean-forward="false" selection-start-line="413" selection-start-column="97" selection-end-line="413" selection-end-column="97" />
           <folding />
         </state>
       </provider>
