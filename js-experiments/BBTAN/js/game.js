@@ -201,14 +201,14 @@ class Game {
         if (this.obstacles[i][0].checkCollision(ball)) {
           this.updateFlagArray(this.obstacles[i][0].row, this.obstacles[i][0].column);
           ball.collisionOperation(this.obstacles[i], this);
-          this.updateMaps(this.obstacles[i][0].row, this.obstacles[i][0].column, this.obstacles[i][1]);
+          this.updateMaps(this.obstacles[i][0].row, this.obstacles[i][0].column, this.obstacles[i][1],ball);
         }
       }
     }
   }
 
   //updating both maps after collision-------------------------------------------------------------------------------
-  updateMaps(row,column,type){
+  updateMaps(row,column,type,ball){
     let newPlus1Score;
     switch (type)
     {
@@ -223,7 +223,7 @@ class Game {
         this.tileMap[row][column] = 11;
         newPlus1Score = new Plus1(this.ctx,row,column);
         newPlus1Score.drawPlus1();
-        this.gameSound.play('coin');
+        ball.ballSound.play('coin');
         this.plus1Score.push(newPlus1Score);
         break;
       case PLUS_BALL:
@@ -231,7 +231,7 @@ class Game {
         this.tileMap[row][column] = 11;
         newPlus1Score = new Plus1(this.ctx,row,column);
         newPlus1Score.drawPlus1();
-        this.gameSound.play('addBall');
+        ball.ballSound.play('addBall');
         this.plus1Score.push(newPlus1Score);
         break;
       default:
@@ -259,22 +259,22 @@ class Game {
   }
 
   //animation for horizontal laser----------------------------------------------------------------------------------
-  horizontalLaser(row) {
+  horizontalLaser(row,ball) {
     let valueY = (TILE_HEIGHT * row) + OBSTACLE_HEIGHT/2 - TILE_PADDING + TOP_HEIGHT;
     this.ctx.beginPath();
     this.ctx.fillStyle = 'yellow';
     this.ctx.fillRect(0,valueY,GAME_WIDTH,TILE_HEIGHT/3);
-    this.gameSound.play('powerUpLaser');
+    ball.ballSound.play('powerUpLaser');
     this.ctx.closePath();
   }
 
   //animation for vertical laser-------------------------------------------------------------------------------------
-  verticalLaser(column) {
+  verticalLaser(column,ball) {
     let valueX = (TILE_WIDTH * column) + OBSTACLE_WIDTH/2 - TILE_PADDING;
     this.ctx.beginPath();
     this.ctx.fillStyle = 'yellow';
     this.ctx.fillRect(valueX,TOP_HEIGHT,TILE_WIDTH/3,GAME_HEIGHT - TOP_HEIGHT - BOT_HEIGHT);
-    this.gameSound.play('powerUpLaser');
+    ball.ballSound.play('powerUpLaser');
     this.ctx.closePath();
   }
 

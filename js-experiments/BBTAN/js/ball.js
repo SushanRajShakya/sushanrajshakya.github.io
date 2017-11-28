@@ -11,6 +11,7 @@ class Ball {
     this.visible = true;
     this.flagForSplit = true;
     this.flagForPowHor = true;
+    this.ballSound = new BallSound();
     this.flagForPowVer = true;
   }
 
@@ -176,7 +177,7 @@ class Ball {
     } else if (this.y + BALL_RADIUS/2 > (obstacle.y + OBSTACLE_HEIGHT)) {
       this.dy = -Math.abs(this.dy);
     }
-    this.game.gameSound.play('collision');
+    this.ballSound.play('collision');
   }
 
   changeDirectionPowerSplit() {
@@ -185,7 +186,7 @@ class Ball {
     let dy = Math.sin(angle) * BALL_VELOCITY;
     this.dx = dx;
     let random = getRandomNumber(4,3);
-    this.game.gameSound.play('powerUpSplit');
+    this.ballSound.play('powerUpSplit');
     //for negative dx random value;
     if(random == 3){
       this.dx *= -1;
@@ -195,7 +196,7 @@ class Ball {
 
   laserHorizontal(obstacle,game) {
     let row = obstacle.row;
-    game.horizontalLaser(row);
+    game.horizontalLaser(row,this);
     for(let i=0;i<TILE_COLUMNS;i++){
       game.levelMap[row][i]--;
       if(game.levelMap[row][i] <= 0){
@@ -210,7 +211,7 @@ class Ball {
 
   laserVertical(obstacle,game) {
     let column = obstacle.column;
-    game.verticalLaser(column);
+    game.verticalLaser(column,this);
     for(let i=1;i<TILE_ROWS;i++){
       game.levelMap[i][column]--;
       if(game.levelMap[i][column] <= 0){
