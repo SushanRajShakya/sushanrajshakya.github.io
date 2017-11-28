@@ -147,8 +147,6 @@ class Game {
 
   //updating TILE MAP and number of balls-------------------------------------------------------------------------
   updateTileMap() {
-    let tempTileMap = this.tileMap.slice();
-    let tempLevelMap = this.levelMap.slice();
     let lastBall = this.ballsArray.length - 1;
     for(let i=0;i<this.addBalls;i++){
       let tempBall = new Ball(this.ctx,this);
@@ -666,7 +664,6 @@ class Game {
 let game = new Game();
 let raf;
 game.spriteSheet.onload = () => {
-  game.updateTileMap();
   draw();
 };
 
