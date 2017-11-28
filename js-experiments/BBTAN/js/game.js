@@ -36,6 +36,7 @@ class Game {
     this.bbtanGameBot = new BbtanGameBot(this.ctx,this.ballsArray[0].x);
     this.ballsLeftPosX = this.ballsArray[0].x;
     this.obstacles = [];
+    this.animation = [];
     //start menu objects --------------------------------------------------------------------------------------------
     this.startMenuBall = new StartMenuBall(this.ctx);
     this.startMenuBot = new BbtanStartBot(this.ctx);
@@ -216,6 +217,7 @@ class Game {
         this.levelMap[row][column]--;
         if (this.levelMap[row][column] === 0) {
           this.tileMap[row][column] = 0;
+          this.animation.push(new Animation(this,row,column));
         }
         break;
       case COIN:
@@ -521,6 +523,18 @@ class Game {
     }
   }
 
+  drawAnimation() {
+    for(let i=0;i<this.animation.length;i++) {
+      this.animation[i].draw();
+    }
+    let tempArray = this.animation.slice();
+    for(let i = 0;i<tempArray.length;tempArray++){
+      if(tempArray[i].opacityIndex <= 0){
+        this.animation.splice(this.animation.indexOf(this.animation[i]),1);
+      }
+    }
+  }
+
   //reset game
   reset(){
     this.gameTime = TOTAL_TIME;
@@ -671,6 +685,7 @@ function  draw() {
     if (game.gameStatus === 'gameOver') {
       game.drawGameOver();
     }
+    game.drawAnimation();
   }else if(game.gameStatus === 'startMenu'){
     game.drawStartMenu();
     game.gameSound.play('startGame');

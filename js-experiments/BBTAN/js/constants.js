@@ -183,3 +183,21 @@ const RED = 255;
 const GREEN_MAX = 255;
 const GREEN_MIN = 0;
 const BLUE = 102;
+
+//exploding animation constants---------------------------------------------------------------------------------------
+const TOTAL_SQUARES = 20;
+const NUMBER_OF_SQUARES = 20;
+const ANGLE_DIFF = (Math.PI/2)/((NUMBER_OF_SQUARES/4)-1);
+
+//angle for only one quadrant-----------------------------------------------------------------------------------------
+let angleForAnimation = [];
+for(let i=0;i<(NUMBER_OF_SQUARES/4);i++){
+  angleForAnimation.push((i*ANGLE_DIFF));
+}
+
+const MAX_SQUARE_WIDTH = OBSTACLE_WIDTH/4;
+const MIN_SQUARE_WIDTH = OBSTACLE_WIDTH/6;
+const MAX_SQUARE_HEIGHT = OBSTACLE_HEIGHT/4;
+const MIN_SQUARE_HEIGHT = OBSTACLE_HEIGHT/6;
+const ANIMATE_VELOCITY = 2;
+const OPACITY_VELOCITY = .02;

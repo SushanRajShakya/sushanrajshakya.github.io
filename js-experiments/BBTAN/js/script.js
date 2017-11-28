@@ -154,3 +154,8 @@ function removeHS(){
   window.localStorage.removeItem('HIGHSCORE');
 }
 
+//random color -------------------------------------------------------------------------------------------------------
+function randomColor() {
+  return getRandomNumber(255,0);
+}
+
