@@ -21,7 +21,7 @@ var slider = {
 
 
 //Slider Images--------------------------------------------------------------------------------------------------
-var sliderType = 0;
+var sliderType = 1;
 
 //slider TitleDivision
 var sliderTitleDiv=document.getElementById('sliderTitle');
