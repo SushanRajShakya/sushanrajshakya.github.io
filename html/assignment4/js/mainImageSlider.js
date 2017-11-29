@@ -187,7 +187,9 @@ function initiateSlider() {
     var tempBtn = document.getElementById('sliderBtn'+i);
     tempBtn.onclick = function (i) {
       return function () {
-        changeSliderImage(i);
+        if(flag) {
+          changeSliderImage(i);
+        }
       }
     }(i);
   }
