@@ -7,7 +7,7 @@ const INTERVAL_TIME = 5;
 var slider = {
   0: {
     title: 'Donec faucibus ultricies congue',
-    images: ['mountain (1).jpg','mountain (2).jpg','mountain (3).jpg','mountain (4).jpg','mountain (5).jpg']
+    images: ['scene (1).jpeg','scene (2).jpeg','scene (3).jpeg','scene (4).jpeg','scene (5).jpeg']
   },
   1: {
     title: 'Faucibus donec congue ultricies',
