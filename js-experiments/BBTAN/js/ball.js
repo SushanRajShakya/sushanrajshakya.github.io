@@ -160,6 +160,12 @@ class Ball {
         this.flagForPowHor = true;
         this.flagForPowVer = false;
         break;
+      case DOUBLE_SQUARE:
+        this.flagForSplit = true;
+        this.flagForPowHor = true;
+        this.flagForPowVer = true;
+        this.changeDirectionSquare(obstacle[0]);
+        break;
       default:
       //do  nothing
     }

@@ -73,6 +73,17 @@ class Game {
     }
   }
 
+  //checkLevel for Blue square---------------------------------------------------------------------------------------
+  checkLevel(){
+    if(this.level % 10 === 0){
+      let quotient = this.level/10;
+      if(quotient % 2 === 1){
+        return false;
+      }
+    }
+    return true;
+  }
+
   //tile-row generator logic------------------------------------------------------------------------------------------
   generateNewTile() {
     let addBallPosition = getRandomNumber(TILE_COLUMNS-1,0); //position for the +1 ball powerUP
@@ -84,17 +95,28 @@ class Game {
         newTile.push(PLUS_BALL);
         newLevel.push(this.level);
       } else {
-        randomValue = getRandomNumber(8,0);
-        if (randomValue>=0 && randomValue<=5) {
-          newTile.push(SQUARE);
-          newLevel.push(this.level);
-        } else if (randomValue === 6) {
-          this.randomTriangle(newTile,newLevel);
-        } else if (randomValue === 7) {
-          this.randomPowerUp(newTile,newLevel);
-        } else {
-          newTile.push(BLANK);
-          newLevel.push(this.level);
+        if(this.checkLevel()) {
+          randomValue = getRandomNumber(8, 0);
+          if (randomValue >= 0 && randomValue <= 5) {
+            newTile.push(SQUARE);
+            newLevel.push(this.level);
+          } else if (randomValue === 6) {
+            this.randomTriangle(newTile, newLevel);
+          } else if (randomValue === 7) {
+            this.randomPowerUp(newTile, newLevel);
+          } else {
+            newTile.push(BLANK);
+            newLevel.push(this.level);
+          }
+        }else{
+          randomValue = getRandomNumber(8, 0);
+          if (randomValue >= 0 && randomValue <= 3) {
+            newTile.push(DOUBLE_SQUARE);
+            newLevel.push(this.level*2);
+          } else {
+            newTile.push(BLANK);
+            newLevel.push(this.level);
+          }
         }
       }
     }
@@ -225,6 +247,11 @@ class Game {
             game.obstacles.push([powerUp, POWER_VERT]);
             game.flagPowerUps.push([i, j, false]);
             break;
+          case DOUBLE_SQUARE:
+            obstacle = new ObsSquareDouble(game.ctx, i + animateIndex, j,game);
+            obstacle.drawSquare(game.levelMap[i][j]);
+            game.obstacles.push([obstacle, DOUBLE_SQUARE]);
+            break;
           default:
           //do nothing
         }
@@ -253,7 +280,7 @@ class Game {
   checkTileMap(){
     let lastRow = this.tileMap.length - 1;
     for(let i=0; i<TILE_COLUMNS; i++){
-      if(this.tileMap[lastRow][i] === SQUARE){
+      if(this.tileMap[lastRow][i] === SQUARE || this.tileMap[lastRow][i] === DOUBLE_SQUARE){
         this.gameStatus = 'gameOver';
         this.gameSound.play('gameOver');
         this.checkHighScore();
@@ -310,6 +337,13 @@ class Game {
         newPlus1Score.drawPlus1();
         ball.ballSound.play('addBall');
         this.plus1Score.push(newPlus1Score);
+        break;
+      case DOUBLE_SQUARE:
+        this.levelMap[row][column]--;
+        if (this.levelMap[row][column] === 0) {
+          this.tileMap[row][column] = 0;
+          this.animation.push(new Animation(this,row,column));
+        }
         break;
       default:
       //do nothing
@@ -550,9 +584,9 @@ class Game {
   drawGameOverMenu(){
     //PLAY AGAIN BUTTON
     this.ctx.beginPath();
-    this.ctx.fillStyle = '#f6d917';
+    this.ctx.fillStyle = '#c4ab00';
     this.ctx.strokeStyle = 'white';
-    this.ctx.globalAlpha = .8;
+    this.ctx.globalAlpha = 1;
     this.ctx.fillRect(PLAY_AGAIN_X,PLAY_AGAIN_Y,PLAY_AGAIN_WIDTH,PLAY_AGAIN_HEIGHT);
     this.ctx.strokeRect(PLAY_AGAIN_X,PLAY_AGAIN_Y,PLAY_AGAIN_WIDTH,PLAY_AGAIN_HEIGHT);
     this.ctx.fillStyle = 'white';
@@ -561,9 +595,9 @@ class Game {
     this.ctx.closePath();
     //MAIN MENU BUTTON
     this.ctx.beginPath();
-    this.ctx.fillStyle = '#00c2ce';
+    this.ctx.fillStyle = '#00929e';
     this.ctx.strokeStyle = 'white';
-    this.ctx.globalAlpha = .8;
+    this.ctx.globalAlpha = 1;
     this.ctx.fillRect(GO_MAIN_MENU_X,GO_MAIN_MENU_Y,GO_MAIN_MENU_WIDTH,GO_MAIN_MENU_HEIGHT);
     this.ctx.strokeRect(GO_MAIN_MENU_X,GO_MAIN_MENU_Y,GO_MAIN_MENU_WIDTH,GO_MAIN_MENU_HEIGHT);
     this.ctx.fillStyle = 'white';
@@ -653,7 +687,7 @@ class Game {
       [0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0],
+      [0,3,0,0,0,0,0],
       [0,0,0,0,0,0,0]
     ];
   }
@@ -738,6 +772,10 @@ function  draw() {
               score = new Plus1(game.ctx, i, j); //displaying +1 after eating coins or addBallPowerUp
               score.drawPlus1();
               break;
+            case DOUBLE_SQUARE:
+              obstacle = new ObsSquareDouble(game.ctx, i, j, game);
+              obstacle.drawSquare(game.levelMap[i][j]);
+              game.obstacles.push([obstacle, DOUBLE_SQUARE]);
             default:
             //do nothing
           }

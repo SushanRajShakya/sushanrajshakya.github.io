@@ -11,7 +11,6 @@ class AnimationSquare {
     this.sqColor = 'rgb(' + randomColor() + ',' + randomColor() + ', ' + randomColor() + ')';
     this.column = column;
     this.ctx = game.ctx;
-    console.log(this.dx,this.dy);
   }
 
   drawSquare(opacityIndex) {

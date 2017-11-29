@@ -57,6 +57,7 @@ const POWER_HORZ = 8;
 const POWER_SPLIT = 9;
 const POWER_VERT = 10;
 const PLUS_1 = 11;
+const DOUBLE_SQUARE = 12;
 const TOTAL_TIME = 1800; //30 mins in seconds
 
 //dimensions for obstacles when collision occurs----------------------------------------------------------------------
@@ -184,6 +185,10 @@ const RED = 255;
 const GREEN_MAX = 255;
 const GREEN_MIN = 0;
 const BLUE = 102;
+
+////RGB color code for double level max and min------------------------------------------------------------------------------------------
+const RED_DOUBLE = 0;
+const BLUE_DOUBLE = 255;
 
 //exploding animation constants---------------------------------------------------------------------------------------
 const NUMBER_OF_SQUARES = 25;

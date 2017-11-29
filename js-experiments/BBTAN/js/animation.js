@@ -21,16 +21,12 @@ class Animation {
       this.dy = Math.sin(angleForAnimation[angleIndex]) * animateVel;
       if(i<changeSignAt && i>=0){
         this.squares.push(new AnimationSquare(this.row,this.column,this.game,-this.dx,this.dy));
-        console.log('1');
       }else if(i<(changeSignAt*2) && i>=changeSignAt){
         this.squares.push(new AnimationSquare(this.row,this.column,this.game,this.dx,this.dy));
-        console.log(this.dx,this.dy);
       }else if(i<(changeSignAt*3) && i>=(changeSignAt*2)){
         this.squares.push(new AnimationSquare(this.row,this.column,this.game,this.dx,-this.dy));
-        console.log('3');
       }else{
         this.squares.push(new AnimationSquare(this.row,this.column,this.game,-this.dx,-this.dy));
-        console.log('4');
       }
       angleIndex++;
       if(angleIndex>angleForAnimation.length-1){
