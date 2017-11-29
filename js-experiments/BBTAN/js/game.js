@@ -317,7 +317,7 @@ class Game {
     {
       case SQUARE:
         this.levelMap[row][column]--;
-        if (this.levelMap[row][column] === 0) {
+        if (this.levelMap[row][column] <= 0) {
           this.tileMap[row][column] = 0;
           this.animation.push(new Animation(this,row,column));
         }
@@ -340,7 +340,7 @@ class Game {
         break;
       case DOUBLE_SQUARE:
         this.levelMap[row][column]--;
-        if (this.levelMap[row][column] === 0) {
+        if (this.levelMap[row][column] <= 0) {
           this.tileMap[row][column] = 0;
           this.animation.push(new Animation(this,row,column));
         }
