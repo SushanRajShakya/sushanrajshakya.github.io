@@ -1,6 +1,6 @@
 const MAX_IMAGE_COLLECTION_INDEX = 2;
 const MIN_IMAGE_COLLECTION_INDEX = 0;
-const INTERVAL_TIME_FADE = 30;
+const INTERVAL_TIME_FADE = 15;
 const OPACITY_CHANGE_INDEX = 1/100;
 
 var imageCollection = {
@@ -26,17 +26,12 @@ var imageCollectionKeys = Object.keys(imageCollection[0]);
 var navLeft = document.getElementById('botNavLeft');
 var navRight = document.getElementById('botNavRight');
 
-//image elements
-var imageBodyBot1 = document.getElementById('imageBodyBot1');
-var imageBodyBot2 = document.getElementById('imageBodyBot2');
-var imageBodyBot3 = document.getElementById('imageBodyBot3');
-var imageBodyBot4 = document.getElementById('imageBodyBot4');
+var flag = true; //for preventing multiple on clicks
 
 //initiating the function
 init();
 function init(){
   var that = this;
-  this.flag = true;
   this.maxText = imageCollection[imageCollectionIndex][imageCollectionKeys[0]].length;
   this.maxImage = imageCollection[imageCollectionIndex][imageCollectionKeys[1]].length;
   setText();
@@ -62,56 +57,42 @@ function init(){
 
   //display image if no animation
   function setOpacity(image){
-    if(this.flag){
+    if(flag){
       image.style.opacity = 1;
     }
   }
 
   //function for animation next------------------------------------------------------------------------------------
-  function animateNext() {
-    var opacity = [0,0,0,0];
-    var stopper = setInterval(function () {
-      for(var i=0;i<that.maxImage;i++){
-        var image = document.getElementById('imageBodyBot'+(i+1));
-        opacity[i]+= OPACITY_CHANGE_INDEX;
-        image.style.opacity = opacity[i];
-      }
-      if (opacity[3] >=1) {
-        clearInterval(stopper);
-        that.flag = true;
-        opacity = [1,1,1,1];
-      }
-    }, INTERVAL_TIME_SLIDER);
-  }
-
-  //function for animation previous------------------------------------------------------------------------------------
   function animate() {
     var opacity = [0,0,0,0];
     var stopper = setInterval(function () {
-      if (opacity[3] >=1) {
-        clearInterval(stopper);
-        that.flag = true;
-        opacity = [1,1,1,1];
-      }
       for(var i=0;i<that.maxImage;i++){
         var image = document.getElementById('imageBodyBot'+(i+1));
-        image.src = 'images/' + imageCollection[imageCollectionIndex]['images'][i];
-        image.style.opacity = opacity[i];
         opacity[i]+= OPACITY_CHANGE_INDEX;
+        image.style.opacity = opacity[i];
       }
-    }, INTERVAL_TIME_SLIDER);
+      if (opacity[3] >=1) {
+        clearInterval(stopper);
+        flag = true;
+        opacity = [1,1,1,1];
+      }
+    }, INTERVAL_TIME_FADE);
   }
 
   navLeft.onclick = function(){
-    if(imageCollectionIndex>MIN_IMAGE_COLLECTION_INDEX && that.flag) {
+    if(imageCollectionIndex>MIN_IMAGE_COLLECTION_INDEX && flag) {
       imageCollectionIndex--;
+      flag = false;
+      init();
       animate();
     }
   }
 
   navRight.onclick = function(){
-    if(imageCollectionIndex<MAX_IMAGE_COLLECTION_INDEX && that.flag) {
+    if(imageCollectionIndex<MAX_IMAGE_COLLECTION_INDEX && flag) {
       imageCollectionIndex++;
+      flag = false;
+      init();
       animate();
     }
   }
