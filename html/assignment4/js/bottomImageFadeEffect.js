@@ -1,6 +1,7 @@
 const MAX_IMAGE_COLLECTION_INDEX = 2;
 const MIN_IMAGE_COLLECTION_INDEX = 0;
-const INTERVAL_TIME_FADE = 5;
+const INTERVAL_TIME_FADE = 30;
+const OPACITY_CHANGE_INDEX = 1/100;
 
 var imageCollection = {
   0: {
@@ -54,35 +55,64 @@ function init(){
     for(var i=0;i<this.maxImage;i++) {
       var image = document.getElementById('imageBodyBot'+(i+1));
       image.src = 'images/' + imageCollection[imageCollectionIndex]['images'][i];
+      image.style.opacity = 0; //setting opacity 0 firstly for all images
+      setOpacity(image); //changing opacity if animation isn't occuring
     }
   }
 
-  // //function for animation next------------------------------------------------------------------------------------
-  // function animateNext() {
-  //   var opacity = [0,0,0,0];
-  //   var stopper = setInterval(function () {
-  //     for(var i=0;i<that.maxImage;i++){
-  //       var image = document.getElementById('imageBodyBot'+(i+1));
-  //       image.src = 'images/' + imageCollection[imageCollectionIndex]['images'][i];
-  //     }
-  //     if (Math.abs(percent % 100) == 0) {
-  //       clearInterval(stopper)
-  //       that.flag = true;
-  //     }
-  //   }, INTERVAL_TIME_SLIDER);
-  // }
+  //display image if no animation
+  function setOpacity(image){
+    if(this.flag){
+      image.style.opacity = 1;
+    }
+  }
+
+  //function for animation next------------------------------------------------------------------------------------
+  function animateNext() {
+    var opacity = [0,0,0,0];
+    var stopper = setInterval(function () {
+      for(var i=0;i<that.maxImage;i++){
+        var image = document.getElementById('imageBodyBot'+(i+1));
+        opacity[i]+= OPACITY_CHANGE_INDEX;
+        image.style.opacity = opacity[i];
+      }
+      if (opacity[3] >=1) {
+        clearInterval(stopper);
+        that.flag = true;
+        opacity = [1,1,1,1];
+      }
+    }, INTERVAL_TIME_SLIDER);
+  }
+
+  //function for animation previous------------------------------------------------------------------------------------
+  function animate() {
+    var opacity = [0,0,0,0];
+    var stopper = setInterval(function () {
+      if (opacity[3] >=1) {
+        clearInterval(stopper);
+        that.flag = true;
+        opacity = [1,1,1,1];
+      }
+      for(var i=0;i<that.maxImage;i++){
+        var image = document.getElementById('imageBodyBot'+(i+1));
+        image.src = 'images/' + imageCollection[imageCollectionIndex]['images'][i];
+        image.style.opacity = opacity[i];
+        opacity[i]+= OPACITY_CHANGE_INDEX;
+      }
+    }, INTERVAL_TIME_SLIDER);
+  }
 
   navLeft.onclick = function(){
     if(imageCollectionIndex>MIN_IMAGE_COLLECTION_INDEX && that.flag) {
       imageCollectionIndex--;
-      init();
+      animate();
     }
   }
 
   navRight.onclick = function(){
     if(imageCollectionIndex<MAX_IMAGE_COLLECTION_INDEX && that.flag) {
       imageCollectionIndex++;
-      init();
+      animate();
     }
   }
 }
