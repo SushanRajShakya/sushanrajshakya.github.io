@@ -2,7 +2,7 @@ const IMAGE_WIDTH = 1170;
 const SLIDE_LENGTH = .5;
 const MAX_SLIDER_TYPE = 2;
 const MIN_SLIDER_TYPE = 0;
-const INTERVAL_TIME = 5;
+const INTERVAL_TIME_SLIDER = 5;
 
 var slider = {
   0: {
@@ -19,12 +19,11 @@ var slider = {
   }
 };
 
+var sliderKeys = Object.keys(slider[0]);
+console.log(sliderKeys);
 
 //Slider Images--------------------------------------------------------------------------------------------------
-var sliderType = 1;
-
-//slider TitleDivision
-var sliderTitleDiv=document.getElementById('sliderTitle');
+var sliderType = 0;
 
 //TITLE
 var sliderTitle=document.getElementById('titleText');
@@ -46,11 +45,12 @@ initiateSlider();
 
 function initiateSlider() {
   var that = this;
+  this.flag = true;
   this.sliderImageIndex = 0;
-  this.NUMBER_OF_IMAGE_IN_SLIDER = slider[sliderType]['images'].length;
+  this.NUMBER_OF_IMAGE_IN_SLIDER = slider[sliderType][sliderKeys[1]].length;
 
   //title for slider-------------------------------------------------------------------------------------------
-  sliderTitle.textContent = slider[sliderType]['title'];
+  sliderTitle.textContent = slider[sliderType][sliderKeys[0]];
 
   //change slider button next
   sliderTitleBtnRight.onclick = function () {
@@ -126,9 +126,6 @@ function initiateSlider() {
     this.addButton(c);
   }
 
-//function for timeout-------------------------------------------------------------------------------------------
-  this.flag = true;
-
 //function for animation next------------------------------------------------------------------------------------
   function animateNext(percent) {
     var stopper = setInterval(function () {
@@ -138,7 +135,7 @@ function initiateSlider() {
         clearInterval(stopper)
         that.flag = true;
       }
-    }, INTERVAL_TIME);
+    }, INTERVAL_TIME_SLIDER);
   }
 
 //function for animation previous-------------------------------------------------------------------------------
@@ -150,7 +147,7 @@ function initiateSlider() {
         clearInterval(stopper);
         that.flag = true;
       }
-    }, INTERVAL_TIME);
+    }, INTERVAL_TIME_SLIDER);
   }
 
 //Sliding Function for Next-------------------------------------------------------------------------------------
@@ -190,10 +187,15 @@ function initiateSlider() {
     var tempBtn = document.getElementById('sliderBtn'+i);
     tempBtn.onclick = function (i) {
       return function () {
-        that.sliderImageIndex = i;
-        console.log('selected'+i);
+        changeSliderImage(i);
       }
     }(i);
+  }
+
+  function changeSliderImage(index){
+    that.sliderImageIndex = index;
+    that.ul.style.left = -(100*index) + "%";
+    setSliderBtnActive();
   }
 }
 

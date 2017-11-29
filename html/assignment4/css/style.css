@@ -309,6 +309,10 @@ h1.active{
     padding: 0px 0px 0px 19px;
 }
 
+.related-projects a:hover{
+    cursor: pointer;
+}
+
 .related-projects a.left{
     background-image: url(../images/left.png);
 }
