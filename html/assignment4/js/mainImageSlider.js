@@ -1,7 +1,8 @@
 const IMAGE_WIDTH = 1170;
-const TRANSITION_SPEED = 2;
+const SLIDE_LENGTH = .5;
 const MAX_SLIDER_TYPE = 2;
 const MIN_SLIDER_TYPE = 0;
+const INTERVAL_TIME = 5;
 
 var slider = {
   0: {
@@ -128,33 +129,28 @@ function initiateSlider() {
 //function for timeout-------------------------------------------------------------------------------------------
   this.flag = true;
 
-  function preventClick() {
-    setTimeout(function () {
-      that.flag = true;
-    }, 1000);
-  }
-
-
 //function for animation next------------------------------------------------------------------------------------
   function animateNext(percent) {
     var stopper = setInterval(function () {
-      percent -= TRANSITION_SPEED;
+      percent -= SLIDE_LENGTH;
       that.ul.style.left = percent + "%";
       if (Math.abs(percent % 100) == 0) {
-        clearInterval(stopper);
+        clearInterval(stopper)
+        that.flag = true;
       }
-    }, 20);
+    }, INTERVAL_TIME);
   }
 
 //function for animation previous-------------------------------------------------------------------------------
   function animatePrev(percent) {
     var stopper = setInterval(function () {
-      percent += TRANSITION_SPEED;
+      percent += SLIDE_LENGTH;
       that.ul.style.left = percent + "%";
       if (Math.abs(percent % 100) == 0) {
         clearInterval(stopper);
+        that.flag = true;
       }
-    }, 20);
+    }, INTERVAL_TIME);
   }
 
 //Sliding Function for Next-------------------------------------------------------------------------------------
@@ -164,7 +160,7 @@ function initiateSlider() {
       that.sliderImageIndex++;
       var percent = -(that.sliderImageIndex - 1) * 100;
       animateNext(percent);
-      preventClick();
+      setSliderBtnActive();
     }
   }
 
@@ -175,10 +171,30 @@ function initiateSlider() {
       that.sliderImageIndex--;
       var percent = -(that.sliderImageIndex + 1) * 100;
       animatePrev(percent);
-      preventClick();
+      setSliderBtnActive();
     }
   }
 
+  function setSliderBtnActive(){
+    for(var i =0;i<that.NUMBER_OF_IMAGE_IN_SLIDER;i++){
+      var tempBtn = document.getElementById('sliderBtn'+i);
+      if(i==that.sliderImageIndex){
+        tempBtn.setAttribute('class','active');
+      }else{
+        tempBtn.setAttribute('class','dummy');
+      }
+    }
+  }
+
+  for(var i=0;i<this.NUMBER_OF_IMAGE_IN_SLIDER;i++) {
+    var tempBtn = document.getElementById('sliderBtn'+i);
+    tempBtn.onclick = function (i) {
+      return function () {
+        that.sliderImageIndex = i;
+        console.log('selected'+i);
+      }
+    }(i);
+  }
 }
 
 //removing all the child -------------------------------------------------------------------------------------
